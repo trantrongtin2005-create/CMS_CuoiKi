@@ -9,6 +9,10 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'http://wordpress.local');
+        define('WP_SITEURL', 'http://wordpress.local');
     depends_on:
       - db
     volumes:
