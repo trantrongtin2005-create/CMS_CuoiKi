@@ -13,6 +13,9 @@ services:
       - db
     volumes:
       - wordpress_data:/var/www/html
+      - ./wp-content/themes/jobscout:/var/www/html/wp-content/themes/jobscout
+      - ./wp-content/uploads:/var/www/html/wp-content/uploads
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
 
   db:
     image: mysql:8.0
@@ -24,6 +27,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - db_data:/var/lib/mysql
+      - ./database.sql:/docker-entrypoint-initdb.d/init.sql
 
   phpmyadmin:
     image: phpmyadmin:latest
