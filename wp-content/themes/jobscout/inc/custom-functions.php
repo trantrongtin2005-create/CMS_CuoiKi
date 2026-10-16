@@ -87,7 +87,7 @@ function jobscout_setup() {
      * Add support for custom header.
     */
     add_theme_support( 'custom-header', apply_filters( 'jobscout_custom_header_args', array(
-		'default-image' => get_template_directory_uri().'/images/banner-image.jpg',
+		'default-image' => get_template_directory_uri().'/images/fuji-pagoda-banner.jpg',
         'video'         => true,
 		'width'         => 1920,
 		'height'        => 704, 
@@ -97,9 +97,9 @@ function jobscout_setup() {
     // Register default headers.
     register_default_headers( array(
         'default-banner' => array(
-            'url'           => '%s/images/banner-image.jpg',
-            'thumbnail_url' => '%s/images/banner-image.jpg',
-            'description'   => esc_html_x( 'Default Banner', 'header image description', 'jobscout' ),
+            'url'           => '%s/images/fuji-pagoda-banner.jpg',
+            'thumbnail_url' => '%s/images/fuji-pagoda-banner.jpg',
+            'description'   => esc_html_x( 'Fuji Pagoda Banner', 'header image description', 'jobscout' ),
         ),
     ) );
  

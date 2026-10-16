@@ -862,69 +862,7 @@ function jobscout_wpjm_custom_styles() {
 		display: none !important;
 	}
 
-	/* 2 bảng tìm kiếm ở trên banner (Từ khóa & Địa điểm) */
-	.site-banner .form-wrap .search_jobs {
-		display: flex !important;
-		align-items: center !important;
-		gap: 14px !important;
-		background: #ffffff !important;
-		padding: 12px 18px !important;
-		border-radius: 6px !important;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
-		max-width: 800px !important;
-		margin: 0 auto !important;
-	}
-
-	.site-banner .form-wrap .search_keywords,
-	.site-banner .form-wrap .search_location {
-		flex: 1 1 0% !important;
-		display: flex !important;
-		flex-direction: column !important;
-		text-align: left !important;
-	}
-
-	.site-banner .form-wrap .search_keywords label,
-	.site-banner .form-wrap .search_location label {
-		font-size: 12px !important;
-		font-weight: 600 !important;
-		color: #64748b !important;
-		margin-bottom: 3px !important;
-		text-transform: uppercase !important;
-	}
-
-	.site-banner .form-wrap .search_keywords input,
-	.site-banner .form-wrap .search_location input {
-		border: 1px solid #e2e8f0 !important;
-		border-radius: 4px !important;
-		padding: 9px 12px !important;
-		font-size: 14px !important;
-		color: #1e293b !important;
-		width: 100% !important;
-		box-sizing: border-box !important;
-		outline: none !important;
-	}
-
-	.site-banner .form-wrap .search_submit {
-		flex: 0 0 auto !important;
-		margin-top: 18px !important;
-	}
-
-	.site-banner .form-wrap button.banner-search-submit-btn {
-		width: 44px !important;
-		height: 42px !important;
-		background: #27c96d !important;
-		border: none !important;
-		border-radius: 4px !important;
-		display: flex !important;
-		align-items: center !important;
-		justify-content: center !important;
-		cursor: pointer !important;
-		transition: background 0.2s ease !important;
-	}
-
-	.site-banner .form-wrap button.banner-search-submit-btn:hover {
-		background: #21b360 !important;
-	}
+	/* Hero Banner CSS được quản lý trực tiếp và tối ưu tại sections/banner.php */
 
 	/* ==========================================================================
 	   4. LƯỚI VIỆC LÀM 2 CỘT (2-COLUMN GRID - CANH GIỮA TRANG, KHÔNG MẤT NỘI DUNG, ZOOM KHÔNG LỖI)
