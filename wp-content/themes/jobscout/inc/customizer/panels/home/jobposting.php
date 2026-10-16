@@ -45,7 +45,7 @@ function jobscout_customize_register_frontpage_job_posting( $wp_customize ){
     $wp_customize->add_setting(
         'job_posting_section_title',
         array(
-            'default'           => __( 'Job Posting', 'jobscout' ),
+            'default'           => __( 'TOP JOBS', 'jobscout' ),
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'postMessage'
         )
@@ -61,7 +61,7 @@ function jobscout_customize_register_frontpage_job_posting( $wp_customize ){
     );
 
     $wp_customize->selective_refresh->add_partial( 'job_posting_section_title', array(
-        'selector' => '.top-job-section .container h2.section-title',
+        'selector' => '.top-jobs-heading',
         'render_callback' => 'jobscout_get_job_posting_section_title',
     ) );
 

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <rect width="100%" height="100%" fill="#FFFFFF"/>
+  <g fill="#1E2022" text-anchor="middle">
+    <!-- Square in square icon -->
+    <rect x="52" y="38" width="56" height="56" fill="#1E2022"/>
+    <rect x="68" y="54" width="24" height="24" fill="#FFFFFF"/>
+    <!-- Brand text -->
+    <text x="80" y="122" font-family="'Courier New', monospace" font-size="10" font-weight="700" letter-spacing="4">SHIKAKU</text>
+  </g>
+</svg>
