@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+    require_once( dirname( __FILE__ ) . '/wp-load.php' );
+}
 $cats = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_empty' => false ) );
 foreach ( $cats as $c ) {
     $jobs = get_posts( array(
