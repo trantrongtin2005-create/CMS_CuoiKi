@@ -14,6 +14,15 @@ if( ! function_exists( 'job_board_taxonomy_publicview_modified_filter' ) ){
 		 return $public;
 	}
 }
+
+if ( ! function_exists( 'job_board_taxonomy_type_modified_filter' ) ) {
+	function job_board_taxonomy_type_modified_filter( $args ) {
+		if ( is_array( $args ) ) {
+			$args['public'] = true;
+			$args['publicly_queryable'] = true;
+			$args['show_ui'] = true;
+			$args['show_in_nav_menus'] = true;
+			$args['rewrite'] = array( 'slug' => 'job-type', 'with_front' => false );
 		}
 		return $args;
 	}
