@@ -85,6 +85,78 @@ function jobscout_customize_register_frontpage_banner( $wp_customize ) {
         'selector'        => '.site-banner .banner-caption .description',
         'render_callback' => 'jobscout_get_banner_sub_title',
     ) );
+
+    /** Search Keyword Placeholder */
+    $wp_customize->add_setting(
+        'banner_keyword_placeholder',
+        array(
+            'default'           => 'Search for jobs, companies, skills',
+            'sanitize_callback' => 'sanitize_text_field',
+        )
+    );
+    $wp_customize->add_control(
+        'banner_keyword_placeholder',
+        array(
+            'label'       => __( 'Placeholder ô Tìm việc', 'jobscout' ),
+            'description' => __( 'Nhập placeholder ô tìm kiếm từ khóa', 'jobscout' ),
+            'section'     => 'header_image',
+            'type'        => 'text',
+        )
+    );
+
+    /** Search Location Default */
+    $wp_customize->add_setting(
+        'banner_location_default',
+        array(
+            'default'           => 'Tokyo',
+            'sanitize_callback' => 'sanitize_text_field',
+        )
+    );
+    $wp_customize->add_control(
+        'banner_location_default',
+        array(
+            'label'       => __( 'Địa điểm chọn sẵn (Mặc định)', 'jobscout' ),
+            'description' => __( 'Địa điểm hiển thị đầu tiên trên ô chọn (ví dụ: Tokyo)', 'jobscout' ),
+            'section'     => 'header_image',
+            'type'        => 'text',
+        )
+    );
+
+    /** Custom Locations List */
+    $wp_customize->add_setting(
+        'banner_locations_list',
+        array(
+            'default'           => "Tokyo\nOsaka\nKyoto\nYokohama\nNagoya\nFukuoka\nSapporo",
+            'sanitize_callback' => 'sanitize_textarea_field',
+        )
+    );
+    $wp_customize->add_control(
+        'banner_locations_list',
+        array(
+            'label'       => __( 'Danh sách địa điểm trong Menu thả xuống', 'jobscout' ),
+            'description' => __( 'Nhập danh sách địa điểm tùy ý tại đây (mỗi dòng một thành phố/địa điểm)', 'jobscout' ),
+            'section'     => 'header_image',
+            'type'        => 'textarea',
+        )
+    );
+
+    /** Search Button Label */
+    $wp_customize->add_setting(
+        'banner_btn_text',
+        array(
+            'default'           => 'SEARCH JOB',
+            'sanitize_callback' => 'sanitize_text_field',
+        )
+    );
+    $wp_customize->add_control(
+        'banner_btn_text',
+        array(
+            'label'       => __( 'Chữ trên nút tìm kiếm', 'jobscout' ),
+            'description' => __( 'Ví dụ: SEARCH JOB', 'jobscout' ),
+            'section'     => 'header_image',
+            'type'        => 'text',
+        )
+    );
     
 }
 endif;
