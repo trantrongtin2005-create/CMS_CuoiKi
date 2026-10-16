@@ -568,6 +568,20 @@ function jobscout_ensure_company_logo_saved( $job_id, $values ) {
 }
 
 /**
+ * Automatically adapt siteurl & home to current request host (localhost or wordpress.local)
+ * Prevents 301 redirect loop and DNS errors when team members open http://localhost
+ */
+add_filter( 'pre_option_siteurl', 'jobscout_dynamic_site_host_url', 1 );
+add_filter( 'pre_option_home', 'jobscout_dynamic_site_host_url', 1 );
+function jobscout_dynamic_site_host_url( $url ) {
+	if ( ! empty( $_SERVER['HTTP_HOST'] ) ) {
+		$proto = is_ssl() ? 'https://' : 'http://';
+		return $proto . $_SERVER['HTTP_HOST'];
+	}
+	return $url;
+}
+
+/**
  * Automatically normalize media URLs to match current visitor HTTP_HOST.
  * Guarantees 100% visibility whether team members access via localhost, wordpress.local, or IP.
  */

@@ -443,7 +443,13 @@ foreach ( $existing_jobs as $ej ) {
 }
 
 $fulltime_term = get_term_by( 'slug', 'toan-thoi-gian', 'job_listing_type' );
-$fulltime_id   = $fulltime_term ? $fulltime_term->term_id : 0;
+if ( ! $fulltime_term ) {
+    $inserted_type = wp_insert_term( 'Toàn thời gian', 'job_listing_type', array( 'slug' => 'toan-thoi-gian' ) );
+    $fulltime_id   = is_array( $inserted_type ) ? $inserted_type['term_id'] : 0;
+} else {
+    $fulltime_id = $fulltime_term->term_id;
+    wp_update_term( $fulltime_id, 'job_listing_type', array( 'name' => 'Toàn thời gian' ) );
+}
 
 $count_created = 0;
 
@@ -454,6 +460,7 @@ foreach ( $categories_data as $cat_slug => $cat_info ) {
         $cat_id = is_array( $inserted ) ? $inserted['term_id'] : 0;
     } else {
         $cat_id = $term->term_id;
+        wp_update_term( $cat_id, 'job_listing_category', array( 'name' => $cat_info['name'] ) );
     }
 
     foreach ( $cat_info['jobs'] as $job_data ) {

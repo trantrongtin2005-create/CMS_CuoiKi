@@ -9,10 +9,9 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_DEBUG: 1
       WORDPRESS_CONFIG_EXTRA: |
-        define('WP_HOME', 'http://wordpress.local');
-        define('WP_SITEURL', 'http://wordpress.local');
+        define('WP_HOME', 'http://' . ($$_SERVER['HTTP_HOST'] ?? 'localhost'));
+        define('WP_SITEURL', 'http://' . ($$_SERVER['HTTP_HOST'] ?? 'localhost'));
     depends_on:
       - db
     volumes:
@@ -20,6 +19,8 @@ services:
       - ./wp-content/themes/jobscout:/var/www/html/wp-content/themes/jobscout
       - ./wp-content/uploads:/var/www/html/wp-content/uploads
       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./setup-32-jobs.php:/var/www/html/setup-32-jobs.php
+      - ./check-jobs.php:/var/www/html/check-jobs.php
 
   db:
     image: mysql:8.0
