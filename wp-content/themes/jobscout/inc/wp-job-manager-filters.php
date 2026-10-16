@@ -5,14 +5,9 @@
  * @package JobScout 
  */
 
-if( ! function_exists( 'job_board_taxonomy_publicview_modified_filter' ) ){
-	/**
-	 * Filter to modify job listing
-	 */    
-	function job_board_taxonomy_publicview_modified_filter( $public ) {
-		$public['public'] = true;
-		 return $public;
-	}
+add_action( 'after_setup_theme', 'jobscout_job_manager_setup' );
+function jobscout_job_manager_setup() {
+	add_theme_support( 'job-manager-templates' );
 }
 
 if ( ! function_exists( 'job_board_taxonomy_type_modified_filter' ) ) {
