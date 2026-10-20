@@ -278,7 +278,7 @@ while ( have_posts() ) : the_post();
 		justify-content: center;
 		gap: 8px;
 		padding: 9px 22px;
-		border: 1.5px solid #1a1a1a;
+		border: 1px solid #1a1a1a;
 		border-radius: 4px;
 		background: #fff;
 		color: #1a1a1a;
@@ -303,7 +303,7 @@ while ( have_posts() ) : the_post();
 		justify-content: center;
 		gap: 8px;
 		padding: 9px 22px;
-		border: 1.5px solid #E87722;
+		border: 1px solid #E87722;
 		border-radius: 4px;
 		background: #fff;
 		color: #E87722;
@@ -413,11 +413,11 @@ while ( have_posts() ) : the_post();
 		height: 22px;
 		display: block;
 	}
-	/* 4.0 score in bold orange #E87722 */
+	/* 4.0 score matching design image (medium dark gray) */
 	.jd-rating-score {
-		font-size: 22px;
-		font-weight: 800;
-		color: #E87722;
+		font-size: 18px;
+		font-weight: 700;
+		color: #4b5563;
 		margin-left: 8px;
 		line-height: 1;
 	}
@@ -507,6 +507,9 @@ while ( have_posts() ) : the_post();
 		transition: transform 0.25s ease, box-shadow 0.25s ease;
 		min-height: 240px;
 		box-sizing: border-box;
+		text-decoration: none;
+		color: inherit;
+		cursor: pointer;
 	}
 	.jd-job-card:hover {
 		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
@@ -557,13 +560,9 @@ while ( have_posts() ) : the_post();
 		line-height: 1.35;
 		margin: 0 0 6px 0;
 		word-break: break-word;
-	}
-	.jd-job-card-name a {
-		color: inherit;
-		text-decoration: none;
 		transition: color 0.2s;
 	}
-	.jd-job-card:hover .jd-job-card-name a {
+	.jd-job-card:hover .jd-job-card-name {
 		color: #E87722;
 	}
 	.jd-job-card-date {
@@ -752,10 +751,6 @@ while ( have_posts() ) : the_post();
 		<!-- Right Buttons -->
 		<div class="jd-header-actions">
 			<button type="button" class="jd-btn-share" id="jd-share-btn" title="Copy link to clipboard">
-				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-					<circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
-					<line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-				</svg>
 				SHARE
 			</button>
 			<?php if ( $can_apply ) : ?>
@@ -817,7 +812,7 @@ while ( have_posts() ) : the_post();
 					</div>
 				</div>
 
-				<!-- Why You'll Love Working Here -->
+				<!-- Why You'll Love Working Here (kèm mức lương) -->
 				<div class="jd-section">
 					<h2 class="jd-section-title">Why You'll Love Working Here</h2>
 					<div class="jd-section-body">
@@ -827,9 +822,9 @@ while ( have_posts() ) : the_post();
 							echo wp_kses_post( wpautop( $why_work ) );
 						} else {
 							echo '<p>Môi trường làm việc chuyên nghiệp, cởi mở và khuyến khích sáng tạo đột phá. Chế độ đãi ngộ cạnh tranh trên thị trường, xét tăng lương định kỳ cùng lộ trình thăng tiến rõ ràng.</p>';
-							if ( ! empty( $job_salary ) ) {
-								echo '<p>Mức lương dự kiến: <strong style="color: #E87722;">' . esc_html( $job_salary ) . '</strong></p>';
-							}
+						}
+						if ( ! empty( $job_salary ) ) {
+							echo '<p style="margin-top: 10px;">Mức lương / Salary: <strong style="color: #E87722;">' . esc_html( $job_salary ) . '</strong></p>';
 						}
 						?>
 					</div>
@@ -852,7 +847,7 @@ while ( have_posts() ) : the_post();
 		<!-- RIGHT SIDEBAR -->
 		<div class="jd-sidebar">
 
-			<!-- 2. Staff Rating Card: 4.0 in #E87722, 5th star is orange outline star -->
+			<!-- 2. Staff Rating Card: 4.0, 5th star is light gray outline star matching design -->
 			<div class="jd-rating-card">
 				<h3 class="jd-rating-label">Staff Rating</h3>
 				<div class="jd-rating-row">
@@ -860,8 +855,8 @@ while ( have_posts() ) : the_post();
 						<?php
 						// 4 filled orange stars (#E87722)
 						$filled_star_svg = '<svg viewBox="0 0 24 24"><polygon fill="#E87722" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
-						// 5th star: outline star with orange #E87722 border and empty inside
-						$outline_star_svg = '<svg viewBox="0 0 24 24"><polygon fill="none" stroke="#E87722" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+						// 5th star: outline star with subtle gray #9ca3af border matching screenshot
+						$outline_star_svg = '<svg viewBox="0 0 24 24"><polygon fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
 
 						for ( $i = 0; $i < 4; $i++ ) {
 							echo '<span class="jd-star">' . $filled_star_svg . '</span>';
@@ -1005,17 +1000,13 @@ while ( have_posts() ) : the_post();
 					$rj_bullets[] = array_shift( $rj_defaults );
 				}
 			?>
-			<div class="jd-job-card">
+			<a href="<?php echo esc_url( get_permalink( $rj_id ) ); ?>" class="jd-job-card">
 				<div class="jd-job-card-top">
 					<div class="jd-job-card-logo">
-						<a href="<?php echo esc_url( get_permalink( $rj_id ) ); ?>">
-							<img src="<?php echo esc_url( $rj_logo ); ?>" alt="<?php echo esc_attr( $rj_company ?: $rjob->post_title ); ?>" />
-						</a>
+						<img src="<?php echo esc_url( $rj_logo ); ?>" alt="<?php echo esc_attr( $rj_company ?: $rjob->post_title ); ?>" />
 					</div>
 					<div class="jd-job-card-info">
-						<h3 class="jd-job-card-name">
-							<a href="<?php echo esc_url( get_permalink( $rj_id ) ); ?>"><?php echo esc_html( $rjob->post_title ); ?></a>
-						</h3>
+						<h3 class="jd-job-card-name"><?php echo esc_html( $rjob->post_title ); ?></h3>
 						<div class="jd-job-card-date"><?php echo esc_html( $rj_date ); ?></div>
 						<!-- 3 separate badge tags, NO "|" separator -->
 						<div class="jd-job-card-tags">
@@ -1033,7 +1024,7 @@ while ( have_posts() ) : the_post();
 						<?php endforeach; ?>
 					</ul>
 				</div>
-			</div>
+			</a>
 			<?php endforeach; ?>
 		</div>
 	</div>
