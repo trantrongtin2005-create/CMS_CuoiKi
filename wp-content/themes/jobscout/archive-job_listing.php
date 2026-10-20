@@ -852,10 +852,10 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		</div>
 		<div class="aj-top-right">
 			<select id="aj-sort-select" class="aj-sort-select" aria-label="Sắp xếp kết quả">
-				<option value="latest" selected>Latest Jobs</option>
-				<option value="oldest">Oldest Jobs</option>
-				<option value="salary-desc">Highest Salary</option>
-				<option value="salary-asc">Lowest Salary</option>
+				<option value="latest" selected>Mới nhất</option>
+				<option value="oldest">Cũ nhất</option>
+				<option value="salary-desc">Lương cao nhất</option>
+				<option value="salary-asc">Lương thấp nhất</option>
 			</select>
 		</div>
 	</div>
