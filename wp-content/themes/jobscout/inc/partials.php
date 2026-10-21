@@ -102,7 +102,7 @@ function jobscout_get_job_posting_section_title(){
  * Blog Section Title
 */
 function jobscout_get_blog_section_title(){
-    $blog_section_title = get_theme_mod( 'blog_section_title', __( 'Latest Articles', 'jobscout' ) );
+    $blog_section_title = get_theme_mod( 'blog_section_title', 'NEWEST BLOG ENTRIES' );
 
     if ( $blog_section_title ){
         return esc_html( $blog_section_title );
@@ -115,7 +115,7 @@ function jobscout_get_blog_section_title(){
  * Blog Section Description
 */
 function jobscout_get_blog_section_description(){
-    $blog_section_subtitle = get_theme_mod( 'blog_section_subtitle', __( 'We will help you find it. We are your first step to becoming everything you want to be.', 'jobscout' ) );
+    $blog_section_subtitle = get_theme_mod( 'blog_section_subtitle', '' );
 
     if ( $blog_section_subtitle ){
         return wpautop( wp_kses_post( $blog_section_subtitle ) );
@@ -128,7 +128,7 @@ function jobscout_get_blog_section_description(){
  * Blog View All Button
 */
 function jobscout_get_blog_view_all_btn(){
-    $view_all_btn = get_theme_mod( 'blog_view_all', __( 'Browse All', 'jobscout' ) );
+    $view_all_btn = get_theme_mod( 'blog_view_all', '' );
     if ( $view_all_btn ){
         return esc_html( $view_all_btn );
     } else {
