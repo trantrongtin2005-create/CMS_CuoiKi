@@ -230,3 +230,54 @@ function jobscout_save_top_jobs_meta( $post_id ) {
     }
 }
 add_action( 'save_post_job_listing', 'jobscout_save_top_jobs_meta' );
+
+/**
+ * ========================================================
+ * META BOX: CẤU HÌNH BÀI VIẾT HIỂN THỊ Ở TRANG CHỦ
+ * ========================================================
+ */
+function jobscout_add_home_blog_metabox() {
+    add_meta_box(
+        'jobscout_home_blog_meta',
+        __( '⭐ Cấu hình hiển thị NEWEST BLOG ENTRIES (Trang chủ)', 'jobscout' ),
+        'jobscout_home_blog_meta_callback',
+        'post',
+        'side',
+        'high'
+    );
+}
+add_action( 'add_meta_boxes', 'jobscout_add_home_blog_metabox' );
+
+function jobscout_home_blog_meta_callback( $post ) {
+    wp_nonce_field( 'jobscout_home_blog_nonce_action', 'jobscout_home_blog_nonce' );
+    $is_featured_blog = get_post_meta( $post->ID, '_featured_home_blog', true );
+    ?>
+    <p>
+        <label style="font-weight: 600; cursor: pointer;">
+            <input type="checkbox" name="_featured_home_blog" value="1" <?php checked( $is_featured_blog, '1' ); ?> style="margin-right: 6px;" />
+            <?php esc_html_e( 'Ưu tiên hiển thị bài viết này ở mục "NEWEST BLOG ENTRIES" trên Trang chủ', 'jobscout' ); ?>
+        </label>
+    </p>
+    <p class="description" style="color: #64748B; font-size: 12px; margin-top: 6px;">
+        <?php esc_html_e( 'Bài viết cần có Ảnh đại diện (Featured Image) để hiển thị đầy đủ và đẹp nhất theo khung thẻ trang chủ.', 'jobscout' ); ?>
+    </p>
+    <?php
+}
+
+function jobscout_save_home_blog_meta( $post_id ) {
+    if ( ! isset( $_POST['jobscout_home_blog_nonce'] ) || ! wp_verify_nonce( $_POST['jobscout_home_blog_nonce'], 'jobscout_home_blog_nonce_action' ) ) {
+        return;
+    }
+
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return;
+    }
+
+    $is_featured = isset( $_POST['_featured_home_blog'] ) ? '1' : '0';
+    update_post_meta( $post_id, '_featured_home_blog', $is_featured );
+}
+add_action( 'save_post_post', 'jobscout_save_home_blog_meta' );

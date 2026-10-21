@@ -15,20 +15,93 @@ $blog_heading   = get_theme_mod( 'blog_section_title', 'NEWEST BLOG ENTRIES' );
 $sub_title      = get_theme_mod( 'blog_section_subtitle', '' );
 $blog           = get_option( 'page_for_posts' );
 $label          = get_theme_mod( 'blog_view_all', '' );
-$ed_blog        = get_theme_mod( 'ed_blog', true );
-$read_more_text = 'Read More';
+$ed_blog        = get_theme_mod( 'ed_blog_section', get_theme_mod( 'ed_blog', true ) );
+$read_more_text = get_theme_mod( 'blog_read_more_text', 'Read More' );
+$source         = get_theme_mod( 'blog_posts_source', 'auto' );
+$qry            = null;
 
-$args = array(
-    'post_type'           => 'post',
-    'post_status'         => 'publish',
-    'posts_per_page'      => 4,
-    'ignore_sticky_posts' => true,
-    'meta_key'            => '_thumbnail_id', // Chỉ lấy bài có ảnh để thẻ hiển thị đúng thiết kế.
-);
+// 1. Chế độ thủ công: Lấy theo 4 ID bài viết do người dùng chọn trong Customizer
+if ( 'manual' === $source ) {
+    $manual_ids = array();
+    for ( $i = 1; $i <= 4; $i++ ) {
+        $pid = absint( get_theme_mod( "blog_post_id_{$i}", 0 ) );
+        if ( $pid > 0 && 'publish' === get_post_status( $pid ) ) {
+            $manual_ids[] = $pid;
+        }
+    }
 
-$qry = new WP_Query( $args );
+    if ( ! empty( $manual_ids ) ) {
+        $args = array(
+            'post_type'           => 'post',
+            'post__in'            => $manual_ids,
+            'orderby'             => 'post__in',
+            'posts_per_page'      => count( $manual_ids ),
+            'post_status'         => 'publish',
+            'ignore_sticky_posts' => true,
+        );
+        $qry = new WP_Query( $args );
+    }
+}
 
-if ( $ed_blog && ( $blog_heading || $sub_title || $qry->have_posts() ) ) { ?>
+// 2. Chế độ tự động: Ưu tiên các bài viết đánh dấu Nổi bật (_featured_home_blog = 1) và có ảnh
+if ( empty( $qry ) || ! $qry->have_posts() ) {
+    $featured_posts = get_posts( array(
+        'post_type'      => 'post',
+        'post_status'    => array( 'publish' ),
+        'posts_per_page' => 4,
+        'meta_key'       => '_thumbnail_id',
+        'meta_query'     => array(
+            array(
+                'key'     => '_featured_home_blog',
+                'value'   => '1',
+                'compare' => '=',
+            ),
+        ),
+    ) );
+
+    $chosen_ids = ! empty( $featured_posts ) ? wp_list_pluck( $featured_posts, 'ID' ) : array();
+
+    if ( count( $chosen_ids ) < 4 ) {
+        $needed = 4 - count( $chosen_ids );
+        $recent_posts = get_posts( array(
+            'post_type'      => 'post',
+            'post_status'    => array( 'publish' ),
+            'posts_per_page' => $needed,
+            'post__not_in'   => $chosen_ids,
+            'meta_key'       => '_thumbnail_id',
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+        ) );
+        if ( ! empty( $recent_posts ) ) {
+            $chosen_ids = array_merge( $chosen_ids, wp_list_pluck( $recent_posts, 'ID' ) );
+        }
+    }
+
+    if ( ! empty( $chosen_ids ) ) {
+        $qry = new WP_Query( array(
+            'post_type'      => 'post',
+            'post__in'       => $chosen_ids,
+            'orderby'        => 'post__in',
+            'posts_per_page' => count( $chosen_ids ),
+            'post_status'    => array( 'publish' ),
+        ) );
+    }
+
+    // Fallback nếu không có post nào có thumbnail
+    if ( empty( $qry ) || ! $qry->have_posts() ) {
+        $args = array(
+            'post_type'           => 'post',
+            'post_status'         => 'publish',
+            'posts_per_page'      => 4,
+            'ignore_sticky_posts' => true,
+            'orderby'             => 'date',
+            'order'               => 'DESC',
+        );
+        $qry = new WP_Query( $args );
+    }
+}
+
+if ( $ed_blog && ( $blog_heading || $sub_title || ( $qry && $qry->have_posts() ) ) ) { ?>
 
 <!-- ========================================================
      CSS CHO MODULE NEWEST BLOG ENTRIES
