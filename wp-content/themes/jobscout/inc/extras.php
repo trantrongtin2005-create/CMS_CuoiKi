@@ -519,7 +519,7 @@ function jobscout_get_home_sections(){
     $ed_banner = get_theme_mod( 'ed_banner_section', true );
     $sections = array( 
         'jobposting'  => array( 'section' => 'jobposting' ),
-        'cta'         => array( 'sidebar' => 'cta' ),
+        'cta'         => array( 'section' => 'cta' ),
         'blog'        => array( 'section' => 'blog' ), 
         'testimonial' => array( 'sidebar' => 'testimonial' ),
         'client'      => array( 'sidebar' => 'client' ),

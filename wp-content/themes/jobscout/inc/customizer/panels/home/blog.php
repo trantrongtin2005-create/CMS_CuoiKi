@@ -43,7 +43,7 @@ function jobscout_customize_register_frontpage_blog( $wp_customize ){
     $wp_customize->add_setting(
         'blog_section_title',
         array(
-            'default'           => __( 'Latest Articles', 'jobscout' ),
+            'default'           => 'NEWEST BLOG ENTRIES',
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'postMessage'
         )
@@ -60,7 +60,7 @@ function jobscout_customize_register_frontpage_blog( $wp_customize ){
 
     /** Selective refresh for blog title. */
     $wp_customize->selective_refresh->add_partial( 'blog_section_title', array(
-        'selector'            => '.article-section .container h2.section-title',
+        'selector'            => '.newest-blog-module-section .newest-blog-heading',
         'render_callback'     => 'jobscout_get_blog_section_title',
         'container_inclusive' => false,
         'fallback_refresh'    => true,
@@ -70,7 +70,7 @@ function jobscout_customize_register_frontpage_blog( $wp_customize ){
     $wp_customize->add_setting(
         'blog_section_subtitle',
         array(
-            'default'           => __( 'We will help you find it. We are your first step to becoming everything you want to be.', 'jobscout' ),
+            'default'           => '',
             'sanitize_callback' => 'wp_kses_post',
             'transport'         => 'postMessage'
         )
@@ -87,7 +87,7 @@ function jobscout_customize_register_frontpage_blog( $wp_customize ){
 
     /** Selective refresh for blog description. */
     $wp_customize->selective_refresh->add_partial( 'blog_section_subtitle', array(
-        'selector'            => '.article-section .container .section-desc',
+        'selector'            => '.newest-blog-module-section .newest-blog-desc',
         'render_callback'     => 'jobscout_get_blog_section_description',
         'container_inclusive' => false,
         'fallback_refresh'    => true,
@@ -98,7 +98,7 @@ function jobscout_customize_register_frontpage_blog( $wp_customize ){
     $wp_customize->add_setting(
         'blog_view_all',
         array(
-            'default'           => __( 'Browse All', 'jobscout' ),
+            'default'           => '',
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'postMessage'
         )
@@ -115,7 +115,7 @@ function jobscout_customize_register_frontpage_blog( $wp_customize ){
     );
     
     $wp_customize->selective_refresh->add_partial( 'blog_view_all', array(
-        'selector'            => '.article-section .btn-wrap .btn',
+        'selector'            => '.newest-blog-module-section .newest-blog-btn',
         'render_callback'     => 'jobscout_get_blog_view_all_btn',
         'container_inclusive' => false,
         'fallback_refresh'    => true,
