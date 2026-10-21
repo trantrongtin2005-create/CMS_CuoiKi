@@ -528,3 +528,58 @@ function jobscout_get_page_id_by_template( $template_name ){
     return get_pages( $args );    
 }
 endif;
+
+if ( ! function_exists( 'jobscout_get_job_bullets' ) ) :
+/**
+ * Trích xuất 3 gạch đầu dòng quyền lợi/trách nhiệm của công việc cho mục TOP JOBS
+ * 1. Ưu tiên meta riêng (_job_bullet_1, _job_bullet_2, _job_bullet_3)
+ * 2. Tự động lấy từ các thẻ <li> trong post_content
+ * 3. Lấy từ cài đặt mặc định trong Customizer
+ *
+ * @param int $post_id ID của tin tuyển dụng
+ * @return array Danh sách các gạch đầu dòng
+ */
+function jobscout_get_job_bullets( $post_id ) {
+    $bullets = array();
+    
+    // 1. Kiểm tra 3 bullet được nhập riêng trong Meta Box
+    $b1 = get_post_meta( $post_id, '_job_bullet_1', true );
+    $b2 = get_post_meta( $post_id, '_job_bullet_2', true );
+    $b3 = get_post_meta( $post_id, '_job_bullet_3', true );
+    if ( ! empty( $b1 ) || ! empty( $b2 ) || ! empty( $b3 ) ) {
+        if ( ! empty( $b1 ) ) $bullets[] = $b1;
+        if ( ! empty( $b2 ) ) $bullets[] = $b2;
+        if ( ! empty( $b3 ) ) $bullets[] = $b3;
+        return $bullets;
+    }
+    
+    // 2. Trích xuất từ <li> trong post_content
+    $post = get_post( $post_id );
+    if ( $post && ! empty( $post->post_content ) ) {
+        if ( preg_match_all( '/<li[^>]*>(.*?)<\/li>/is', $post->post_content, $matches ) ) {
+            if ( ! empty( $matches[1] ) ) {
+                foreach ( array_slice( $matches[1], 0, 3 ) as $item ) {
+                    $clean = trim( wp_strip_all_tags( $item ) );
+                    if ( ! empty( $clean ) ) {
+                        $bullets[] = $clean;
+                    }
+                }
+                if ( ! empty( $bullets ) ) {
+                    return $bullets;
+                }
+            }
+        }
+    }
+    
+    // 3. Lấy từ Customizer default
+    $def1 = get_theme_mod( 'top_jobs_default_bullet_1', 'Be responsible for the effective operational management of the hotel' );
+    $def2 = get_theme_mod( 'top_jobs_default_bullet_2', 'Excellent salary bonuses & recognition activities' );
+    $def3 = get_theme_mod( 'top_jobs_default_bullet_3', 'Foreign language allowance (up to 500 USD/month)' );
+    
+    if ( ! empty( $def1 ) ) $bullets[] = $def1;
+    if ( ! empty( $def2 ) ) $bullets[] = $def2;
+    if ( ! empty( $def3 ) ) $bullets[] = $def3;
+    
+    return $bullets;
+}
+endif;
