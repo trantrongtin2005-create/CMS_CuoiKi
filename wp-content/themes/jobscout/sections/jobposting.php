@@ -272,17 +272,60 @@ if ( $ed_jobposting ) {
 
     <div class="top-jobs-grid">
       <?php
-      // Lấy 6 việc làm mới nhất từ WP Job Manager
-      $args = array(
-          'post_type'      => 'job_listing',
-          'posts_per_page' => 6,
-          'post_status'    => array( 'publish' ),
-          'orderby'        => 'ID',
-          'order'          => 'ASC'
-      );
-      $query = new WP_Query( $args );
+      $source = get_theme_mod( 'top_jobs_source', 'auto' );
+      $query  = null;
 
-      if ( $query->have_posts() ) :
+      // 1. Chế độ thủ công: Lấy theo các ID việc làm do người dùng chọn trong Customizer
+      if ( 'manual' === $source ) {
+          $manual_ids = array();
+          for ( $i = 1; $i <= 6; $i++ ) {
+              $jid = absint( get_theme_mod( "top_job_id_{$i}", 0 ) );
+              if ( $jid > 0 && 'publish' === get_post_status( $jid ) ) {
+                  $manual_ids[] = $jid;
+              }
+          }
+
+          if ( ! empty( $manual_ids ) ) {
+              $args = array(
+                  'post_type'      => 'job_listing',
+                  'post__in'       => $manual_ids,
+                  'orderby'        => 'post__in',
+                  'posts_per_page' => count( $manual_ids ),
+                  'post_status'    => array( 'publish' ),
+              );
+              $query = new WP_Query( $args );
+          }
+      }
+
+      // 2. Chế độ tự động hoặc khi thủ công chưa chọn đủ bài:
+      // Ưu tiên các việc làm đánh dấu Nổi bật (_featured = 1)
+      if ( empty( $query ) || ! $query->have_posts() ) {
+          $args = array(
+              'post_type'      => 'job_listing',
+              'posts_per_page' => 6,
+              'post_status'    => array( 'publish' ),
+              'meta_key'       => '_featured',
+              'orderby'        => array(
+                  'meta_value_num' => 'DESC',
+                  'ID'             => 'ASC',
+              ),
+          );
+          $query = new WP_Query( $args );
+
+          // Fallback nếu không có post nào có _featured
+          if ( ! $query->have_posts() ) {
+              $args = array(
+                  'post_type'      => 'job_listing',
+                  'posts_per_page' => 6,
+                  'post_status'    => array( 'publish' ),
+                  'orderby'        => 'ID',
+                  'order'          => 'ASC',
+              );
+              $query = new WP_Query( $args );
+          }
+      }
+
+      if ( $query && $query->have_posts() ) :
           while ( $query->have_posts() ) : $query->the_post();
               $post_id   = get_the_ID();
               $logo_url  = get_post_meta( $post_id, '_company_logo', true );
@@ -311,6 +354,9 @@ if ( $ed_jobposting ) {
               if ( empty( $logo_url ) ) {
                   $logo_url = get_template_directory_uri() . '/images/companies/the-sodoh.svg';
               }
+
+              // Trích xuất 3 gạch đầu dòng quyền lợi linh hoạt
+              $bullets = jobscout_get_job_bullets( $post_id );
               ?>
               <div class="top-job-card">
                 <div class="top-job-card-header">
@@ -332,9 +378,9 @@ if ( $ed_jobposting ) {
 
                 <div class="top-job-card-body">
                   <ul class="top-job-bullets">
-                    <li>Be responsible for the effective operational management of the hotel</li>
-                    <li>Excellent salary bonuses &amp; recognition activities</li>
-                    <li>Foreign language allowance (up to 500 USD/month)</li>
+                    <?php foreach ( $bullets as $bullet ) : ?>
+                      <li><?php echo esc_html( $bullet ); ?></li>
+                    <?php endforeach; ?>
                   </ul>
                 </div>
               </div>
@@ -378,11 +424,13 @@ if ( $ed_jobposting ) {
       ?>
     </div>
 
-    <div class="top-jobs-footer">
-      <a href="<?php echo esc_url( $view_more_url ); ?>" class="top-jobs-btn-more">
-        <?php echo esc_html( $view_more_text ); ?>
-      </a>
-    </div>
+    <?php if ( ! empty( $view_more_text ) && ! empty( $view_more_url ) ) : ?>
+      <div class="top-jobs-footer">
+        <a href="<?php echo esc_url( $view_more_url ); ?>" class="top-jobs-btn-more">
+          <?php echo esc_html( $view_more_text ); ?>
+        </a>
+      </div>
+    <?php endif; ?>
 
   </div>
 </section>
