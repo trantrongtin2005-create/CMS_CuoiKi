@@ -577,7 +577,7 @@ function cms_newsletter_render_admin_page() {
                         <form method="post" action="">
                             <?php wp_nonce_field( 'cms_test_smtp_nonce' ); ?>
                             <div style="display: flex; gap: 12px; align-items: center; max-width: 600px;">
-                                <input type="email" name="test_email" class="regular-text" placeholder="Nhập email nhận thử nghiệm..." required value="<?php echo esc_attr( get_option( 'admin_email' ) ); ?>" style="flex: 1; height: 38px;">
+                                <input type="email" name="test_email" class="regular-text" placeholder="Nhập email nhận thử nghiệm..." required value="" style="flex: 1; height: 38px;">
                                 <button type="submit" name="cms_test_smtp_mail" class="button button-secondary button-large" style="height: 38px;">Gửi Thử Ngay</button>
                             </div>
                         </form>
