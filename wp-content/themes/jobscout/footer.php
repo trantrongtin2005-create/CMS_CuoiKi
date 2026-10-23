@@ -18,7 +18,7 @@ do_action( 'jobscout_before_footer' );
 ?>
 
 <!-- ========================================================
-     CSS STYLES CHO MODULE FOOTER (CHUẨN 100% THEO SCREENSHOT)
+     CSS STYLES CHO MODULE FOOTER (CHUẨN 100% THEO THIẾT KẾ)
      ======================================================== -->
 <style id="jobscout-module-footer-styles">
   /* Font Montserrat cho Footer */
@@ -45,7 +45,7 @@ do_action( 'jobscout_before_footer' );
   }
 
   /* ----------------------------------------------------
-     1. TOP BAR: SUBSCRIBE TO OUR NEWSLETTER (DẢI MÀU CAM)
+     1. THANH TRÊN: DẢI ĐĂNG KÝ NHẬN BẢN TIN (MÀU CAM)
      ---------------------------------------------------- */
   .site-footer-module .ft-newsletter-bar {
     background-color: var(--ft-orange);
@@ -349,7 +349,7 @@ do_action( 'jobscout_before_footer' );
   }
 
   /* ----------------------------------------------------
-     3. BOTTOM BAR: DẢI ĐEN NÂU CĂN GIỮA BẢN QUYỀN
+     3. THANH DƯỚI: DẢI ĐEN NÂU CĂN GIỮA DÒNG BẢN QUYỀN
      ---------------------------------------------------- */
   .site-footer-module .ft-bottom-bar {
     background-color: var(--ft-bottom-bg);
@@ -380,7 +380,7 @@ do_action( 'jobscout_before_footer' );
     text-decoration: underline !important;
   }
 
-  /* 4. BACK TO TOP BUTTON */
+  /* 4. NÚT CUỘN LÊN ĐẦU TRANG (BACK TO TOP) */
   .ft-scroll-top-btn {
     position: fixed;
     bottom: 28px;
@@ -414,7 +414,7 @@ do_action( 'jobscout_before_footer' );
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   }
 
-  /* 5. TOAST FEEDBACK */
+  /* 5. HỘP THOẠI TOAST THÔNG BÁO */
   .ft-toast {
     position: fixed;
     bottom: 30px;
@@ -446,7 +446,7 @@ do_action( 'jobscout_before_footer' );
   .ft-toast.ft-toast-success { border-left-color: #10B981; }
   .ft-toast.ft-toast-error { border-left-color: #EF4444; }
 
-  /* RESPONSIVE CHO CẢ MOBILE & TABLET */
+  /* TƯƠNG THÍCH TRÊN DI ĐỘNG VÀ MÁY TÍNH BẢNG (RESPONSIVE) */
   @media (max-width: 900px) {
     .site-footer-module .ft-newsletter-container {
       flex-direction: column;
@@ -523,7 +523,7 @@ do_action( 'jobscout_before_footer' );
 </style>
 
 <!-- ========================================================
-     HTML MARKUP CHO FOOTER MODULE (GIỐNG 100% SCREENSHOT)
+     MÃ NGUỒN HTML CHO MODULE FOOTER (CHUẨN THEO THIẾT KẾ)
      ======================================================== -->
 <footer class="site-footer-module" id="siteFooter">
 <?php
@@ -554,7 +554,7 @@ if ( is_active_sidebar( 'footer-module' ) ) {
 </div>
 
 <!-- ========================================================
-     JAVASCRIPT LOGIC CHO FOOTER MODULE TRÊN WORDPRESS
+     MÃ JAVASCRIPT XỬ LÝ CHO MODULE FOOTER TRÊN WORDPRESS
      ======================================================== -->
 <script>
 (function() {
@@ -578,7 +578,7 @@ if ( is_active_sidebar( 'footer-module' ) ) {
     }, 4500);
   }
 
-  // Xử lý gửi Form Newsletter
+  // Xử lý gửi biểu mẫu đăng ký nhận bản tin
   if (form && emailInput && btn) {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -605,7 +605,7 @@ if ( is_active_sidebar( 'footer-module' ) ) {
         return;
       }
 
-      // Trạng thái gửi
+      // Cập nhật trạng thái đang gửi trên nút bấm
       btn.classList.add('is-loading');
       if (btnText) btnText.textContent = 'SENDING...';
 
@@ -645,7 +645,7 @@ if ( is_active_sidebar( 'footer-module' ) ) {
     });
   }
 
-  // Nút Scroll to top
+  // Xử lý sự kiện nút cuộn lên đầu trang (Scroll to top)
   if (scrollBtn) {
     window.addEventListener('scroll', function() {
       if ((window.pageYOffset || document.documentElement.scrollTop) > 250) {

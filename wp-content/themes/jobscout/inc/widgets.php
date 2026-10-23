@@ -1,6 +1,6 @@
 <?php
 /**
- * JobScout Widget Areas
+ * Các khu vực Widget (Sidebars) của giao diện JobScout
  * 
  * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
  * @package JobScout
@@ -79,16 +79,16 @@ function jobscout_widgets_init(){
     	) );
     }
 
-    // Đăng ký Custom Widget cho Footer Module
+    // Đăng ký Widget tuỳ biến cho Module Footer
     register_widget( 'CMS_Footer_Module_Widget' );
 }
 add_action( 'widgets_init', 'jobscout_widgets_init' );
 
-// Tối ưu giao diện quản lý Widgets trực quan, dễ chỉnh sửa trong wp-admin
+// Tối ưu giao diện quản lý Widgets dạng cổ điển, dễ chỉnh sửa trong wp-admin
 add_filter( 'use_widgets_block_editor', '__return_false' );
 
 /**
- * Class Widget: CMS_Footer_Module_Widget
+ * Lớp Widget: CMS_Footer_Module_Widget
  * Cho phép chỉnh sửa toàn bộ nội dung của Module Footer trực tiếp trong wp-admin > Widgets
  */
 class CMS_Footer_Module_Widget extends WP_Widget {

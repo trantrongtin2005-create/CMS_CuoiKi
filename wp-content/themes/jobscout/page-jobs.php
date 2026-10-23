@@ -1,8 +1,8 @@
 <?php
 /**
- * Template Name: Jobs Listing (4-all job 2.png)
+ * Template Name: Danh sách việc làm (Jobs Listing)
  *
- * The template for displaying the Jobs page matching 4-all job 2.png
+ * Giao diện hiển thị trang Danh sách việc làm theo thiết kế chuẩn.
  *
  * @package JobScout
  */

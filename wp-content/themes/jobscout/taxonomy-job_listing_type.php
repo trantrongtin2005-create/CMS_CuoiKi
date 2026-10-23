@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying Job Type archive pages (Vietnamese).
+ * Giao diện hiển thị trang Lưu trữ theo Hình thức làm việc (Job Type)
  *
  * @package JobScout
  */
@@ -10,7 +10,7 @@ $current_term = get_queried_object();
 $type_name    = ( $current_term && ! is_wp_error( $current_term ) ) ? $current_term->name : 'Hình Thức Làm Việc';
 ?>
 
-    <!-- HERO BANNER -->
+    <!-- ẢNH BÌA BANNER CHUYÊN MỤC -->
     <div class="career-hero-banner">
         <div class="career-hero-overlay"></div>
         <div class="career-hero-content">

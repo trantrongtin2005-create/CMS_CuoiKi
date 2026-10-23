@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying Job Category archive pages (Vietnamese).
+ * Giao diện hiển thị trang Lưu trữ theo Danh mục việc làm (Job Category)
  *
  * @package JobScout
  */
@@ -10,7 +10,7 @@ $current_term = get_queried_object();
 $cat_name     = ( $current_term && ! is_wp_error( $current_term ) ) ? $current_term->name : 'Danh Mục Việc Làm';
 ?>
 
-    <!-- HERO BANNER -->
+    <!-- ẢNH BÌA BANNER CHUYÊN MỤC -->
     <div class="career-hero-banner">
         <div class="career-hero-overlay"></div>
         <div class="career-hero-content">
