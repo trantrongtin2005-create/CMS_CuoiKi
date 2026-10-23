@@ -39,4 +39,22 @@
 			}
 		} );
 	} );
+
+	// Logo Color Live Preview
+	wp.customize( 'logo_color', function( value ) {
+		value.bind( function( to ) {
+			$( '.site-branding .site-title, .site-branding .site-title a' ).css( 'color', to );
+		} );
+	} );
+
+	// Logo Hover Color Live Preview
+	wp.customize( 'logo_hover_color', function( value ) {
+		value.bind( function( to ) {
+			var $style = $( '#jobscout-logo-hover-preview' );
+			if ( ! $style.length ) {
+				$style = $( '<style id="jobscout-logo-hover-preview"></style>' ).appendTo( 'head' );
+			}
+			$style.text( '.site-branding .site-title a:hover, .site-branding .site-title a:focus { color: ' + to + ' !important; }' );
+		} );
+	} );
 } )( jQuery );

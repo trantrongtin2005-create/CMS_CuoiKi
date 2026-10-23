@@ -18,14 +18,14 @@ if( $post_slug ){
     $action_page = home_url( '/jobs/' );
 }
 
-$keyword_placeholder = get_theme_mod( 'banner_keyword_placeholder', 'Search for jobs, companies, skills' );
-$location_default    = get_theme_mod( 'banner_location_default', 'Tokyo' );
-$button_label        = get_theme_mod( 'banner_btn_text', 'SEARCH JOB' );
-$locations_raw       = get_theme_mod( 'banner_locations_list', "Tokyo\nOsaka\nKyoto\nYokohama\nNagoya\nFukuoka\nSapporo" );
+$keyword_placeholder = get_theme_mod( 'banner_keyword_placeholder', 'Tìm kiếm vị trí, công ty, kỹ năng...' );
+$location_default    = get_theme_mod( 'banner_location_default', 'Hà Nội' );
+$button_label        = get_theme_mod( 'banner_btn_text', 'TÌM VIỆC NGAY' );
+$locations_raw       = get_theme_mod( 'banner_locations_list', "Hà Nội\nTP. Hồ Chí Minh\nĐà Nẵng\nTokyo\nOsaka\nKyoto\nYokohama\nNagoya\nFukuoka\nSapporo" );
 
 $locations_list = array_filter( array_map( 'trim', explode( "\n", str_replace( "\r", "", $locations_raw ) ) ) );
 if ( empty( $locations_list ) ) {
-    $locations_list = array( 'Tokyo', 'Osaka', 'Kyoto', 'Yokohama', 'Nagoya', 'Fukuoka', 'Sapporo' );
+    $locations_list = array( 'Hà Nội', 'TP. Hồ Chí Minh', 'Đà Nẵng', 'Tokyo', 'Osaka', 'Kyoto', 'Yokohama', 'Nagoya', 'Fukuoka', 'Sapporo' );
 }
 ?>
 

@@ -13,8 +13,8 @@
  */
 
 $ed_jobposting   = get_theme_mod( 'ed_jobposting_section', true );
-$job_title       = get_theme_mod( 'job_posting_section_title', 'TOP JOBS' );
-$view_more_text  = get_theme_mod( 'top_jobs_btn_text', 'VIEW MORE JOBS' );
+$job_title       = get_theme_mod( 'job_posting_section_title', 'VIỆC LÀM HÀNG ĐẦU' );
+$view_more_text  = get_theme_mod( 'top_jobs_btn_text', 'XEM THÊM VIỆC LÀM' );
 $view_more_url   = get_theme_mod( 'top_jobs_btn_url', home_url( '/jobs/' ) );
 
 if ( $ed_jobposting ) {
@@ -45,6 +45,11 @@ if ( $ed_jobposting ) {
   }
 
   /* Tiêu đề mục: TOP JOBS căn giữa */
+  .top-jobs-module-section .top-jobs-heading-wrap {
+    text-align: center !important;
+    margin: 0 0 42px 0 !important;
+  }
+
   .top-jobs-module-section .top-jobs-heading {
     font-family: 'Montserrat', sans-serif !important;
     font-size: 30px !important;
@@ -53,8 +58,31 @@ if ( $ed_jobposting ) {
     text-transform: uppercase !important;
     text-align: center !important;
     letter-spacing: 0.6px !important;
-    margin: 0 0 42px 0 !important;
+    margin: 0 !important;
     line-height: 1.2 !important;
+    display: inline-block !important;
+    position: relative !important;
+  }
+
+  /* Customizer shortcut pencil buttons */
+  .top-jobs-module-section .customize-partial-edit-shortcut {
+    z-index: 99999 !important;
+  }
+  .top-jobs-module-section .customize-partial-edit-shortcut button {
+    z-index: 99999 !important;
+    pointer-events: auto !important;
+  }
+  .top-jobs-module-section .top-jobs-heading .customize-partial-edit-shortcut button {
+    left: -38px !important;
+    top: 0 !important;
+  }
+  .top-jobs-module-section .top-jobs-btn-more {
+    position: relative !important;
+  }
+  .top-jobs-module-section .top-jobs-btn-more .customize-partial-edit-shortcut button {
+    left: auto !important;
+    right: -12px !important;
+    top: -12px !important;
   }
 
   /* Lưới 2 cột cho các thẻ việc làm */
@@ -268,21 +296,66 @@ if ( $ed_jobposting ) {
 <section id="job-posting-section" class="top-jobs-module-section">
   <div class="top-jobs-container">
 
-    <h2 class="top-jobs-heading"><?php echo esc_html( $job_title ); ?></h2>
+    <div class="top-jobs-heading-wrap">
+      <h2 class="top-jobs-heading"><?php echo esc_html( $job_title ); ?></h2>
+    </div>
 
     <div class="top-jobs-grid">
       <?php
-      // Lấy 6 việc làm mới nhất từ WP Job Manager
-      $args = array(
-          'post_type'      => 'job_listing',
-          'posts_per_page' => 6,
-          'post_status'    => array( 'publish' ),
-          'orderby'        => 'ID',
-          'order'          => 'ASC'
-      );
-      $query = new WP_Query( $args );
+      $source = get_theme_mod( 'top_jobs_source', 'auto' );
+      $query  = null;
 
-      if ( $query->have_posts() ) :
+      // 1. Chế độ thủ công: Lấy theo các ID việc làm do người dùng chọn trong Customizer
+      if ( 'manual' === $source ) {
+          $manual_ids = array();
+          for ( $i = 1; $i <= 6; $i++ ) {
+              $jid = absint( get_theme_mod( "top_job_id_{$i}", 0 ) );
+              if ( $jid > 0 && 'publish' === get_post_status( $jid ) ) {
+                  $manual_ids[] = $jid;
+              }
+          }
+
+          if ( ! empty( $manual_ids ) ) {
+              $args = array(
+                  'post_type'      => 'job_listing',
+                  'post__in'       => $manual_ids,
+                  'orderby'        => 'post__in',
+                  'posts_per_page' => count( $manual_ids ),
+                  'post_status'    => array( 'publish' ),
+              );
+              $query = new WP_Query( $args );
+          }
+      }
+
+      // 2. Chế độ tự động hoặc khi thủ công chưa chọn đủ bài:
+      // Ưu tiên các việc làm đánh dấu Nổi bật (_featured = 1)
+      if ( empty( $query ) || ! $query->have_posts() ) {
+          $args = array(
+              'post_type'      => 'job_listing',
+              'posts_per_page' => 6,
+              'post_status'    => array( 'publish' ),
+              'meta_key'       => '_featured',
+              'orderby'        => array(
+                  'meta_value_num' => 'DESC',
+                  'ID'             => 'ASC',
+              ),
+          );
+          $query = new WP_Query( $args );
+
+          // Fallback nếu không có post nào có _featured
+          if ( ! $query->have_posts() ) {
+              $args = array(
+                  'post_type'      => 'job_listing',
+                  'posts_per_page' => 6,
+                  'post_status'    => array( 'publish' ),
+                  'orderby'        => 'ID',
+                  'order'          => 'ASC',
+              );
+              $query = new WP_Query( $args );
+          }
+      }
+
+      if ( $query && $query->have_posts() ) :
           while ( $query->have_posts() ) : $query->the_post();
               $post_id   = get_the_ID();
               $logo_url  = get_post_meta( $post_id, '_company_logo', true );
@@ -311,6 +384,9 @@ if ( $ed_jobposting ) {
               if ( empty( $logo_url ) ) {
                   $logo_url = get_template_directory_uri() . '/images/companies/the-sodoh.svg';
               }
+
+              // Trích xuất 3 gạch đầu dòng quyền lợi linh hoạt
+              $bullets = jobscout_get_job_bullets( $post_id );
               ?>
               <div class="top-job-card">
                 <div class="top-job-card-header">
@@ -321,7 +397,7 @@ if ( $ed_jobposting ) {
                     <h3 class="top-job-title">
                       <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                     </h3>
-                    <span class="top-job-date">Created: <?php echo get_the_date( 'M j, Y' ); ?></span>
+                    <span class="top-job-date">Ngày đăng: <?php echo get_the_date( 'd/m/Y' ); ?></span>
                     <div class="top-job-badges">
                       <span class="top-job-badge badge-type"><?php echo esc_html( $type_name ); ?></span>
                       <span class="top-job-badge badge-category"><?php echo esc_html( $cat_name ); ?></span>
@@ -332,9 +408,9 @@ if ( $ed_jobposting ) {
 
                 <div class="top-job-card-body">
                   <ul class="top-job-bullets">
-                    <li>Be responsible for the effective operational management of the hotel</li>
-                    <li>Excellent salary bonuses &amp; recognition activities</li>
-                    <li>Foreign language allowance (up to 500 USD/month)</li>
+                    <?php foreach ( $bullets as $bullet ) : ?>
+                      <li><?php echo esc_html( $bullet ); ?></li>
+                    <?php endforeach; ?>
                   </ul>
                 </div>
               </div>
@@ -355,7 +431,7 @@ if ( $ed_jobposting ) {
                     <h3 class="top-job-title">
                       <a href="<?php echo esc_url( home_url( '/jobs/' ) ); ?>"><?php echo esc_html( $job['title'] ); ?></a>
                     </h3>
-                    <span class="top-job-date">Created: Oct 28, 2022</span>
+                    <span class="top-job-date">Ngày đăng: 28/10/2022</span>
                     <div class="top-job-badges">
                       <span class="top-job-badge badge-type"><?php echo esc_html( $job['type'] ); ?></span>
                       <span class="top-job-badge badge-category"><?php echo esc_html( $job['category'] ); ?></span>
@@ -378,11 +454,13 @@ if ( $ed_jobposting ) {
       ?>
     </div>
 
-    <div class="top-jobs-footer">
-      <a href="<?php echo esc_url( $view_more_url ); ?>" class="top-jobs-btn-more">
-        <?php echo esc_html( $view_more_text ); ?>
-      </a>
-    </div>
+    <?php if ( ! empty( $view_more_text ) && ! empty( $view_more_url ) ) : ?>
+      <div class="top-jobs-footer">
+        <a href="<?php echo esc_url( $view_more_url ); ?>" class="top-jobs-btn-more">
+          <?php echo esc_html( $view_more_text ); ?>
+        </a>
+      </div>
+    <?php endif; ?>
 
   </div>
 </section>

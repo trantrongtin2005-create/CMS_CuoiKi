@@ -248,6 +248,12 @@ do_action( 'jobscout_before_footer' );
   }
 
   /* Menu 5 liên kết điều hướng */
+  .site-footer-module .ft-nav-wrap {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+  }
+
   .site-footer-module .ft-nav-menu {
     display: flex;
     align-items: center;
@@ -286,7 +292,8 @@ do_action( 'jobscout_before_footer' );
 
   /* 4 Icon Mạng Xã Hội Tròn */
   .site-footer-module .ft-social-row {
-    display: flex;
+    position: relative;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 16px;
@@ -602,27 +609,8 @@ if ( is_active_sidebar( 'footer-module' ) ) {
       btn.classList.add('is-loading');
       if (btnText) btnText.textContent = 'SENDING...';
 
-      // Lưu trữ LocalStorage
-      let alreadySubscribed = false;
-      try {
-        const stored = JSON.parse(localStorage.getItem('wp_newsletter_subscribers') || '[]');
-        if (stored.includes(email)) {
-          alreadySubscribed = true;
-        } else {
-          stored.push(email);
-          localStorage.setItem('wp_newsletter_subscribers', JSON.stringify(stored));
-        }
-      } catch (err) {}
-
-      if (alreadySubscribed) {
-        btn.classList.remove('is-loading');
-        if (btnText) btnText.textContent = 'SUBSCRIBE';
-        showToast('Email "' + email + '" đã được đăng ký trước đó!', 'error');
-        return;
-      }
-
       // Gửi AJAX tới WordPress backend
-      const ajaxUrl = '<?php echo esc_url(admin_url('admin-ajax.php')); ?>';
+      const ajaxUrl = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
       const formData = new FormData();
       formData.append('action', 'cms_subscribe_newsletter');
       formData.append('email', email);
@@ -632,12 +620,27 @@ if ( is_active_sidebar( 'footer-module' ) ) {
         body: formData
       })
       .then(res => res.json())
-      .catch(() => ({ success: true, data: 'Đăng ký thành công!' }))
+      .catch(() => ({ success: true, data: { message: 'Đăng ký thành công!' } }))
       .then(data => {
         btn.classList.remove('is-loading');
         if (btnText) btnText.textContent = 'SUBSCRIBE';
-        emailInput.value = '';
-        showToast('🎉 Cảm ơn bạn! Đã đăng ký nhận bản tin việc làm: ' + email, 'success');
+
+        if (data && data.success) {
+          emailInput.value = '';
+          try {
+            const stored = JSON.parse(localStorage.getItem('wp_newsletter_subscribers') || '[]');
+            if (!stored.includes(email)) {
+              stored.push(email);
+              localStorage.setItem('wp_newsletter_subscribers', JSON.stringify(stored));
+            }
+          } catch (err) {}
+
+          const msg = (data.data && data.data.message) ? data.data.message : ('🎉 Cảm ơn bạn! Đã đăng ký nhận bản tin việc làm: ' + email);
+          showToast(msg, 'success');
+        } else {
+          const errMsg = (data && data.data && data.data.message) ? data.data.message : 'Có lỗi xảy ra, vui lòng thử lại sau!';
+          showToast(errMsg, 'error');
+        }
       });
     });
   }

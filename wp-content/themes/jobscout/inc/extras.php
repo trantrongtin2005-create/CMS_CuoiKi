@@ -165,7 +165,7 @@ if( ! function_exists( 'jobscout_primary_nagivation' ) ) :
 */
 function jobscout_primary_nagivation(){ 
 
-    $post_job_label  = get_theme_mod( 'post_job_label', __( 'Post Jobs', 'jobscout' ) );
+    $post_job_label  = get_theme_mod( 'post_job_label', __( 'ĐĂNG TIN TUYỂN DỤNG', 'jobscout' ) );
     $post_job_url    = get_theme_mod( 'post_job_url', '#' );
     ?>
     	<nav id="site-navigation" class="main-navigation" role="navigation" itemscope itemtype="https://schema.org/SiteNavigationElement">
@@ -519,7 +519,7 @@ function jobscout_get_home_sections(){
     $ed_banner = get_theme_mod( 'ed_banner_section', true );
     $sections = array( 
         'jobposting'  => array( 'section' => 'jobposting' ),
-        'cta'         => array( 'sidebar' => 'cta' ),
+        'cta'         => array( 'section' => 'cta' ),
         'blog'        => array( 'section' => 'blog' ), 
         'testimonial' => array( 'sidebar' => 'testimonial' ),
         'client'      => array( 'sidebar' => 'client' ),

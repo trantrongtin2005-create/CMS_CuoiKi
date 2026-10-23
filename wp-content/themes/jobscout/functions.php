@@ -88,28 +88,7 @@ if( jobscout_is_wp_job_manager_activated() ) :
 endif;
 
 /**
- * AJAX Handler: Đăng ký nhận bản tin Footer Module
+ * Module xử lý đăng ký nhận bản tin Footer & tự động gửi email thông báo
  */
-function cms_handle_newsletter_subscription() {
-    $email = isset($_POST['email']) ? sanitize_email(wp_unslash($_POST['email'])) : '';
-    
-    if (empty($email) || !is_email($email)) {
-        wp_send_json_error(array('message' => 'Địa chỉ email không hợp lệ!'));
-    }
+require get_template_directory() . '/inc/newsletter.php';
 
-    $subscribers = get_option('cms_newsletter_subscribers', array());
-    if (!is_array($subscribers)) {
-        $subscribers = array();
-    }
-
-    if (in_array($email, $subscribers, true)) {
-        wp_send_json_error(array('message' => 'Email này đã đăng ký trước đó!'));
-    }
-
-    $subscribers[] = $email;
-    update_option('cms_newsletter_subscribers', $subscribers);
-
-    wp_send_json_success(array('message' => 'Đăng ký nhận bản tin thành công!'));
-}
-add_action('wp_ajax_cms_subscribe_newsletter', 'cms_handle_newsletter_subscription');
-add_action('wp_ajax_nopriv_cms_subscribe_newsletter', 'cms_handle_newsletter_subscription');
