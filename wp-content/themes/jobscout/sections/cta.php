@@ -99,6 +99,35 @@ if ( $ed_cta_career ) {
     line-height: 1.25 !important;
     margin: 0 0 24px 0 !important;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
+    position: relative !important;
+  }
+
+  /* Customizer shortcut pencil buttons */
+  .career-module-section .customize-partial-edit-shortcut {
+    z-index: 99999 !important;
+  }
+  .career-module-section .customize-partial-edit-shortcut button {
+    z-index: 99999 !important;
+    pointer-events: auto !important;
+  }
+  .career-module-section .career-heading .customize-partial-edit-shortcut button {
+    left: -38px !important;
+    top: 4px !important;
+  }
+  .career-module-section .career-text {
+    position: relative !important;
+  }
+  .career-module-section .career-text .customize-partial-edit-shortcut button {
+    left: -38px !important;
+    top: 0 !important;
+  }
+  .career-module-section .career-btn {
+    position: relative !important;
+  }
+  .career-module-section .career-btn .customize-partial-edit-shortcut button {
+    left: auto !important;
+    right: -12px !important;
+    top: -12px !important;
   }
 
   .career-module-section .career-text {

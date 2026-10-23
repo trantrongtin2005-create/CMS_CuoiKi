@@ -105,10 +105,10 @@ class CMS_Footer_Module_Widget extends WP_Widget {
     }
 
     public function widget( $args, $instance ) {
-        $newsletter_title_1   = get_theme_mod( 'footer_newsletter_title_1', ! empty( $instance['newsletter_title_1'] ) ? $instance['newsletter_title_1'] : 'Subscribe To' );
-        $newsletter_title_2   = get_theme_mod( 'footer_newsletter_title_2', ! empty( $instance['newsletter_title_2'] ) ? $instance['newsletter_title_2'] : 'Our Newsletter' );
-        $placeholder          = get_theme_mod( 'footer_newsletter_placeholder', ! empty( $instance['placeholder'] ) ? $instance['placeholder'] : 'Input your email address' );
-        $btn_text             = get_theme_mod( 'footer_newsletter_btn_text', ! empty( $instance['btn_text'] ) ? $instance['btn_text'] : 'SUBSCRIBE' );
+        $newsletter_title_1   = get_theme_mod( 'footer_newsletter_title_1', ! empty( $instance['newsletter_title_1'] ) ? $instance['newsletter_title_1'] : 'ĐĂNG KÝ NHẬN' );
+        $newsletter_title_2   = get_theme_mod( 'footer_newsletter_title_2', ! empty( $instance['newsletter_title_2'] ) ? $instance['newsletter_title_2'] : 'BẢN TIN CỦA CHÚNG TÔI' );
+        $placeholder          = get_theme_mod( 'footer_newsletter_placeholder', ! empty( $instance['placeholder'] ) ? $instance['placeholder'] : 'Nhập địa chỉ email của bạn...' );
+        $btn_text             = get_theme_mod( 'footer_newsletter_btn_text', ! empty( $instance['btn_text'] ) ? $instance['btn_text'] : 'ĐĂNG KÝ' );
         $brand_name           = get_theme_mod( 'footer_brand_name', ! empty( $instance['brand_name'] ) ? $instance['brand_name'] : 'Plan Do See Global Inc.' );
         $brand_url            = get_theme_mod( 'footer_brand_url', ! empty( $instance['brand_url'] ) ? $instance['brand_url'] : home_url( '/' ) );
         $customizer_menu      = (int) get_theme_mod( 'footer_menu_select', 0 );
@@ -184,10 +184,10 @@ class CMS_Footer_Module_Widget extends WP_Widget {
     }
 
     public function form( $instance ) {
-        $newsletter_title_1 = ! empty( $instance['newsletter_title_1'] ) ? $instance['newsletter_title_1'] : 'Subscribe To';
-        $newsletter_title_2 = ! empty( $instance['newsletter_title_2'] ) ? $instance['newsletter_title_2'] : 'Our Newsletter';
-        $placeholder        = ! empty( $instance['placeholder'] ) ? $instance['placeholder'] : 'Input your email address';
-        $btn_text           = ! empty( $instance['btn_text'] ) ? $instance['btn_text'] : 'SUBSCRIBE';
+        $newsletter_title_1 = ! empty( $instance['newsletter_title_1'] ) ? $instance['newsletter_title_1'] : 'ĐĂNG KÝ NHẬN';
+        $newsletter_title_2 = ! empty( $instance['newsletter_title_2'] ) ? $instance['newsletter_title_2'] : 'BẢN TIN CỦA CHÚNG TÔI';
+        $placeholder        = ! empty( $instance['placeholder'] ) ? $instance['placeholder'] : 'Nhập địa chỉ email của bạn...';
+        $btn_text           = ! empty( $instance['btn_text'] ) ? $instance['btn_text'] : 'ĐĂNG KÝ';
         $brand_name         = ! empty( $instance['brand_name'] ) ? $instance['brand_name'] : 'Plan Do See Global Inc.';
         $brand_url          = ! empty( $instance['brand_url'] ) ? $instance['brand_url'] : home_url( '/' );
         $nav_menu           = ! empty( $instance['nav_menu'] ) ? (int) $instance['nav_menu'] : 0;
@@ -231,7 +231,7 @@ class CMS_Footer_Module_Widget extends WP_Widget {
             <p>
                 <label for="<?php echo esc_attr( $this->get_field_id( 'nav_menu' ) ); ?>">Chọn Menu hiển thị (hoặc để mặc định 5 link):</label>
                 <select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'nav_menu' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'nav_menu' ) ); ?>">
-                    <option value="0"><?php esc_html_e( '— Mặc định (JOBS, COMPANIES, BLOG, ABOUT, CONTACT) —', 'jobscout' ); ?></option>
+                    <option value="0"><?php esc_html_e( '— Mặc định (VIỆC LÀM, CÔNG TY, BÀI VIẾT, GIỚI THIỆU, LIÊN HỆ) —', 'jobscout' ); ?></option>
                     <?php foreach ( $menus as $menu ) : ?>
                         <option value="<?php echo esc_attr( $menu->term_id ); ?>" <?php selected( $nav_menu, $menu->term_id ); ?>>
                             <?php echo esc_html( $menu->name ); ?>
@@ -244,11 +244,11 @@ class CMS_Footer_Module_Widget extends WP_Widget {
             <h4 style="margin: 16px 0 4px; color: #1e2022; font-weight: bold; border-top: 1px solid #ddd; padding-top: 10px;">2B. Tùy Chỉnh 5 Liên Kết Điều Hướng (Nếu không chọn Menu trên)</h4>
             <?php
             $default_link_labels = array(
-                1 => array( 'text' => 'JOBS', 'url' => home_url( '/jobs/' ) ),
-                2 => array( 'text' => 'COMPANIES', 'url' => home_url( '/jobs/' ) ),
-                3 => array( 'text' => 'BLOG', 'url' => home_url( '/blog/' ) ),
-                4 => array( 'text' => 'ABOUT', 'url' => home_url( '/about/' ) ),
-                5 => array( 'text' => 'CONTACT', 'url' => home_url( '/contact/' ) ),
+                1 => array( 'text' => 'VIỆC LÀM', 'url' => home_url( '/jobs/' ) ),
+                2 => array( 'text' => 'CÔNG TY', 'url' => home_url( '/jobs/' ) ),
+                3 => array( 'text' => 'BÀI VIẾT', 'url' => home_url( '/blog/' ) ),
+                4 => array( 'text' => 'GIỚI THIỆU', 'url' => home_url( '/about/' ) ),
+                5 => array( 'text' => 'LIÊN HỆ', 'url' => home_url( '/contact/' ) ),
             );
             for ( $i = 1; $i <= 5; $i++ ) :
                 $l_text = ! empty( $instance["link_{$i}_text"] ) ? $instance["link_{$i}_text"] : get_theme_mod( "footer_link_text_{$i}", $default_link_labels[$i]['text'] );

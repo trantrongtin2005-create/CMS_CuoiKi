@@ -2172,7 +2172,13 @@ body.home:not(.banner-enabled) .site-header {
 }
 
 .site-branding .site-title a {
-  color: #2ace5e;
+  color: #000000;
+  transition: color 0.2s ease;
+}
+
+.site-branding .site-title a:hover,
+.site-branding .site-title a:focus {
+  color: #222222;
 }
 
 .site-branding .site-description {

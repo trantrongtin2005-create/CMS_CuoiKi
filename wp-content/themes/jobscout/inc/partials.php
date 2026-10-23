@@ -37,7 +37,7 @@ function jobscout_customize_partial_blogdescription() {
  * Header post job button
  */
 function jobscout_get_header_post_job_label(){
-    $btn_label = get_theme_mod( 'post_job_label', __( 'Post Jobs', 'jobscout' ) );
+    $btn_label = get_theme_mod( 'post_job_label', __( 'ĐĂNG TIN TUYỂN DỤNG', 'jobscout' ) );
 
     if ( $btn_label ){
         return esc_html( $btn_label );
@@ -50,7 +50,7 @@ function jobscout_get_header_post_job_label(){
  * Banner Section Title
 */
 function jobscout_get_banner_title(){
-    $banner_title = get_theme_mod( 'banner_title', __( 'Aim Higher, Dream Bigger', 'jobscout' ) );
+    $banner_title = get_theme_mod( 'banner_title', __( 'TÌM KIẾM CÔNG VIỆC MƠ ƯỚC', 'jobscout' ) );
 
     if ( $banner_title ){
         return esc_html( $banner_title );
@@ -63,7 +63,7 @@ function jobscout_get_banner_title(){
  * Banner Section Sub Title
 */
 function jobscout_get_banner_sub_title(){
-    $banner_subtitle = get_theme_mod( 'banner_subtitle', __( 'Each month, more than 7 million JobScout turn to website in their search for work, making over 160,000 applications every day.', 'jobscout' ) );
+    $banner_subtitle = get_theme_mod( 'banner_subtitle', __( 'Bí quyết đằng sau thành công của chúng tôi rất đơn giản: luôn đặt mình vào vị trí của người khác – dù là nhân viên, đối tác hay khách hàng. Điều đó giúp chúng tôi thấu hiểu sâu sắc, đón đầu nhu cầu và đồng hành trọn vẹn cùng bạn.', 'jobscout' ) );
 
     if ( $banner_subtitle ){
         return wpautop( wp_kses_post( $banner_subtitle ) );
@@ -76,7 +76,7 @@ function jobscout_get_banner_sub_title(){
  * Popular Section Title
 */
 function jobscout_get_popular_section_title(){
-    $popular_section_title = get_theme_mod( 'popular_section_title', __( 'Popular Categories', 'jobscout' ) );
+    $popular_section_title = get_theme_mod( 'popular_section_title', __( 'Danh mục phổ biến', 'jobscout' ) );
 
     if ( $popular_section_title ){
         return esc_html( $popular_section_title );
@@ -89,7 +89,7 @@ function jobscout_get_popular_section_title(){
  * Job Posting Section Title
 */
 function jobscout_get_job_posting_section_title(){
-    $job_posting_section_title = get_theme_mod( 'job_posting_section_title', __( 'Job Posting', 'jobscout' ) );
+    $job_posting_section_title = get_theme_mod( 'job_posting_section_title', __( 'VIỆC LÀM HÀNG ĐẦU', 'jobscout' ) );
 
     if ( $job_posting_section_title ){
         return esc_html( $job_posting_section_title );
@@ -102,7 +102,7 @@ function jobscout_get_job_posting_section_title(){
  * Blog Section Title
 */
 function jobscout_get_blog_section_title(){
-    $blog_section_title = get_theme_mod( 'blog_section_title', 'NEWEST BLOG ENTRIES' );
+    $blog_section_title = get_theme_mod( 'blog_section_title', 'BÀI VIẾT MỚI NHẤT' );
 
     if ( $blog_section_title ){
         return esc_html( $blog_section_title );
@@ -236,7 +236,7 @@ function jobscout_get_cta_career_title(){
     if ( function_exists( 'jobscout_get_cta_career_option' ) ) {
         return esc_html( jobscout_get_cta_career_option( 'cta_career_title' ) );
     }
-    return esc_html( get_theme_mod( 'cta_career_title', 'CAREER WITH US' ) );
+    return esc_html( get_theme_mod( 'cta_career_title', 'CƠ HỘI NGHỀ NGHIỆP' ) );
 }
 endif;
 
@@ -263,6 +263,6 @@ function jobscout_get_cta_career_btn_text(){
     if ( function_exists( 'jobscout_get_cta_career_option' ) ) {
         return esc_html( jobscout_get_cta_career_option( 'cta_career_btn_text' ) );
     }
-    return esc_html( get_theme_mod( 'cta_career_btn_text', 'MORE ABOUT US' ) );
+    return esc_html( get_theme_mod( 'cta_career_btn_text', 'VỀ CHÚNG TÔI' ) );
 }
 endif;

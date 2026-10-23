@@ -316,10 +316,10 @@ add_action( 'add_meta_boxes', 'jobscout_add_home_career_metabox' );
 function jobscout_home_career_meta_callback( $post ) {
     wp_nonce_field( 'jobscout_home_career_nonce_action', 'jobscout_home_career_nonce' );
 
-    $title    = function_exists( 'jobscout_get_cta_career_option' ) ? jobscout_get_cta_career_option( 'cta_career_title' ) : 'CAREER WITH US';
+    $title    = function_exists( 'jobscout_get_cta_career_option' ) ? jobscout_get_cta_career_option( 'cta_career_title' ) : 'CƠ HỘI NGHỀ NGHIỆP';
     $text_1   = function_exists( 'jobscout_get_cta_career_option' ) ? jobscout_get_cta_career_option( 'cta_career_text_1' ) : '';
     $text_2   = function_exists( 'jobscout_get_cta_career_option' ) ? jobscout_get_cta_career_option( 'cta_career_text_2' ) : '';
-    $btn_text = function_exists( 'jobscout_get_cta_career_option' ) ? jobscout_get_cta_career_option( 'cta_career_btn_text' ) : 'MORE ABOUT US';
+    $btn_text = function_exists( 'jobscout_get_cta_career_option' ) ? jobscout_get_cta_career_option( 'cta_career_btn_text' ) : 'VỀ CHÚNG TÔI';
     $btn_url  = function_exists( 'jobscout_get_cta_career_option' ) ? jobscout_get_cta_career_option( 'cta_career_btn_url' ) : home_url( '/about/' );
     $bg_url   = function_exists( 'jobscout_get_cta_career_bg_url' ) ? jobscout_get_cta_career_bg_url() : get_template_directory_uri() . '/images/career-with-us-bg.jpg';
     $default_bg = get_template_directory_uri() . '/images/career-with-us-bg.jpg';
@@ -372,7 +372,7 @@ function jobscout_home_career_meta_callback( $post ) {
             <tr>
                 <th><label for="cta_career_title" style="font-weight: 600;"><?php esc_html_e( 'Tiêu đề module:', 'jobscout' ); ?></label></th>
                 <td>
-                    <input type="text" id="cta_career_title" name="cta_career_title" value="<?php echo esc_attr( $title ); ?>" class="large-text" placeholder="CAREER WITH US" />
+                    <input type="text" id="cta_career_title" name="cta_career_title" value="<?php echo esc_attr( $title ); ?>" class="large-text" placeholder="CƠ HỘI NGHỀ NGHIỆP" />
                 </td>
             </tr>
 
@@ -397,7 +397,7 @@ function jobscout_home_career_meta_callback( $post ) {
                 <th><label for="cta_career_btn_text" style="font-weight: 600;"><?php esc_html_e( 'Nút bấm (CTA Button):', 'jobscout' ); ?></label></th>
                 <td>
                     <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                        <input type="text" id="cta_career_btn_text" name="cta_career_btn_text" value="<?php echo esc_attr( $btn_text ); ?>" style="width: 220px;" placeholder="Chữ trên nút (ví dụ: MORE ABOUT US)" />
+                        <input type="text" id="cta_career_btn_text" name="cta_career_btn_text" value="<?php echo esc_attr( $btn_text ); ?>" style="width: 220px;" placeholder="Chữ trên nút (ví dụ: VỀ CHÚNG TÔI)" />
                         <input type="url" id="cta_career_btn_url" name="cta_career_btn_url" value="<?php echo esc_attr( $btn_url ); ?>" style="flex: 1; min-width: 280px;" placeholder="Liên kết đích (ví dụ: http://.../about/)" />
                     </div>
                 </td>

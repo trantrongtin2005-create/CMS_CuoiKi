@@ -11,8 +11,8 @@
  */
 
 $ed_banner         = get_theme_mod( 'ed_banner_section', true );
-$banner_title      = get_theme_mod( 'banner_title', 'FIND YOUR DREAM JOBS' );
-$banner_subtitle   = get_theme_mod( 'banner_subtitle', "The secret behind our company is simple: to always put ourselves in the other person's shoes-employee, guest or customer. This allows us to see the world through their eyes, anticipate their needs and better understand their feelings." );
+$banner_title      = get_theme_mod( 'banner_title', 'TÌM KIẾM CÔNG VIỆC MƠ ƯỚC' );
+$banner_subtitle   = get_theme_mod( 'banner_subtitle', "Bí quyết đằng sau thành công của chúng tôi rất đơn giản: luôn đặt mình vào vị trí của người khác – dù là nhân viên, đối tác hay khách hàng. Điều đó giúp chúng tôi thấu hiểu sâu sắc, đón đầu nhu cầu và đồng hành trọn vẹn cùng bạn." );
 $find_a_job_link   = get_option( 'job_manager_jobs_page_id', 0 );
 
 if( $ed_banner ){ 
@@ -99,6 +99,68 @@ if( $ed_banner ){
     margin: 0 0 16px 0 !important;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65) !important;
     display: block !important;
+    position: relative !important;
+  }
+
+  .hero-dream-banner .hero-dream-subtitle {
+    position: relative !important;
+  }
+
+  /* ========================================================
+     CUSTOMIZER EDIT SHORTCUTS (CÂY BÚT CHỈNH SỬA NHANH)
+     ======================================================== */
+  .hero-dream-banner .customize-partial-edit-shortcut {
+    z-index: 99999 !important;
+  }
+  .hero-dream-banner .customize-partial-edit-shortcut button {
+    z-index: 99999 !important;
+    pointer-events: auto !important;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.45) !important;
+  }
+  /* Icon cây bút cho Ảnh nền Banner */
+  #banner-section > .customize-partial-edit-shortcut {
+    position: absolute !important;
+    top: 25px !important;
+    left: 25px !important;
+  }
+  #banner-section > .customize-partial-edit-shortcut button {
+    left: 0 !important;
+    top: 0 !important;
+  }
+  /* Icon cây bút cho Tiêu đề Banner */
+  .hero-dream-title .customize-partial-edit-shortcut button {
+    left: -36px !important;
+    top: 4px !important;
+  }
+  /* Icon cây bút cho Đoạn mô tả Banner */
+  .hero-dream-subtitle .customize-partial-edit-shortcut button {
+    left: -36px !important;
+    top: 0 !important;
+  }
+  /* Icon cây bút cho Nút Tìm việc (Search Button) */
+  .hero-dream-banner .hero-search-submit-wrap {
+    position: relative !important;
+  }
+  .hero-search-submit-wrap .customize-partial-edit-shortcut button {
+    left: auto !important;
+    right: -12px !important;
+    top: -12px !important;
+  }
+  /* Icon cây bút cho Ô tìm kiếm Từ khóa */
+  .hero-dream-banner .hero-input-group-keyword {
+    position: relative !important;
+  }
+  .hero-input-group-keyword .customize-partial-edit-shortcut button {
+    left: -12px !important;
+    top: -12px !important;
+  }
+  /* Icon cây bút cho Ô chọn Địa điểm */
+  .hero-dream-banner .hero-input-group-location {
+    position: relative !important;
+  }
+  .hero-input-group-location .customize-partial-edit-shortcut button {
+    left: -12px !important;
+    top: -12px !important;
   }
 
   /* Mô tả 2 dòng dưới tiêu đề */

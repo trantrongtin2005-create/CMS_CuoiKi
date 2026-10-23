@@ -35,7 +35,7 @@ if( ! function_exists( 'jobscout_responsive_header' ) ) :
  * Responsive Header
 */
 function jobscout_responsive_header(){ 
-    $post_job_label  = get_theme_mod( 'post_job_label', __( 'Post Jobs', 'jobscout' ) );
+    $post_job_label  = get_theme_mod( 'post_job_label', __( 'ĐĂNG TIN TUYỂN DỤNG', 'jobscout' ) );
     $post_job_url    = get_theme_mod( 'post_job_url', '#' );
     ?>
     <div class="responsive-nav">
