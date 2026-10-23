@@ -119,7 +119,7 @@ add_action('wp_ajax_nopriv_cms_subscribe_newsletter', 'cms_handle_newsletter_sub
  */
 function cms_about_page_editor_styles() {
     global $post;
-    if ( ! $post || ( (int)$post->ID !== 1176 && get_post_meta($post->ID, '_wp_page_template', true) !== 'page-about.php' ) ) {
+    if ( ! $post || ( ! in_array( (int)$post->ID, array( 1176, 1272 ), true ) && get_post_meta( $post->ID, '_wp_page_template', true ) !== 'page-about.php' && $post->post_name !== 'about' ) ) {
         return;
     }
     ?>
@@ -226,8 +226,11 @@ function cms_about_page_editor_styles() {
 add_action( 'admin_head', 'cms_about_page_editor_styles' );
 
 /**
- * Hiển thị tất cả trang (100 trang) trên 1 màn hình danh sách Trang để người dùng không phải bấm sang Trang 2
+ * Hiển thị tất cả trang (100 trang) trên 1 màn hình danh sách Trang
  */
-add_filter( 'edit_pages_per_page', function() {
-    return 100;
-} );
+add_filter( 'edit_posts_per_page', function( $per_page, $post_type = 'post' ) {
+    if ( 'page' === $post_type ) {
+        return 100;
+    }
+    return $per_page;
+}, 10, 2 );
