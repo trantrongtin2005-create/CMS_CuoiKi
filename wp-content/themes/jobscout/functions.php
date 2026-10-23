@@ -92,3 +92,20 @@ endif;
  */
 require get_template_directory() . '/inc/newsletter.php';
 
+/**
+ * Tùy biến truy vấn trang Tin tức / Blog: Hiển thị 8 bài viết (4 hàng x 2 cột) chuẩn mẫu thiết kế
+ */
+add_action( 'pre_get_posts', function( $query ) {
+	if ( ! is_admin() && $query->is_main_query() && ( $query->is_home() || $query->is_post_type_archive( 'post' ) ) ) {
+		$query->set( 'posts_per_page', 8 );
+	}
+} );
+
+/**
+ * Hỗ trợ đường dẫn /news/ và /tin-tuc/ trỏ về trang Tin tức / Blog
+ */
+add_action( 'init', function() {
+	add_rewrite_rule( '^news/?$', 'index.php?pagename=blog', 'top' );
+	add_rewrite_rule( '^tin-tuc/?$', 'index.php?pagename=blog', 'top' );
+} );
+
