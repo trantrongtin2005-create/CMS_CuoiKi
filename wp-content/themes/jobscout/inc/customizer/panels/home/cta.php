@@ -2,8 +2,9 @@
 /**
  * Call To Action Section (CAREER WITH US MODULE)
  *
- * Tạo các ô nhập liệu trong Giao diện → Tùy biến → Front Page Settings → Career With Us Section
- * để chỉnh nội dung module ở sections/cta.php mà không cần sửa code.
+ * Cung cấp đầy đủ công cụ quản trị trong:
+ * Giao diện → Tùy biến → Front Page Settings → Career With Us Section
+ * Giúp người dùng dễ dàng thay đổi ảnh nền, màu phủ tối, căn chỉnh và toàn bộ văn bản.
  *
  * @package jobscout
  */
@@ -11,19 +12,22 @@
 if ( ! function_exists( 'jobscout_get_cta_career_defaults' ) ) :
 /**
  * Giá trị mặc định của module CAREER WITH US.
- * Dùng chung cho Customizer và sections/cta.php để không bị lặp nội dung.
  *
  * @return array
  */
 function jobscout_get_cta_career_defaults(){
     return array(
-        'ed_cta_section'      => true,
-        'cta_career_title'    => 'CAREER WITH US',
-        'cta_career_text_1'   => 'Plan Do See Global is a hospitality group founded in Japan and rooted in "Omotenashi", the Japanese principle of selfless hospitality. We strive to deliver unforgettable and bespoke experiences, to understand local cultures like natives, to provide service that is warm but not intrusive, and to foresee our guests\' every need at all times. That is our sole mission and purpose.',
-        'cta_career_text_2'   => 'We are experts in all stages of project development: concept, design, implementation and management. We love to find unique ways to create experiences that surprise and delight guests and customers.',
-        'cta_career_btn_text' => 'MORE ABOUT US',
-        'cta_career_btn_url'  => home_url( '/about/' ),
-        'cta_career_bg'       => get_template_directory_uri() . '/images/career-with-us-bg.jpg',
+        'ed_cta_section'             => true,
+        'cta_career_title'           => 'CAREER WITH US',
+        'cta_career_text_1'          => 'Plan Do See Global is a hospitality group founded in Japan and rooted in "Omotenashi", the Japanese principle of selfless hospitality. We strive to deliver unforgettable and bespoke experiences, to understand local cultures like natives, to provide service that is warm but not intrusive, and to foresee our guests\' every need at all times. That is our sole mission and purpose.',
+        'cta_career_text_2'          => 'We are experts in all stages of project development: concept, design, implementation and management. We love to find unique ways to create experiences that surprise and delight guests and customers.',
+        'cta_career_btn_text'        => 'MORE ABOUT US',
+        'cta_career_btn_url'         => home_url( '/about/' ),
+        'cta_career_btn_target'      => false,
+        'cta_career_bg'              => get_template_directory_uri() . '/images/career-with-us-bg.jpg',
+        'cta_career_overlay_opacity' => 65,
+        'cta_career_overlay_color'   => '#140c0a',
+        'cta_career_alignment'       => 'center',
     );
 }
 endif;
@@ -39,6 +43,62 @@ function jobscout_get_cta_career_option( $key ){
     $defaults = jobscout_get_cta_career_defaults();
     $default  = isset( $defaults[ $key ] ) ? $defaults[ $key ] : '';
     return get_theme_mod( $key, $default );
+}
+endif;
+
+if ( ! function_exists( 'jobscout_get_cta_career_bg_url' ) ) :
+/**
+ * Lấy URL ảnh nền hợp lệ (xử lý cả URL trực tiếp lẫn Attachment ID từ Media Library,
+ * tự động chuẩn hóa hostname để tránh lỗi vỡ ảnh giữa localhost và server).
+ *
+ * @return string URL ảnh nền
+ */
+function jobscout_get_cta_career_bg_url(){
+    $defaults = jobscout_get_cta_career_defaults();
+    $raw      = get_theme_mod( 'cta_career_bg', $defaults['cta_career_bg'] );
+
+    if ( empty( $raw ) ) {
+        $raw = $defaults['cta_career_bg'];
+    }
+
+    // Nếu người dùng chọn ảnh qua Media uploader và lưu ID
+    if ( is_numeric( $raw ) && (int) $raw > 0 ) {
+        $img_url = wp_get_attachment_image_url( (int) $raw, 'full' );
+        if ( ! empty( $img_url ) ) {
+            $raw = $img_url;
+        }
+    }
+
+    // Chuẩn hóa tên miền để hiển thị mượt mà trên cả localhost và domain khác
+    if ( function_exists( 'jobscout_normalize_media_host' ) ) {
+        $raw = jobscout_normalize_media_host( $raw );
+    }
+
+    return esc_url( $raw );
+}
+endif;
+
+if ( ! function_exists( 'jobscout_cta_hex_to_rgb' ) ) :
+/**
+ * Chuyển đổi mã màu HEX sang RGB mảng [r, g, b].
+ *
+ * @param string $hex Mã màu hex.
+ * @return array
+ */
+function jobscout_cta_hex_to_rgb( $hex ) {
+    $hex = ltrim( (string) $hex, '#' );
+    if ( strlen( $hex ) === 3 ) {
+        $r = hexdec( substr( $hex, 0, 1 ) . substr( $hex, 0, 1 ) );
+        $g = hexdec( substr( $hex, 1, 1 ) . substr( $hex, 1, 1 ) );
+        $b = hexdec( substr( $hex, 2, 1 ) . substr( $hex, 2, 1 ) );
+    } elseif ( strlen( $hex ) === 6 ) {
+        $r = hexdec( substr( $hex, 0, 2 ) );
+        $g = hexdec( substr( $hex, 2, 2 ) );
+        $b = hexdec( substr( $hex, 4, 2 ) );
+    } else {
+        return array( 20, 12, 10 );
+    }
+    return array( $r, $g, $b );
 }
 endif;
 
@@ -58,7 +118,7 @@ function jobscout_customize_register_frontpage_cta( $wp_customize ){
         )
     );
 
-    /** Bật/Tắt module */
+    /** 1. Bật/Tắt module */
     $wp_customize->add_setting(
         'ed_cta_section',
         array(
@@ -79,99 +139,7 @@ function jobscout_customize_register_frontpage_cta( $wp_customize ){
         )
     );
 
-    /** Tiêu đề */
-    $wp_customize->add_setting(
-        'cta_career_title',
-        array(
-            'default'           => $defaults['cta_career_title'],
-            'sanitize_callback' => 'sanitize_text_field',
-        )
-    );
-
-    $wp_customize->add_control(
-        'cta_career_title',
-        array(
-            'section' => 'cta_section',
-            'label'   => __( 'Tiêu đề', 'jobscout' ),
-            'type'    => 'text',
-        )
-    );
-
-    /** Đoạn văn 1 */
-    $wp_customize->add_setting(
-        'cta_career_text_1',
-        array(
-            'default'           => $defaults['cta_career_text_1'],
-            'sanitize_callback' => 'sanitize_textarea_field',
-        )
-    );
-
-    $wp_customize->add_control(
-        'cta_career_text_1',
-        array(
-            'section' => 'cta_section',
-            'label'   => __( 'Đoạn văn 1', 'jobscout' ),
-            'type'    => 'textarea',
-        )
-    );
-
-    /** Đoạn văn 2 */
-    $wp_customize->add_setting(
-        'cta_career_text_2',
-        array(
-            'default'           => $defaults['cta_career_text_2'],
-            'sanitize_callback' => 'sanitize_textarea_field',
-        )
-    );
-
-    $wp_customize->add_control(
-        'cta_career_text_2',
-        array(
-            'section'     => 'cta_section',
-            'label'       => __( 'Đoạn văn 2', 'jobscout' ),
-            'description' => __( 'Để trống nếu không muốn hiển thị.', 'jobscout' ),
-            'type'        => 'textarea',
-        )
-    );
-
-    /** Chữ trên nút */
-    $wp_customize->add_setting(
-        'cta_career_btn_text',
-        array(
-            'default'           => $defaults['cta_career_btn_text'],
-            'sanitize_callback' => 'sanitize_text_field',
-        )
-    );
-
-    $wp_customize->add_control(
-        'cta_career_btn_text',
-        array(
-            'section'     => 'cta_section',
-            'label'       => __( 'Chữ trên nút', 'jobscout' ),
-            'description' => __( 'Để trống để ẩn nút.', 'jobscout' ),
-            'type'        => 'text',
-        )
-    );
-
-    /** Link của nút */
-    $wp_customize->add_setting(
-        'cta_career_btn_url',
-        array(
-            'default'           => $defaults['cta_career_btn_url'],
-            'sanitize_callback' => 'esc_url_raw',
-        )
-    );
-
-    $wp_customize->add_control(
-        'cta_career_btn_url',
-        array(
-            'section' => 'cta_section',
-            'label'   => __( 'Link của nút', 'jobscout' ),
-            'type'    => 'url',
-        )
-    );
-
-    /** Ảnh nền */
+    /** 2. Ảnh nền (Background Image) */
     $wp_customize->add_setting(
         'cta_career_bg',
         array(
@@ -186,9 +154,217 @@ function jobscout_customize_register_frontpage_cta( $wp_customize ){
             'cta_career_bg',
             array(
                 'section'     => 'cta_section',
-                'label'       => __( 'Ảnh nền', 'jobscout' ),
-                'description' => __( 'Nên dùng ảnh ngang, tối màu, tối thiểu 1600px chiều rộng.', 'jobscout' ),
+                'label'       => __( 'Ảnh nền (Background Image)', 'jobscout' ),
+                'description' => __( 'Chọn ảnh từ Thư viện Media hoặc tải lên ảnh mới từ máy tính. Khuyên dùng ảnh ngang độ phân giải từ 1600px.', 'jobscout' ),
             )
+        )
+    );
+
+    /** 3. Độ tối lớp phủ (Overlay Opacity) */
+    $wp_customize->add_setting(
+        'cta_career_overlay_opacity',
+        array(
+            'default'           => $defaults['cta_career_overlay_opacity'],
+            'sanitize_callback' => 'jobscout_sanitize_number_absint',
+        )
+    );
+
+    $wp_customize->add_control(
+        new JobScout_Slider_Control(
+            $wp_customize,
+            'cta_career_overlay_opacity',
+            array(
+                'section'     => 'cta_section',
+                'label'       => __( 'Độ tối lớp phủ (Overlay Opacity %)', 'jobscout' ),
+                'description' => __( 'Tăng độ tối nếu ảnh nền sáng để chữ trắng và tiêu đề luôn sắc nét, dễ đọc.', 'jobscout' ),
+                'choices'     => array(
+                    'min'  => 0,
+                    'max'  => 95,
+                    'step' => 5,
+                ),
+            )
+        )
+    );
+
+    /** 4. Màu lớp phủ (Overlay Color) */
+    $wp_customize->add_setting(
+        'cta_career_overlay_color',
+        array(
+            'default'           => $defaults['cta_career_overlay_color'],
+            'sanitize_callback' => 'sanitize_hex_color',
+        )
+    );
+
+    $wp_customize->add_control(
+        new WP_Customize_Color_Control(
+            $wp_customize,
+            'cta_career_overlay_color',
+            array(
+                'section'     => 'cta_section',
+                'label'       => __( 'Màu lớp phủ', 'jobscout' ),
+                'description' => __( 'Mặc định tông đen / nâu trầm (#140c0a) tạo chiều sâu điện ảnh.', 'jobscout' ),
+            )
+        )
+    );
+
+    /** 5. Tiêu đề */
+    $wp_customize->add_setting(
+        'cta_career_title',
+        array(
+            'default'           => $defaults['cta_career_title'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'postMessage',
+        )
+    );
+
+    $wp_customize->add_control(
+        'cta_career_title',
+        array(
+            'section' => 'cta_section',
+            'label'   => __( 'Tiêu đề module', 'jobscout' ),
+            'type'    => 'text',
+        )
+    );
+
+    $wp_customize->selective_refresh->add_partial( 'cta_career_title', array(
+        'selector'        => '.career-module-section .career-heading',
+        'render_callback' => 'jobscout_get_cta_career_title',
+        'fallback_refresh'=> true,
+    ) );
+
+    /** 6. Đoạn văn 1 */
+    $wp_customize->add_setting(
+        'cta_career_text_1',
+        array(
+            'default'           => $defaults['cta_career_text_1'],
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport'         => 'postMessage',
+        )
+    );
+
+    $wp_customize->add_control(
+        'cta_career_text_1',
+        array(
+            'section' => 'cta_section',
+            'label'   => __( 'Đoạn văn 1', 'jobscout' ),
+            'type'    => 'textarea',
+        )
+    );
+
+    $wp_customize->selective_refresh->add_partial( 'cta_career_text_1', array(
+        'selector'        => '.career-module-section .career-text-1',
+        'render_callback' => 'jobscout_get_cta_career_text_1',
+        'fallback_refresh'=> true,
+    ) );
+
+    /** 7. Đoạn văn 2 */
+    $wp_customize->add_setting(
+        'cta_career_text_2',
+        array(
+            'default'           => $defaults['cta_career_text_2'],
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport'         => 'postMessage',
+        )
+    );
+
+    $wp_customize->add_control(
+        'cta_career_text_2',
+        array(
+            'section'     => 'cta_section',
+            'label'       => __( 'Đoạn văn 2', 'jobscout' ),
+            'description' => __( 'Để trống nếu chỉ muốn hiển thị 1 đoạn văn.', 'jobscout' ),
+            'type'        => 'textarea',
+        )
+    );
+
+    $wp_customize->selective_refresh->add_partial( 'cta_career_text_2', array(
+        'selector'        => '.career-module-section .career-text-2',
+        'render_callback' => 'jobscout_get_cta_career_text_2',
+        'fallback_refresh'=> true,
+    ) );
+
+    /** 8. Chữ trên nút */
+    $wp_customize->add_setting(
+        'cta_career_btn_text',
+        array(
+            'default'           => $defaults['cta_career_btn_text'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'postMessage',
+        )
+    );
+
+    $wp_customize->add_control(
+        'cta_career_btn_text',
+        array(
+            'section'     => 'cta_section',
+            'label'       => __( 'Chữ trên nút (Button Text)', 'jobscout' ),
+            'description' => __( 'Để trống nếu muốn ẩn nút bấm.', 'jobscout' ),
+            'type'        => 'text',
+        )
+    );
+
+    $wp_customize->selective_refresh->add_partial( 'cta_career_btn_text', array(
+        'selector'        => '.career-module-section .career-btn',
+        'render_callback' => 'jobscout_get_cta_career_btn_text',
+        'fallback_refresh'=> true,
+    ) );
+
+    /** 9. Link của nút */
+    $wp_customize->add_setting(
+        'cta_career_btn_url',
+        array(
+            'default'           => $defaults['cta_career_btn_url'],
+            'sanitize_callback' => 'esc_url_raw',
+        )
+    );
+
+    $wp_customize->add_control(
+        'cta_career_btn_url',
+        array(
+            'section' => 'cta_section',
+            'label'   => __( 'Liên kết nút (Button URL)', 'jobscout' ),
+            'type'    => 'url',
+        )
+    );
+
+    /** 10. Mở link trong tab mới */
+    $wp_customize->add_setting(
+        'cta_career_btn_target',
+        array(
+            'default'           => $defaults['cta_career_btn_target'],
+            'sanitize_callback' => 'jobscout_sanitize_checkbox',
+        )
+    );
+
+    $wp_customize->add_control(
+        'cta_career_btn_target',
+        array(
+            'section' => 'cta_section',
+            'label'   => __( 'Mở link nút trong tab mới (target="_blank")', 'jobscout' ),
+            'type'    => 'checkbox',
+        )
+    );
+
+    /** 11. Căn lề nội dung */
+    $wp_customize->add_setting(
+        'cta_career_alignment',
+        array(
+            'default'           => $defaults['cta_career_alignment'],
+            'sanitize_callback' => 'jobscout_sanitize_radio',
+        )
+    );
+
+    $wp_customize->add_control(
+        'cta_career_alignment',
+        array(
+            'section' => 'cta_section',
+            'label'   => __( 'Căn lề nội dung', 'jobscout' ),
+            'type'    => 'radio',
+            'choices' => array(
+                'center' => __( 'Căn giữa (Mặc định chuẩn theo mẫu)', 'jobscout' ),
+                'left'   => __( 'Căn trái', 'jobscout' ),
+                'right'  => __( 'Căn phải', 'jobscout' ),
+            ),
         )
     );
     /** Career With Us Section Ends */
