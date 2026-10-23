@@ -30,7 +30,7 @@ function jobscout_customize_register_footer( $wp_customize ) {
     $wp_customize->add_setting(
         'footer_newsletter_title_1',
         array(
-            'default'           => 'Subscribe To',
+            'default'           => 'ĐĂNG KÝ NHẬN',
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'postMessage',
         )
@@ -47,7 +47,7 @@ function jobscout_customize_register_footer( $wp_customize ) {
     $wp_customize->add_setting(
         'footer_newsletter_title_2',
         array(
-            'default'           => 'Our Newsletter',
+            'default'           => 'BẢN TIN CỦA CHÚNG TÔI',
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'postMessage',
         )
@@ -72,7 +72,7 @@ function jobscout_customize_register_footer( $wp_customize ) {
     $wp_customize->add_setting(
         'footer_newsletter_placeholder',
         array(
-            'default'           => 'Input your email address',
+            'default'           => 'Nhập địa chỉ email của bạn...',
             'sanitize_callback' => 'sanitize_text_field',
         )
     );
@@ -88,7 +88,7 @@ function jobscout_customize_register_footer( $wp_customize ) {
     $wp_customize->add_setting(
         'footer_newsletter_btn_text',
         array(
-            'default'           => 'SUBSCRIBE',
+            'default'           => 'ĐĂNG KÝ',
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'postMessage',
         )
@@ -452,11 +452,11 @@ function jobscout_get_footer_nav_menu_html( $nav_menu = null, $instance = array(
     }
 
     $default_texts = array(
-        1 => 'JOBS',
-        2 => 'COMPANIES',
-        3 => 'BLOG',
-        4 => 'ABOUT',
-        5 => 'CONTACT',
+        1 => 'VIỆC LÀM',
+        2 => 'CÔNG TY',
+        3 => 'BÀI VIẾT',
+        4 => 'GIỚI THIỆU',
+        5 => 'LIÊN HỆ',
     );
 
     $default_urls = array(

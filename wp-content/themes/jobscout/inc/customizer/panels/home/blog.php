@@ -53,7 +53,7 @@ function jobscout_customize_register_frontpage_blog( $wp_customize ){
     $wp_customize->add_setting(
         'blog_section_title',
         array(
-            'default'           => 'NEWEST BLOG ENTRIES',
+            'default'           => 'BÀI VIẾT MỚI NHẤT',
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'postMessage',
         )
@@ -169,7 +169,7 @@ function jobscout_customize_register_frontpage_blog( $wp_customize ){
     $wp_customize->add_setting(
         'blog_read_more_text',
         array(
-            'default'           => 'Read More',
+            'default'           => 'Xem thêm',
             'sanitize_callback' => 'sanitize_text_field',
         )
     );
@@ -188,7 +188,7 @@ function jobscout_customize_register_frontpage_blog( $wp_customize ){
     $wp_customize->add_setting(
         'blog_view_all',
         array(
-            'default'           => '',
+            'default'           => 'Xem tất cả bài viết',
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'postMessage',
         )

@@ -13,8 +13,8 @@
  */
 
 $ed_jobposting   = get_theme_mod( 'ed_jobposting_section', true );
-$job_title       = get_theme_mod( 'job_posting_section_title', 'TOP JOBS' );
-$view_more_text  = get_theme_mod( 'top_jobs_btn_text', 'VIEW MORE JOBS' );
+$job_title       = get_theme_mod( 'job_posting_section_title', 'VIỆC LÀM HÀNG ĐẦU' );
+$view_more_text  = get_theme_mod( 'top_jobs_btn_text', 'XEM THÊM VIỆC LÀM' );
 $view_more_url   = get_theme_mod( 'top_jobs_btn_url', home_url( '/jobs/' ) );
 
 if ( $ed_jobposting ) {
@@ -45,6 +45,11 @@ if ( $ed_jobposting ) {
   }
 
   /* Tiêu đề mục: TOP JOBS căn giữa */
+  .top-jobs-module-section .top-jobs-heading-wrap {
+    text-align: center !important;
+    margin: 0 0 42px 0 !important;
+  }
+
   .top-jobs-module-section .top-jobs-heading {
     font-family: 'Montserrat', sans-serif !important;
     font-size: 30px !important;
@@ -53,8 +58,31 @@ if ( $ed_jobposting ) {
     text-transform: uppercase !important;
     text-align: center !important;
     letter-spacing: 0.6px !important;
-    margin: 0 0 42px 0 !important;
+    margin: 0 !important;
     line-height: 1.2 !important;
+    display: inline-block !important;
+    position: relative !important;
+  }
+
+  /* Customizer shortcut pencil buttons */
+  .top-jobs-module-section .customize-partial-edit-shortcut {
+    z-index: 99999 !important;
+  }
+  .top-jobs-module-section .customize-partial-edit-shortcut button {
+    z-index: 99999 !important;
+    pointer-events: auto !important;
+  }
+  .top-jobs-module-section .top-jobs-heading .customize-partial-edit-shortcut button {
+    left: -38px !important;
+    top: 0 !important;
+  }
+  .top-jobs-module-section .top-jobs-btn-more {
+    position: relative !important;
+  }
+  .top-jobs-module-section .top-jobs-btn-more .customize-partial-edit-shortcut button {
+    left: auto !important;
+    right: -12px !important;
+    top: -12px !important;
   }
 
   /* Lưới 2 cột cho các thẻ việc làm */
@@ -268,7 +296,9 @@ if ( $ed_jobposting ) {
 <section id="job-posting-section" class="top-jobs-module-section">
   <div class="top-jobs-container">
 
-    <h2 class="top-jobs-heading"><?php echo esc_html( $job_title ); ?></h2>
+    <div class="top-jobs-heading-wrap">
+      <h2 class="top-jobs-heading"><?php echo esc_html( $job_title ); ?></h2>
+    </div>
 
     <div class="top-jobs-grid">
       <?php
@@ -367,7 +397,7 @@ if ( $ed_jobposting ) {
                     <h3 class="top-job-title">
                       <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                     </h3>
-                    <span class="top-job-date">Created: <?php echo get_the_date( 'M j, Y' ); ?></span>
+                    <span class="top-job-date">Ngày đăng: <?php echo get_the_date( 'd/m/Y' ); ?></span>
                     <div class="top-job-badges">
                       <span class="top-job-badge badge-type"><?php echo esc_html( $type_name ); ?></span>
                       <span class="top-job-badge badge-category"><?php echo esc_html( $cat_name ); ?></span>
@@ -401,7 +431,7 @@ if ( $ed_jobposting ) {
                     <h3 class="top-job-title">
                       <a href="<?php echo esc_url( home_url( '/jobs/' ) ); ?>"><?php echo esc_html( $job['title'] ); ?></a>
                     </h3>
-                    <span class="top-job-date">Created: Oct 28, 2022</span>
+                    <span class="top-job-date">Ngày đăng: 28/10/2022</span>
                     <div class="top-job-badges">
                       <span class="top-job-badge badge-type"><?php echo esc_html( $job['type'] ); ?></span>
                       <span class="top-job-badge badge-category"><?php echo esc_html( $job['category'] ); ?></span>

@@ -2727,15 +2727,33 @@ function jobscout_admin_dashboard_show_all_jobs( $args ) {
 add_filter( 'nav_menu_css_class', 'jobscout_nav_menu_active_classes', 10, 2 );
 function jobscout_nav_menu_active_classes( $classes, $item ) {
 	$home_url_clean = rtrim( home_url(), '/' );
-	$is_home = is_front_page() || is_home();
-	$is_post_job = is_page( 'post-a-job' ) || ( isset( $_SERVER['REQUEST_URI'] ) && strpos( $_SERVER['REQUEST_URI'], '/post-a-job/' ) !== false );
-	$is_dashboard = is_page( 'job-dashboard' ) || ( isset( $_SERVER['REQUEST_URI'] ) && strpos( $_SERVER['REQUEST_URI'], '/job-dashboard/' ) !== false );
+	$current_req_uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
+
+	// 1. Phân biệt rõ ràng giữa Trang chủ và Khu vực Bài viết (Blog)
+	$is_blog_section = is_home() 
+		|| is_singular( 'post' ) 
+		|| is_category() 
+		|| is_tag() 
+		|| ( strpos( $current_req_uri, '/blog' ) !== false );
+
+	$is_front_page = is_front_page() && ! $is_blog_section && ( $current_req_uri === '/' || $current_req_uri === '' || strpos( $current_req_uri, '/?page=' ) !== false );
+
+	$is_post_job = is_page( 'post-a-job' ) || ( strpos( $current_req_uri, '/post-a-job/' ) !== false );
+	$is_dashboard = is_page( 'job-dashboard' ) || ( strpos( $current_req_uri, '/job-dashboard/' ) !== false );
 	$is_jobs_section = is_post_type_archive( 'job_listing' )
 		|| is_page( 'jobs' )
 		|| is_tax( 'job_listing_category' )
 		|| is_tax( 'job_listing_type' );
 
-	if ( $is_home ) {
+	if ( $is_blog_section ) {
+		// Ở khu vực Bài viết: Chỉ mục Bài viết (Blog) nhận active, gỡ bỏ active của Trang chủ
+		if ( strpos( $item->url, '/blog' ) !== false ) {
+			$classes[] = 'current-menu-item';
+			$classes[] = 'current_page_item';
+		} else {
+			$classes = array_diff( $classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current_page_parent', 'current_page_ancestor' ) );
+		}
+	} elseif ( $is_front_page ) {
 		// Ở trang chủ: Chỉ Trang chủ nhận active
 		if ( rtrim( $item->url, '/' ) === $home_url_clean ) {
 			$classes[] = 'current-menu-item';
@@ -2777,8 +2795,11 @@ function jobscout_nav_menu_active_classes( $classes, $item ) {
 			$classes = array_diff( $classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current_page_parent', 'current_page_ancestor' ) );
 		}
 	} else {
-		// Ở các trang khác (Liên hệ, Blog...): Việc làm không nhận active
+		// Ở các trang khác (Liên hệ...): Việc làm không nhận active
 		if ( strpos( $item->url, '/jobs/' ) !== false || strpos( $item->url, '/post-a-job/' ) !== false || strpos( $item->url, '/job-dashboard/' ) !== false ) {
+			$classes = array_diff( $classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current_page_parent', 'current_page_ancestor' ) );
+		}
+		if ( rtrim( $item->url, '/' ) === $home_url_clean ) {
 			$classes = array_diff( $classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current_page_parent', 'current_page_ancestor' ) );
 		}
 	}

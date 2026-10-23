@@ -54,7 +54,7 @@ function jobscout_customize_register_frontpage_job_posting( $wp_customize ){
     $wp_customize->add_setting(
         'job_posting_section_title',
         array(
-            'default'           => 'TOP JOBS',
+            'default'           => 'VIỆC LÀM HÀNG ĐẦU',
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'postMessage',
         )
@@ -72,6 +72,32 @@ function jobscout_customize_register_frontpage_job_posting( $wp_customize ){
     $wp_customize->selective_refresh->add_partial( 'job_posting_section_title', array(
         'selector'        => '.top-jobs-heading',
         'render_callback' => 'jobscout_get_job_posting_section_title',
+        'fallback_refresh'=> true,
+    ) );
+
+    /** Chữ trên nút Xem thêm việc làm */
+    $wp_customize->add_setting(
+        'top_jobs_btn_text',
+        array(
+            'default'           => 'XEM THÊM VIỆC LÀM',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'postMessage',
+        )
+    );
+    $wp_customize->add_control(
+        'top_jobs_btn_text',
+        array(
+            'section' => 'job_posting_section',
+            'label'   => __( 'Chữ trên nút Xem thêm việc làm', 'jobscout' ),
+            'type'    => 'text',
+        )
+    );
+    $wp_customize->selective_refresh->add_partial( 'top_jobs_btn_text', array(
+        'selector'        => '.top-jobs-btn-more',
+        'render_callback' => function() {
+            return esc_html( get_theme_mod( 'top_jobs_btn_text', 'XEM THÊM VIỆC LÀM' ) );
+        },
+        'fallback_refresh'=> true,
     ) );
 
     /** 3. Chế độ nguồn dữ liệu hiển thị (Tự động vs Thủ công) */
@@ -138,7 +164,7 @@ function jobscout_customize_register_frontpage_job_posting( $wp_customize ){
     $wp_customize->add_setting(
         'top_jobs_btn_text',
         array(
-            'default'           => 'VIEW MORE JOBS',
+            'default'           => 'XEM THÊM VIỆC LÀM',
             'sanitize_callback' => 'sanitize_text_field',
         )
     );
@@ -174,7 +200,7 @@ function jobscout_customize_register_frontpage_job_posting( $wp_customize ){
     $wp_customize->add_setting(
         'top_jobs_default_bullet_1',
         array(
-            'default'           => 'Be responsible for the effective operational management of the hotel',
+            'default'           => 'Chịu trách nhiệm quản lý và vận hành hiệu quả các hoạt động của bộ phận',
             'sanitize_callback' => 'sanitize_text_field',
         )
     );
@@ -191,7 +217,7 @@ function jobscout_customize_register_frontpage_job_posting( $wp_customize ){
     $wp_customize->add_setting(
         'top_jobs_default_bullet_2',
         array(
-            'default'           => 'Excellent salary bonuses & recognition activities',
+            'default'           => 'Chế độ lương thưởng hấp dẫn và khen thưởng thành tích xuất sắc',
             'sanitize_callback' => 'sanitize_text_field',
         )
     );
@@ -207,7 +233,7 @@ function jobscout_customize_register_frontpage_job_posting( $wp_customize ){
     $wp_customize->add_setting(
         'top_jobs_default_bullet_3',
         array(
-            'default'           => 'Foreign language allowance (up to 500 USD/month)',
+            'default'           => 'Phụ cấp ngoại ngữ và cơ hội phát triển sự nghiệp thăng tiến',
             'sanitize_callback' => 'sanitize_text_field',
         )
     );

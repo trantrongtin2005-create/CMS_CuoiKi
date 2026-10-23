@@ -122,6 +122,9 @@ endif;
 add_action( 'customize_register', 'jobscout_page_sections_pro' );
 
 function jobscout_page_sections_pro( $manager ) {
+	if ( ! class_exists( 'JobScout_Customize_Section_Pro' ) ) {
+		return;
+	}
 	// Register custom section types.
 	$manager->register_section_type( 'JobScout_Customize_Section_Pro' );
 

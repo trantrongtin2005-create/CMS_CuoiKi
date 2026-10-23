@@ -11,12 +11,12 @@
  * @package JobScout
  */
 
-$blog_heading   = get_theme_mod( 'blog_section_title', 'NEWEST BLOG ENTRIES' );
+$blog_heading   = get_theme_mod( 'blog_section_title', 'BÀI VIẾT MỚI NHẤT' );
 $sub_title      = get_theme_mod( 'blog_section_subtitle', '' );
 $blog           = get_option( 'page_for_posts' );
-$label          = get_theme_mod( 'blog_view_all', '' );
+$label          = get_theme_mod( 'blog_view_all', 'Xem tất cả bài viết' );
 $ed_blog        = get_theme_mod( 'ed_blog_section', get_theme_mod( 'ed_blog', true ) );
-$read_more_text = get_theme_mod( 'blog_read_more_text', 'Read More' );
+$read_more_text = get_theme_mod( 'blog_read_more_text', 'Xem thêm' );
 $source         = get_theme_mod( 'blog_posts_source', 'auto' );
 $qry            = null;
 
@@ -125,6 +125,11 @@ if ( $ed_blog && ( $blog_heading || $sub_title || ( $qry && $qry->have_posts() )
     padding: 0 24px !important;
   }
 
+  .newest-blog-module-section .newest-blog-heading-wrap {
+    text-align: center !important;
+    margin: 0 0 34px 0 !important;
+  }
+
   .newest-blog-module-section .newest-blog-heading {
     font-family: 'Montserrat', sans-serif !important;
     font-size: 30px !important;
@@ -134,15 +139,42 @@ if ( $ed_blog && ( $blog_heading || $sub_title || ( $qry && $qry->have_posts() )
     text-align: center !important;
     letter-spacing: 0.4px !important;
     line-height: 1.2 !important;
-    margin: 0 0 34px 0 !important;
+    margin: 0 !important;
+    display: inline-block !important;
+    position: relative !important;
   }
 
+  /* Customizer shortcut pencil buttons */
+  .newest-blog-module-section .customize-partial-edit-shortcut {
+    z-index: 99999 !important;
+  }
+  .newest-blog-module-section .customize-partial-edit-shortcut button {
+    z-index: 99999 !important;
+    pointer-events: auto !important;
+  }
+  .newest-blog-module-section .newest-blog-heading .customize-partial-edit-shortcut button {
+    left: -38px !important;
+    top: 0 !important;
+  }
   .newest-blog-module-section .newest-blog-desc {
     text-align: center !important;
     color: #64748B !important;
     font-size: 14px !important;
     margin: -20px auto 34px !important;
     max-width: 640px !important;
+    position: relative !important;
+  }
+  .newest-blog-module-section .newest-blog-desc .customize-partial-edit-shortcut button {
+    left: -38px !important;
+    top: 0 !important;
+  }
+  .newest-blog-module-section .newest-blog-btn {
+    position: relative !important;
+  }
+  .newest-blog-module-section .newest-blog-btn .customize-partial-edit-shortcut button {
+    left: auto !important;
+    right: -12px !important;
+    top: -12px !important;
   }
 
   .newest-blog-module-section .newest-blog-desc p {
@@ -305,7 +337,7 @@ if ( $ed_blog && ( $blog_heading || $sub_title || ( $qry && $qry->have_posts() )
 <section id="blog-section" class="article-section newest-blog-module-section">
   <div class="newest-blog-container">
     <?php
-      if ( $blog_heading ) echo '<h2 class="newest-blog-heading">' . esc_html( $blog_heading ) . '</h2>';
+      if ( $blog_heading ) echo '<div class="newest-blog-heading-wrap"><h2 class="newest-blog-heading">' . esc_html( $blog_heading ) . '</h2></div>';
       if ( $sub_title ) echo '<div class="newest-blog-desc">' . wpautop( wp_kses_post( $sub_title ) ) . '</div>';
     ?>
 
@@ -338,9 +370,11 @@ if ( $ed_blog && ( $blog_heading || $sub_title || ( $qry && $qry->have_posts() )
         ?>
       </div><!-- .newest-blog-grid -->
 
-      <?php if ( $blog && $label ) { ?>
+      <?php if ( $label ) { 
+        $blog_target_url = ! empty( $blog ) ? get_permalink( $blog ) : home_url( '/blog/' );
+      ?>
         <div class="newest-blog-footer">
-          <a href="<?php the_permalink( $blog ); ?>" class="newest-blog-btn"><?php echo esc_html( $label ); ?></a>
+          <a href="<?php echo esc_url( $blog_target_url ); ?>" class="newest-blog-btn"><?php echo esc_html( $label ); ?></a>
         </div>
       <?php } ?>
     <?php } ?>

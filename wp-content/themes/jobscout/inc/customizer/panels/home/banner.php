@@ -42,7 +42,7 @@ function jobscout_customize_register_frontpage_banner( $wp_customize ) {
     $wp_customize->add_setting(
         'banner_title',
         array(
-            'default'           => __( 'Aim Higher, Dream Bigger', 'jobscout' ),
+            'default'           => __( 'TÌM KIẾM CÔNG VIỆC MƠ ƯỚC', 'jobscout' ),
             'sanitize_callback' => 'sanitize_text_field',
             'transport'         => 'postMessage'
         )
@@ -58,15 +58,16 @@ function jobscout_customize_register_frontpage_banner( $wp_customize ) {
     );
     
     $wp_customize->selective_refresh->add_partial( 'banner_title', array(
-        'selector' => '.site-banner .banner-caption h2.title',
+        'selector'        => '.hero-dream-title',
         'render_callback' => 'jobscout_get_banner_title',
+        'fallback_refresh'=> true,
     ) );
     
     /** Sub Title */
     $wp_customize->add_setting(
         'banner_subtitle',
         array(
-            'default'           => __( 'Each month, more than 7 million JobScout turn to website in their search for work, making over 160,000 applications every day.', 'jobscout' ),
+            'default'           => __( 'Bí quyết đằng sau thành công của chúng tôi rất đơn giản: luôn đặt mình vào vị trí của người khác – dù là nhân viên, đối tác hay khách hàng. Điều đó giúp chúng tôi thấu hiểu sâu sắc, đón đầu nhu cầu và đồng hành trọn vẹn cùng bạn.', 'jobscout' ),
             'sanitize_callback' => 'wp_kses_post',
             'transport'         => 'postMessage'
         )
@@ -82,16 +83,18 @@ function jobscout_customize_register_frontpage_banner( $wp_customize ) {
     );
     
     $wp_customize->selective_refresh->add_partial( 'banner_subtitle', array(
-        'selector'        => '.site-banner .banner-caption .description',
+        'selector'        => '.hero-dream-subtitle',
         'render_callback' => 'jobscout_get_banner_sub_title',
+        'fallback_refresh'=> true,
     ) );
 
     /** Search Keyword Placeholder */
     $wp_customize->add_setting(
         'banner_keyword_placeholder',
         array(
-            'default'           => 'Search for jobs, companies, skills',
+            'default'           => 'Tìm kiếm theo vị trí, công ty, kỹ năng...',
             'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'postMessage',
         )
     );
     $wp_customize->add_control(
@@ -104,12 +107,20 @@ function jobscout_customize_register_frontpage_banner( $wp_customize ) {
         )
     );
 
+    $wp_customize->selective_refresh->add_partial( 'banner_keyword_placeholder', array(
+        'selector'        => '.hero-input-group-keyword',
+        'settings'        => array( 'banner_keyword_placeholder' ),
+        'render_callback' => '__return_false',
+        'fallback_refresh'=> true,
+    ) );
+
     /** Search Location Default */
     $wp_customize->add_setting(
         'banner_location_default',
         array(
-            'default'           => 'Tokyo',
+            'default'           => 'Hà Nội',
             'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'postMessage',
         )
     );
     $wp_customize->add_control(
@@ -122,11 +133,18 @@ function jobscout_customize_register_frontpage_banner( $wp_customize ) {
         )
     );
 
+    $wp_customize->selective_refresh->add_partial( 'banner_location_default', array(
+        'selector'        => '.hero-input-group-location',
+        'settings'        => array( 'banner_location_default', 'banner_locations_list' ),
+        'render_callback' => '__return_false',
+        'fallback_refresh'=> true,
+    ) );
+
     /** Custom Locations List */
     $wp_customize->add_setting(
         'banner_locations_list',
         array(
-            'default'           => "Tokyo\nOsaka\nKyoto\nYokohama\nNagoya\nFukuoka\nSapporo",
+            'default'           => "Hà Nội\nTP. Hồ Chí Minh\nĐà Nẵng\nTokyo\nOsaka\nKyoto\nYokohama\nNagoya\nFukuoka\nSapporo",
             'sanitize_callback' => 'sanitize_textarea_field',
         )
     );
@@ -144,8 +162,9 @@ function jobscout_customize_register_frontpage_banner( $wp_customize ) {
     $wp_customize->add_setting(
         'banner_btn_text',
         array(
-            'default'           => 'SEARCH JOB',
+            'default'           => 'TÌM VIỆC NGAY',
             'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'postMessage',
         )
     );
     $wp_customize->add_control(
@@ -157,6 +176,24 @@ function jobscout_customize_register_frontpage_banner( $wp_customize ) {
             'type'        => 'text',
         )
     );
+
+    $wp_customize->selective_refresh->add_partial( 'banner_btn_text', array(
+        'selector'        => '.hero-search-submit-wrap',
+        'settings'        => array( 'banner_btn_text' ),
+        'render_callback' => function() {
+            $btn_text = get_theme_mod( 'banner_btn_text', 'TÌM VIỆC NGAY' );
+            return '<button type="submit" class="hero-btn-search">' . esc_html( $btn_text ) . '</button>';
+        },
+        'fallback_refresh'=> true,
+    ) );
+
+    /** Banner Image Shortcut */
+    $wp_customize->selective_refresh->add_partial( 'banner_image_shortcut', array(
+        'selector'        => '#banner-section',
+        'settings'        => array( 'header_image' ),
+        'render_callback' => '__return_false',
+        'fallback_refresh'=> true,
+    ) );
     
 }
 endif;

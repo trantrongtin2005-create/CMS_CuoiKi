@@ -18,10 +18,10 @@ if ( ! function_exists( 'jobscout_get_cta_career_defaults' ) ) :
 function jobscout_get_cta_career_defaults(){
     return array(
         'ed_cta_section'             => true,
-        'cta_career_title'           => 'CAREER WITH US',
-        'cta_career_text_1'          => 'Plan Do See Global is a hospitality group founded in Japan and rooted in "Omotenashi", the Japanese principle of selfless hospitality. We strive to deliver unforgettable and bespoke experiences, to understand local cultures like natives, to provide service that is warm but not intrusive, and to foresee our guests\' every need at all times. That is our sole mission and purpose.',
-        'cta_career_text_2'          => 'We are experts in all stages of project development: concept, design, implementation and management. We love to find unique ways to create experiences that surprise and delight guests and customers.',
-        'cta_career_btn_text'        => 'MORE ABOUT US',
+        'cta_career_title'           => 'CƠ HỘI NGHỀ NGHIỆP',
+        'cta_career_text_1'          => 'Plan Do See Global là tập đoàn dịch vụ - khách sạn được thành lập tại Nhật Bản với triết lý cốt lõi "Omotenashi" – nghệ thuật hiếu khách tận tâm. Chúng tôi không ngừng kiến tạo những trải nghiệm tinh tế và đáng nhớ, thấu hiểu văn hóa bản địa sâu sắc, mang đến dịch vụ ấm áp, chu đáo nhưng luôn tôn trọng không gian riêng tư nhằm đáp ứng mọi kỳ vọng của khách hàng. Đó chính là sứ mệnh và tôn chỉ hoạt động duy nhất của chúng tôi.',
+        'cta_career_text_2'          => 'Chúng tôi là những chuyên gia giàu kinh nghiệm trong mọi giai đoạn phát triển dự án: từ xây dựng ý tưởng, thiết kế, triển khai cho đến quản lý vận hành chuyên nghiệp. Chúng tôi luôn đam mê tìm kiếm những hướng đi sáng tạo để mang đến những trải nghiệm vượt trội, làm hài lòng mọi đối tác và khách hàng.',
+        'cta_career_btn_text'        => 'VỀ CHÚNG TÔI',
         'cta_career_btn_url'         => home_url( '/about/' ),
         'cta_career_btn_target'      => false,
         'cta_career_bg'              => get_template_directory_uri() . '/images/career-with-us-bg.jpg',
