@@ -225,3 +225,44 @@ function jobscout_ed_wp_link(){
      printf( esc_html__( ' Powered by %s', 'jobscout' ), '<a class="wp-link" href="'. esc_url( __( 'https://wordpress.org/', 'jobscout' ) ) .'" target="_blank">WordPress</a>.' );
 }
 endif;
+
+/**
+ * ========================================================
+ * CAREER WITH US SELECTIVE REFRESH PARTIALS
+ * ========================================================
+ */
+if( ! function_exists( 'jobscout_get_cta_career_title' ) ) :
+function jobscout_get_cta_career_title(){
+    if ( function_exists( 'jobscout_get_cta_career_option' ) ) {
+        return esc_html( jobscout_get_cta_career_option( 'cta_career_title' ) );
+    }
+    return esc_html( get_theme_mod( 'cta_career_title', 'CAREER WITH US' ) );
+}
+endif;
+
+if( ! function_exists( 'jobscout_get_cta_career_text_1' ) ) :
+function jobscout_get_cta_career_text_1(){
+    if ( function_exists( 'jobscout_get_cta_career_option' ) ) {
+        return esc_html( jobscout_get_cta_career_option( 'cta_career_text_1' ) );
+    }
+    return esc_html( get_theme_mod( 'cta_career_text_1', '' ) );
+}
+endif;
+
+if( ! function_exists( 'jobscout_get_cta_career_text_2' ) ) :
+function jobscout_get_cta_career_text_2(){
+    if ( function_exists( 'jobscout_get_cta_career_option' ) ) {
+        return esc_html( jobscout_get_cta_career_option( 'cta_career_text_2' ) );
+    }
+    return esc_html( get_theme_mod( 'cta_career_text_2', '' ) );
+}
+endif;
+
+if( ! function_exists( 'jobscout_get_cta_career_btn_text' ) ) :
+function jobscout_get_cta_career_btn_text(){
+    if ( function_exists( 'jobscout_get_cta_career_option' ) ) {
+        return esc_html( jobscout_get_cta_career_option( 'cta_career_btn_text' ) );
+    }
+    return esc_html( get_theme_mod( 'cta_career_btn_text', 'MORE ABOUT US' ) );
+}
+endif;
