@@ -42,37 +42,7 @@ $type_name    = ( $current_term && ! is_wp_error( $current_term ) ) ? $current_t
 
             </div><!-- .container -->
 
-            <!-- NEWSLETTER SECTION -->
-            <div class="career-newsletter-bar">
-                <div class="container">
-                    <div class="newsletter-inner">
-                        <div class="newsletter-title">Đăng Ký Nhận<br>Bản Tin Tuyển Dụng</div>
-                        <div class="newsletter-form-wrap">
-                            <input type="email" placeholder="Nhập địa chỉ email của bạn..." class="newsletter-input" />
-                            <button type="button" class="newsletter-submit-btn">ĐĂNG KÝ</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- FOOTER LINKS & SOCIAL BAR -->
-            <div class="career-footer-bar">
-                <div class="container">
-                    <nav class="career-footer-nav">
-                        <a href="<?php echo esc_url( home_url( '/jobs/' ) ); ?>">VIỆC LÀM</a>
-                        <a href="<?php echo esc_url( home_url( '/' ) ); ?>">DOANH NGHIỆP</a>
-                        <a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">BÀI VIẾT</a>
-                        <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">GIỚI THIỆU</a>
-                        <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">LIÊN HỆ</a>
-                    </nav>
-                    <div class="career-footer-social">
-                        <a href="#" class="social-circle fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-circle gg" title="Google"><i class="fab fa-google"></i></a>
-                        <a href="#" class="social-circle line" title="LINE"><i class="fab fa-line"></i></a>
-                        <a href="#" class="social-circle tw" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-            </div>
 
         </main>
     </div>
