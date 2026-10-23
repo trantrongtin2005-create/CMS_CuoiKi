@@ -2745,30 +2745,18 @@ function jobscout_admin_dashboard_show_all_jobs( $args ) {
 add_filter( 'nav_menu_css_class', 'jobscout_nav_menu_active_classes', 10, 2 );
 function jobscout_nav_menu_active_classes( $classes, $item ) {
 	$home_url_clean = rtrim( home_url(), '/' );
-	$req_uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
-
-	$is_front = is_front_page();
-	$is_blog_or_post = ! $is_front && (
-		is_home()
-		|| is_singular( 'post' )
-		|| is_category()
-		|| is_tag()
-		|| is_date()
-		|| is_author()
-		|| strpos( $req_uri, '/blog' ) !== false
-		|| strpos( $req_uri, '/news' ) !== false
-		|| strpos( $req_uri, '/tin-tuc' ) !== false
-	);
-	$is_post_job = is_page( 'post-a-job' ) || strpos( $req_uri, '/post-a-job/' ) !== false;
-	$is_dashboard = is_page( 'job-dashboard' ) || strpos( $req_uri, '/job-dashboard/' ) !== false;
 	$current_req_uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
 
-	// 1. Phân biệt rõ ràng giữa Trang chủ và Khu vực Bài viết (Blog)
+	// 1. Phân biệt rõ ràng giữa Trang chủ và Khu vực Bài viết (Blog / News / Tin tức)
 	$is_blog_section = is_home() 
 		|| is_singular( 'post' ) 
 		|| is_category() 
 		|| is_tag() 
-		|| ( strpos( $current_req_uri, '/blog' ) !== false );
+		|| is_date()
+		|| is_author()
+		|| ( strpos( $current_req_uri, '/blog' ) !== false )
+		|| ( strpos( $current_req_uri, '/news' ) !== false )
+		|| ( strpos( $current_req_uri, '/tin-tuc' ) !== false );
 
 	$is_front_page = is_front_page() && ! $is_blog_section && ( $current_req_uri === '/' || $current_req_uri === '' || strpos( $current_req_uri, '/?page=' ) !== false );
 
@@ -2778,13 +2766,11 @@ function jobscout_nav_menu_active_classes( $classes, $item ) {
 		|| is_page( 'jobs' )
 		|| is_tax( 'job_listing_category' )
 		|| is_tax( 'job_listing_type' );
-	$is_contact = is_page( 'contact' ) || is_page( 'contact-2' ) || strpos( $req_uri, '/contact' ) !== false;
-
-	if ( $is_front ) {
+	$is_contact = is_page( 'contact' ) || is_page( 'contact-2' ) || ( strpos( $current_req_uri, '/contact' ) !== false );
 
 	if ( $is_blog_section ) {
-		// Ở khu vực Bài viết: Chỉ mục Bài viết (Blog) nhận active, gỡ bỏ active của Trang chủ
-		if ( strpos( $item->url, '/blog' ) !== false ) {
+		// Ở khu vực Bài viết: Chỉ mục Bài viết (Blog / News / Tin tức) nhận active, gỡ bỏ active của Trang chủ
+		if ( strpos( $item->url, '/blog' ) !== false || strpos( $item->url, '/news' ) !== false || strpos( $item->url, '/tin-tuc' ) !== false ) {
 			$classes[] = 'current-menu-item';
 			$classes[] = 'current_page_item';
 		} else {
@@ -2793,14 +2779,6 @@ function jobscout_nav_menu_active_classes( $classes, $item ) {
 	} elseif ( $is_front_page ) {
 		// Ở trang chủ: Chỉ Trang chủ nhận active
 		if ( rtrim( $item->url, '/' ) === $home_url_clean ) {
-			$classes[] = 'current-menu-item';
-			$classes[] = 'current_page_item';
-		} else {
-			$classes = array_diff( $classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current_page_parent', 'current_page_ancestor' ) );
-		}
-	} elseif ( $is_blog_or_post ) {
-		// Ở trang Tin tức / Bài viết / Chi tiết bài viết: Mục Bài viết nhận active, Trang chủ bị xóa
-		if ( strpos( $item->url, '/blog' ) !== false || strpos( $item->url, '/news' ) !== false || strpos( $item->url, '/tin-tuc' ) !== false ) {
 			$classes[] = 'current-menu-item';
 			$classes[] = 'current_page_item';
 		} else {
@@ -2851,7 +2829,7 @@ function jobscout_nav_menu_active_classes( $classes, $item ) {
 			$classes = array_diff( $classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current_page_parent', 'current_page_ancestor' ) );
 		}
 	} else {
-		// Ở các trang khác: Việc làm không nhận active
+		// Ở các trang khác (Liên hệ...): Việc làm không nhận active
 		if ( strpos( $item->url, '/jobs/' ) !== false || strpos( $item->url, '/post-a-job/' ) !== false || strpos( $item->url, '/job-dashboard/' ) !== false ) {
 			$classes = array_diff( $classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current_page_parent', 'current_page_ancestor' ) );
 		}

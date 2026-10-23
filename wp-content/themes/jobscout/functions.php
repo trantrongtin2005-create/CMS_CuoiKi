@@ -108,6 +108,8 @@ add_action( 'init', function() {
 	add_rewrite_rule( '^news/?$', 'index.php?pagename=blog', 'top' );
 	add_rewrite_rule( '^tin-tuc/?$', 'index.php?pagename=blog', 'top' );
 } );
+
+/**
  * Tự động đồng bộ giao diện trong Trình soạn thảo Gutenberg (wp-admin) cho trang Về chúng tôi
  */
 function cms_about_page_editor_styles() {
