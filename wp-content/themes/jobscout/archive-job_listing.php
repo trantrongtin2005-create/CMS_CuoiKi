@@ -1,30 +1,30 @@
 <?php
 /**
- * The template for displaying Job Listings Archive
- * Matched 100% to "4-all job 2.jpg" with complete Search Result Validation & Realtime Engine
+ * Giao diện hiển thị trang Lưu trữ và Danh sách Việc làm (Job Listings Archive)
+ * Thiết kế chuẩn theo mẫu "4-all job 2.jpg" với bộ lọc thời gian thực và xử lý tìm kiếm hoàn chỉnh.
  *
- * Requirements satisfied:
- * 1. ALL JOBS Grid:
- *    - 2-column grid on desktop (1-column on mobile).
- *    - Flat UI, white cards, 4px border-radius, logo in box with border-gray-200.
- *    - Logo, uppercase bold title, created date, 3 badges on 1 row, 3 bullet lines with round dots (•).
- *    - Result Counter: "ALL JOBS (Hiển thị X / Y công việc)" or "(Tìm thấy Y việc làm phù hợp)". Realtime update.
- *    - Active Filter Badges: "[Hà Nội ✕]", "[Dưới 15 triệu ✕]" with instant removal.
- * 2. Sorting & Pagination:
- *    - Dropdown: Latest Jobs (default), Oldest Jobs, Highest Salary, Lowest Salary. Realtime re-sorting.
- *    - "LOAD MORE JOBS" button: Loads next 6 jobs with smooth fade-in animation, auto-hides when X == Y.
- * 3. Empty State Validation:
- *    - When Y == 0: hides grid and load more, displays centered modern box with icon, bold message,
- *      subtitle suggestion, and prominent orange "Đặt lại bộ lọc" (Reset Filters) button.
- * 4. Navigation:
- *    - Entire job card is an anchor link pointing directly to the job detail view.
+ * Các tính năng đáp ứng:
+ * 1. Danh sách ALL JOBS:
+ *    - Lưới 2 cột trên máy tính (1 cột trên điện thoại).
+ *    - Giao diện phẳng Flat UI, thẻ trắng, bo góc 4px, khung logo có viền border-gray-200.
+ *    - Logo công ty, tiêu đề in hoa đậm, ngày đăng, 3 thẻ tag trên 1 hàng, 3 gạch đầu dòng có dấu chấm tròn (•).
+ *    - Bộ đếm kết quả: "ALL JOBS (Hiển thị X / Y công việc)" hoặc "(Tìm thấy Y việc làm phù hợp)". Cập nhật tức thì.
+ *    - Các thẻ bộ lọc đang chọn: "[Hà Nội ✕]", "[Dưới 15 triệu ✕]" hỗ trợ xoá nhanh.
+ * 2. Sắp xếp & Phân trang:
+ *    - Menu chọn: Việc làm mới nhất (mặc định), Cũ nhất, Lương cao nhất, Lương thấp nhất. Sắp xếp tức thì không tải lại trang.
+ *    - Nút "XEM THÊM VIỆC LÀM": Tải tiếp 6 công việc với hiệu ứng mượt mà, tự động ẩn khi hiển thị hết việc làm.
+ * 3. Trạng thái không tìm thấy việc làm (Empty State):
+ *    - Khi không có việc làm phù hợp: ẩn lưới và nút xem thêm, hiển thị thông báo với biểu tượng, thông điệp hướng dẫn rõ ràng
+ *      và nút cam nổi bật "Đặt lại bộ lọc".
+ * 4. Điều hướng:
+ *    - Toàn bộ thẻ công việc là liên kết trỏ trực tiếp đến trang chi tiết việc làm.
  *
  * @package JobScout
  */
 
 get_header();
 
-// Fetch all published jobs from DB to build the realtime client-side dataset
+// Lấy tất cả công việc đã xuất bản từ CSDL để xây dựng tập dữ liệu xử lý thời gian thực phía máy khách
 $all_jobs_query = new WP_Query( array(
 	'post_type'      => 'job_listing',
 	'post_status'    => 'publish',
@@ -46,7 +46,7 @@ if ( $all_jobs_query->have_posts() ) {
 		$types    = wpjm_get_the_job_types( $jid );
 		$cats     = get_the_terms( $jid, 'job_listing_category' );
 
-		// Parse Salary numeric values for accurate sorting & quick filtering
+		// Tách giá trị số từ mức lương để sắp xếp và lọc chính xác
 		$min_sal = 0;
 		$max_sal = 0;
 		if ( ! empty( $salary ) ) {
@@ -70,7 +70,7 @@ if ( $all_jobs_query->have_posts() ) {
 			}
 		}
 
-		// Logo resolution with default and corporate fallback
+		// Xác định ảnh logo của công ty (nếu không có thì dùng logo mặc định)
 		if ( has_post_thumbnail( $jid ) ) {
 			$logo = get_the_post_thumbnail_url( $jid, 'thumbnail' );
 		} else {
@@ -86,7 +86,7 @@ if ( $all_jobs_query->have_posts() ) {
 			$logo = jobscout_normalize_media_host( $logo );
 		}
 
-		// Type
+		// Hình thức làm việc
 		$type_label = 'Toàn thời gian';
 		$type_slug  = 'toan-thoi-gian';
 		if ( ! empty( $types ) ) {
@@ -95,7 +95,7 @@ if ( $all_jobs_query->have_posts() ) {
 			$type_slug  = $first_t->slug;
 		}
 
-		// Category
+		// Ngành nghề / Danh mục
 		$cat_label = 'Công nghệ thông tin';
 		$cat_slug  = 'cong-nghe-thong-tin';
 		if ( ! empty( $cats ) && ! is_wp_error( $cats ) ) {
@@ -104,7 +104,7 @@ if ( $all_jobs_query->have_posts() ) {
 			$cat_slug  = $first_c->slug;
 		}
 
-		// Location
+		// Địa điểm làm việc
 		$loc_label = ! empty( $location ) ? trim( strip_tags( $location ) ) : 'Hồ Chí Minh';
 		$loc_code  = 'hcm';
 		if ( false !== stripos( $loc_label, 'Hà Nội' ) || false !== stripos( $loc_label, 'Ha Noi' ) ) {
@@ -120,7 +120,7 @@ if ( $all_jobs_query->have_posts() ) {
 			$loc_code  = sanitize_title( $loc_label );
 		}
 
-		// 3 Bullets extraction
+		// Tách 3 ý mô tả công việc (gạch đầu dòng)
 		$raw_content = get_the_content();
 		$bullets     = array();
 		if ( preg_match_all( '/<li[^>]*>(.*?)<\/li>/is', $raw_content, $bm ) ) {
@@ -165,7 +165,7 @@ if ( $all_jobs_query->have_posts() ) {
 	wp_reset_postdata();
 }
 
-// Initial GET search parameters
+// Khởi tạo các tham số tìm kiếm ban đầu từ URL (GET)
 $init_keyword  = isset( $_GET['search_keywords'] ) ? sanitize_text_field( wp_unslash( $_GET['search_keywords'] ) ) : '';
 $init_location = isset( $_GET['search_location'] ) ? sanitize_text_field( wp_unslash( $_GET['search_location'] ) ) : '';
 $init_category = isset( $_GET['search_category'] ) ? sanitize_text_field( wp_unslash( $_GET['search_category'] ) ) : '';
@@ -174,12 +174,12 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 ?>
 
 <!-- ============================================================
-     CSS: All Jobs Page & Search Result Validation
+     CSS: GIAO DIỆN TRANG TẤT CẢ VIỆC LÀM & TÌM KIẾM
      ============================================================ -->
 <style id="aj-design-styles">
 	@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
-	/* 1. Global Page Reset & Flat Background */
+	/* 1. Thiết lập chung & Màu nền phẳng toàn trang */
 	body.post-type-archive-job_listing,
 	body.page-template-page-jobs,
 	.post-type-archive-job_listing #page,
@@ -212,7 +212,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		max-width: 100% !important; padding: 0 !important; 
 	}
 
-	/* 2. Hero Banner: CAREER WITH US (Matched 100% to 4-all job 2.jpg) */
+	/* 2. Ảnh bìa Banner: CAREER WITH US (Chuẩn mẫu thiết kế) */
 	.aj-hero-banner {
 		position: relative;
 		width: 100%;
@@ -248,7 +248,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 	}
 
-	/* Main Page Container */
+	/* Khung bao bọc nội dung chính của trang */
 	.aj-page-container {
 		max-width: 1200px;
 		margin: 0 auto;
@@ -258,7 +258,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		color: #333333;
 	}
 
-	/* 3. Search & Quick Filters Box */
+	/* 3. Khối Tìm kiếm & Bộ lọc nhanh */
 	.aj-search-filter-card {
 		background: #ffffff;
 		border-radius: 4px;
@@ -355,7 +355,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		background: #c2410c;
 	}
 
-	/* Quick Filters Row */
+	/* Hàng bộ lọc nhanh */
 	.aj-quick-filters-row {
 		display: flex;
 		align-items: center;
@@ -401,7 +401,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		font-weight: 700;
 	}
 
-	/* Active Filter Badges: [Hà Nội ✕] */
+	/* Các thẻ bộ lọc đang kích hoạt: [Hà Nội ✕] */
 	.aj-active-filters-bar {
 		display: flex;
 		align-items: center;
@@ -463,7 +463,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 	}
 	.aj-af-clear-all:hover { color: #ef4444; }
 
-	/* 4. Top Bar: ALL JOBS + Dynamic Result Counter + Sorting */
+	/* 4. Thanh trên: TIÊU ĐỀ + Bộ đếm kết quả thời gian thực + Sắp xếp */
 	.aj-top-bar {
 		display: flex;
 		align-items: center;
@@ -521,7 +521,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		border-color: #E87722;
 	}
 
-	/* 5. 2-Column Job Grid (Flat UI, 4px border-radius, border-gray-200 logo) */
+	/* 5. Lưới hiển thị việc làm 2 cột (Giao diện Flat UI, bo góc 4px, khung logo có viền border-gray-200) */
 	.aj-grid {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
@@ -564,7 +564,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		min-width: 80px;
 		flex: 0 0 80px;
 		background: #ffffff;
-		border: 1px solid #e5e7eb; /* border-gray-200 */
+		border: 1px solid #e5e7eb; /* Viền xám nhạt border-gray-200 */
 		border-radius: 4px;
 		display: flex;
 		align-items: center;
@@ -611,7 +611,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		font-weight: 500;
 	}
 
-	/* 3 separate badges on 1 row anti-wrap */
+	/* 3 thẻ thông tin trên 1 hàng không bị rớt dòng */
 	.aj-job-card-tags {
 		display: flex;
 		align-items: center;
@@ -633,7 +633,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		line-height: 1.35;
 	}
 
-	/* 3 bullet lines with round dots */
+	/* 3 gạch đầu dòng mô tả có dấu chấm tròn */
 	.aj-job-card-bottom {
 		margin-top: 14px;
 	}
@@ -669,7 +669,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		background-color: #4b5563;
 	}
 
-	/* 6. "LOAD MORE JOBS" button (Orange outline & text, matching 4-all job 2.jpg) */
+	/* 6. Nút "XEM THÊM VIỆC LÀM" (Viền cam và chữ cam chuẩn thiết kế) */
 	.aj-load-more-wrap {
 		margin-top: 45px;
 		text-align: center;
@@ -698,7 +698,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		box-shadow: 0 4px 14px rgba(232, 119, 34, 0.25);
 	}
 
-	/* 7. Empty State Validation Box (Y == 0) */
+	/* 7. Khung thông báo khi không tìm thấy việc làm phù hợp */
 	.aj-empty-state {
 		background: #ffffff;
 		border-radius: 4px;
@@ -750,7 +750,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		background: #c2410c;
 	}
 
-	/* Responsive */
+	/* Tương thích trên các kích thước màn hình (Responsive) */
 	@media (max-width: 960px) {
 		.aj-grid { grid-template-columns: 1fr; }
 		.aj-quick-filters-row { flex-direction: column; align-items: flex-start; }
@@ -761,9 +761,9 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 </style>
 
 <!-- ============================================================
-     HTML MARKUP: ALL JOBS PAGE (Matched 100% to 4-all job 2.jpg)
+     MÃ NGUỒN HTML: TRANG DANH SÁCH VIỆC LÀM (CHUẨN THIẾT KẾ)
      ============================================================ -->
-<!-- HERO BANNER: CAREER WITH US -->
+<!-- ẢNH BÌA BANNER: CAREER WITH US -->
 <div class="aj-hero-banner">
 	<div class="aj-hero-overlay"></div>
 	<div class="aj-hero-content">
@@ -773,10 +773,10 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 
 <div class="aj-page-container">
 
-	<!-- SEARCH & QUICK FILTERS CARD -->
+	<!-- THẺ TÌM KIẾM & BỘ LỌC NHANH -->
 	<div class="aj-search-filter-card">
 		<div class="aj-search-row">
-			<!-- 1. Keyword Input -->
+			<!-- 1. Ô nhập từ khóa tìm kiếm -->
 			<div class="aj-search-field aj-field-keyword">
 				<span class="aj-field-icon" aria-hidden="true">
 					<svg viewBox="0 0 24 24" fill="none" stroke="#E87722" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -795,7 +795,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 				<button type="button" class="aj-input-clear" id="aj-keyword-clear" title="Xóa từ khóa" style="<?php echo empty( $init_keyword ) ? 'display: none;' : ''; ?>">&times;</button>
 			</div>
 
-			<!-- 2. Location Select -->
+			<!-- 2. Chọn địa điểm -->
 			<div class="aj-search-field aj-field-location">
 				<span class="aj-field-icon" aria-hidden="true">
 					<svg viewBox="0 0 24 24" fill="none" stroke="#E87722" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -812,7 +812,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 				</select>
 			</div>
 
-			<!-- 3. Category Select -->
+			<!-- 3. Chọn ngành nghề -->
 			<div class="aj-search-field aj-field-category">
 				<span class="aj-field-icon" aria-hidden="true">
 					<svg viewBox="0 0 24 24" fill="none" stroke="#E87722" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -833,7 +833,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 				</select>
 			</div>
 
-			<!-- 4. Submit Search Button -->
+			<!-- 4. Nút bấm tìm kiếm -->
 			<button type="button" id="aj-search-btn" class="aj-search-btn">TÌM KIẾM</button>
 		</div>
 
@@ -856,7 +856,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 			</div>
 		</div>
 
-		<!-- Active Filter Badges: [Hà Nội ✕], [Dưới 15 triệu ✕] -->
+		<!-- Các thẻ bộ lọc đang kích hoạt: [Hà Nội ✕], [Dưới 15 triệu ✕] -->
 		<div class="aj-active-filters-bar" id="aj-active-filters-bar" style="display: none;">
 			<span class="aj-af-label">Đang lọc:</span>
 			<div class="aj-af-tags" id="aj-af-tags"></div>
@@ -864,7 +864,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		</div>
 	</div>
 
-	<!-- TOP BAR: ALL JOBS + Result Counter + Sorting Dropdown -->
+	<!-- THANH TRÊN: TIÊU ĐỀ + Bộ đếm kết quả + Menu sắp xếp -->
 	<div class="aj-top-bar">
 		<div class="aj-top-left">
 			<h2 class="aj-heading">ALL JOBS</h2>
@@ -880,15 +880,15 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		</div>
 	</div>
 
-	<!-- 2-COLUMN JOB GRID -->
+	<!-- LƯỚI DANH SÁCH VIỆC LÀM 2 CỘT -->
 	<div class="aj-grid" id="aj-grid"></div>
 
-	<!-- "LOAD MORE JOBS" BUTTON -->
+	<!-- NÚT "XEM THÊM VIỆC LÀM" -->
 	<div class="aj-load-more-wrap" id="aj-load-more-wrap">
 		<button type="button" class="aj-load-more-btn" id="aj-load-more-btn">LOAD MORE JOBS</button>
 	</div>
 
-	<!-- EMPTY STATE VALIDATION BOX -->
+	<!-- THÔNG BÁO KHI KHÔNG CÓ KẾT QUẢ PHÙ HỢP -->
 	<div class="aj-empty-state" id="aj-empty-state" style="display: none;">
 		<div class="aj-empty-icon">
 			<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -905,7 +905,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 </div><!-- .aj-page-container -->
 
 <!-- ============================================================
-     JAVASCRIPT: Realtime Search, Filter, Sort, Pagination Engine
+     JAVASCRIPT: Xử lý tìm kiếm, lọc, sắp xếp và phân trang thời gian thực
      ============================================================ -->
 <script>
 (function() {
@@ -919,7 +919,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 	var itemsPerPage    = 6;
 	var visibleCount    = itemsPerPage;
 
-	// DOM Elements
+	// Khai báo các phần tử giao diện DOM
 	var keywordInput     = document.getElementById('aj-keyword-input');
 	var keywordClearBtn  = document.getElementById('aj-keyword-clear');
 	var locationSelect   = document.getElementById('aj-location-select');
@@ -936,10 +936,10 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 	var afBarEl          = document.getElementById('aj-active-filters-bar');
 	var afTagsEl         = document.getElementById('aj-af-tags');
 
-	// Filtering Logic
+	// Logic xử lý lọc dữ liệu công việc
 	function getFilteredJobs() {
 		return rawJobs.filter(function(job) {
-			// 1. Keyword
+			// 1. Lọc theo từ khóa
 			if (currentKeyword) {
 				var kw = currentKeyword.toLowerCase().trim();
 				if (job.search_text.indexOf(kw) === -1) {
@@ -947,21 +947,21 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 				}
 			}
 
-			// 2. Location
+			// 2. Lọc theo địa điểm
 			if (currentLocation) {
 				if (job.loc_code !== currentLocation) {
 					return false;
 				}
 			}
 
-			// 3. Category
+			// 3. Lọc theo ngành nghề
 			if (currentCategory) {
 				if (job.cat_slug !== currentCategory) {
 					return false;
 				}
 			}
 
-			// 4. Type (support either 'remote' or 'lam-tu-xa')
+			// 4. Lọc theo hình thức làm việc
 			if (currentType !== 'all') {
 				if (currentType === 'remote' || currentType === 'lam-tu-xa') {
 					if (job.type_slug !== 'remote' && job.type_slug !== 'lam-tu-xa') {
@@ -972,7 +972,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 				}
 			}
 
-			// 5. Salary
+			// 5. Lọc theo mức lương
 			if (currentSalary !== 'all') {
 				var minSal = job.min_sal || 0;
 				var maxSal = job.max_sal || minSal;
@@ -989,7 +989,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		});
 	}
 
-	// Sorting Logic
+	// Logic xử lý sắp xếp công việc
 	function sortJobs(jobs) {
 		if (currentSort === 'latest') {
 			jobs.sort(function(a, b) { return b.date_timestamp - a.date_timestamp; });
@@ -1011,7 +1011,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		return jobs;
 	}
 
-	// Render Active Filter Badges: [Hà Nội ✕], [Dưới 15 triệu ✕]
+	// Hiển thị các thẻ lọc đang kích hoạt
 	function renderActiveFilters() {
 		if (!afBarEl || !afTagsEl) return;
 		var badges = [];
@@ -1075,7 +1075,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		}
 	}
 
-	// Main Render Function
+	// Hàm render danh sách công việc chính
 	function render() {
 		var filtered = getFilteredJobs();
 		var sorted = sortJobs(filtered.slice());
@@ -1083,7 +1083,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 
 		renderActiveFilters();
 
-		// Empty State Validation (Y == 0)
+		// Trạng thái không tìm thấy công việc phù hợp
 		if (totalMatches === 0) {
 			gridEl.style.display = 'none';
 			gridEl.innerHTML = '';
@@ -1093,7 +1093,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 			return;
 		}
 
-		// Results found
+		// Tìm thấy kết quả phù hợp
 		emptyEl.style.display = 'none';
 		gridEl.style.display = 'grid';
 
@@ -1108,7 +1108,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 				});
 			}
 
-			// Each card is an anchor link pointing directly to the job detail page
+			// Mỗi thẻ công việc là một liên kết trỏ thẳng tới trang chi tiết
 			html += '<a href="' + escapeHtml(job.permalink) + '" class="aj-job-card">' +
 				'<div class="aj-job-card-top">' +
 					'<div class="aj-job-card-logo">' +
@@ -1134,11 +1134,11 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 
 		gridEl.innerHTML = html;
 
-		// Realtime Result Counter
+		// Cập nhật bộ đếm kết quả thời gian thực
 		var showingCount = Math.min(visibleCount, totalMatches);
 		countBadgeEl.textContent = '(Hiển thị ' + showingCount + ' / ' + totalMatches + ' công việc)';
 
-		// "LOAD MORE JOBS" button visibility: automatically hide when X == Y
+		// Ẩn nút "Xem thêm việc làm" khi đã tải hết danh sách
 		if (visibleCount >= totalMatches) {
 			loadMoreWrapEl.style.display = 'none';
 		} else {
@@ -1160,7 +1160,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		render();
 	}
 
-	// Reset All Filters (Used by "Đặt lại bộ lọc" and "Xóa tất cả")
+	// Đặt lại tất cả các bộ lọc về mặc định
 	function resetAllFilters() {
 		currentKeyword  = '';
 		currentLocation = '';
@@ -1188,7 +1188,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		onFilterChange();
 	}
 
-	// Remove single filter badge via 'x' click
+	// Xóa từng bộ lọc khi người dùng nhấn nút 'x'
 	function removeFilterByKey(key) {
 		if (key === 'keyword') {
 			currentKeyword = '';
@@ -1216,8 +1216,8 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		onFilterChange();
 	}
 
-	// Event Listeners
-	// Keyword input debounce & clear button
+	// Lắng nghe và xử lý sự kiện tương tác
+	// Xử lý ô nhập từ khóa với cơ chế debounce và nút xóa nhanh
 	var debounceTimer = null;
 	if (keywordInput) {
 		keywordInput.addEventListener('input', function() {
@@ -1248,7 +1248,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		});
 	}
 
-	// Dropdowns change (realtime)
+	// Thay đổi danh sách chọn (xử lý tức thì)
 	if (locationSelect) {
 		locationSelect.addEventListener('change', function() {
 			currentLocation = locationSelect.value;
@@ -1262,7 +1262,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		});
 	}
 
-	// Search button (instant apply)
+	// Nhấn nút tìm kiếm (áp dụng ngay)
 	if (searchBtn) {
 		searchBtn.addEventListener('click', function() {
 			currentKeyword  = keywordInput ? keywordInput.value : '';
@@ -1272,7 +1272,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		});
 	}
 
-	// Sorting Dropdown (instant re-sort without page reload)
+	// Menu sắp xếp (sắp xếp lại ngay không cần tải lại trang)
 	if (sortSelect) {
 		sortSelect.addEventListener('change', function() {
 			currentSort = sortSelect.value;
@@ -1280,7 +1280,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		});
 	}
 
-	// Quick Filters: Type
+	// Bộ lọc nhanh: Hình thức làm việc
 	var typePills = document.querySelectorAll('#qf-type-group .aj-qf-pill');
 	typePills.forEach(function(pill) {
 		pill.addEventListener('click', function() {
@@ -1291,7 +1291,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		});
 	});
 
-	// Quick Filters: Salary
+	// Bộ lọc nhanh: Mức lương
 	var salPills = document.querySelectorAll('#qf-salary-group .aj-qf-pill');
 	salPills.forEach(function(pill) {
 		pill.addEventListener('click', function() {
@@ -1302,7 +1302,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		});
 	});
 
-	// Active Filter Tag 'x' click delegation
+	// Bắt sự kiện xóa từng thẻ lọc đang kích hoạt
 	if (afTagsEl) {
 		afTagsEl.addEventListener('click', function(e) {
 			var removeBtn = e.target.closest('.aj-af-tag-remove');
@@ -1313,21 +1313,21 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		});
 	}
 
-	// Clear all active filters
+	// Xóa tất cả bộ lọc đang kích hoạt
 	if (clearAllBtn) {
 		clearAllBtn.addEventListener('click', function() {
 			resetAllFilters();
 		});
 	}
 
-	// Empty State "Đặt lại bộ lọc" button
+	// Nút "Đặt lại bộ lọc" khi không có kết quả
 	if (resetBtn) {
 		resetBtn.addEventListener('click', function() {
 			resetAllFilters();
 		});
 	}
 
-	// "LOAD MORE JOBS" button: load next 6 jobs with smooth animation
+	// Nút "Xem thêm việc làm": Tải thêm 6 công việc tiếp theo
 	if (loadMoreBtn) {
 		loadMoreBtn.addEventListener('click', function(e) {
 			e.preventDefault();
@@ -1336,7 +1336,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		});
 	}
 
-	// Initial Render
+	// Khởi tạo hiển thị danh sách lần đầu
 	render();
 })();
 </script>

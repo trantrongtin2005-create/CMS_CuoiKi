@@ -2,8 +2,8 @@
 /**
  * Template Name: Về chúng tôi (About Us)
  *
- * Template for displaying the About Us page with Gutenberg Block Editor support.
- * Allows clients to edit all text, headings, and images directly in wp-admin.
+ * Giao diện hiển thị trang "Về chúng tôi" (About Us) tương thích trình soạn thảo Gutenberg Block Editor.
+ * Cho phép người quản trị dễ dàng tự chỉnh sửa mọi nội dung văn bản, tiêu đề và hình ảnh trực tiếp trong wp-admin.
  *
  * @package JobScout
  */
@@ -63,7 +63,7 @@ get_header(); ?>
   }
 
   /* ----------------------------------------------------
-     1. HERO BANNER COVER BLOCK
+     1. KHỐI ẢNH BÌA HERO (COVER BLOCK)
      ---------------------------------------------------- */
   .about-hero-block.wp-block-cover {
     min-height: 480px;
@@ -261,7 +261,7 @@ get_header(); ?>
   }
 
   /* ----------------------------------------------------
-     RESPONSIVE TRÊN TABLET VÀ MOBILE
+     TƯƠNG THÍCH TRÊN MÁY TÍNH BẢNG VÀ ĐIỆN THOẠI (RESPONSIVE)
      ---------------------------------------------------- */
   @media (max-width: 991px) {
     .about-hero-block.wp-block-cover {
