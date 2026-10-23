@@ -49,7 +49,7 @@ function jobscout_widgets_init(){
             'description' => __( 'Add footer four widgets here.', 'jobscout' ),
         ),
         'footer-module'=> array(
-            'name'        => __( 'Footer Module (CMS_CuoiKi)', 'jobscout' ),
+            'name'        => __( 'Footer Module (Plan Do See)', 'jobscout' ),
             'id'          => 'footer-module', 
             'description' => __( 'Khu vực quản lý Footer Module. Chỉnh sửa nội dung tại Widget [CMS] Module Footer.', 'jobscout' ),
         )
@@ -96,7 +96,7 @@ class CMS_Footer_Module_Widget extends WP_Widget {
     public function __construct() {
         parent::__construct(
             'cms_footer_module_widget',
-            __( '[CMS] Module Footer - CMS_CuoiKi', 'jobscout' ),
+            __( '[CMS] Module Footer - Plan Do See', 'jobscout' ),
             array(
                 'description' => __( 'Tùy chỉnh nội dung Module Footer: Bản tin, Tên thương hiệu, Menu, Mạng xã hội và Bản quyền.', 'jobscout' ),
                 'classname'   => 'widget_cms_footer_module',
@@ -109,15 +109,14 @@ class CMS_Footer_Module_Widget extends WP_Widget {
         $newsletter_title_2   = ! empty( $instance['newsletter_title_2'] ) ? $instance['newsletter_title_2'] : 'Our Newsletter';
         $placeholder          = ! empty( $instance['placeholder'] ) ? $instance['placeholder'] : 'Input your email address';
         $btn_text             = ! empty( $instance['btn_text'] ) ? $instance['btn_text'] : 'SUBSCRIBE';
-        $brand_name           = ! empty( $instance['brand_name'] ) ? $instance['brand_name'] : ( get_bloginfo( 'name' ) ? get_bloginfo( 'name' ) : 'CMS_CuoiKi' );
+        $brand_name           = ! empty( $instance['brand_name'] ) ? $instance['brand_name'] : 'Plan Do See Global Inc.';
         $brand_url            = ! empty( $instance['brand_url'] ) ? $instance['brand_url'] : home_url( '/' );
         $nav_menu             = ! empty( $instance['nav_menu'] ) ? (int) $instance['nav_menu'] : 0;
         $facebook_url         = ! empty( $instance['facebook_url'] ) ? $instance['facebook_url'] : 'https://facebook.com';
         $google_url           = ! empty( $instance['google_url'] ) ? $instance['google_url'] : 'https://google.com';
         $line_url             = ! empty( $instance['line_url'] ) ? $instance['line_url'] : 'https://line.me';
         $twitter_url          = ! empty( $instance['twitter_url'] ) ? $instance['twitter_url'] : 'https://twitter.com';
-        $default_copyright    = '&copy; {year} ' . ( get_bloginfo( 'name' ) ? get_bloginfo( 'name' ) : 'CMS_CuoiKi' ) . '. All rights reserved.';
-        $copyright_text       = ! empty( $instance['copyright_text'] ) ? $instance['copyright_text'] : $default_copyright;
+        $copyright_text       = ! empty( $instance['copyright_text'] ) ? $instance['copyright_text'] : '&copy; {year} Plan Do See Global Inc. All rights reserved.';
         $copyright_text       = str_replace( '{year}', date( 'Y' ), $copyright_text );
         ?>
 
@@ -239,15 +238,14 @@ class CMS_Footer_Module_Widget extends WP_Widget {
         $newsletter_title_2 = ! empty( $instance['newsletter_title_2'] ) ? $instance['newsletter_title_2'] : 'Our Newsletter';
         $placeholder        = ! empty( $instance['placeholder'] ) ? $instance['placeholder'] : 'Input your email address';
         $btn_text           = ! empty( $instance['btn_text'] ) ? $instance['btn_text'] : 'SUBSCRIBE';
-        $brand_name         = ! empty( $instance['brand_name'] ) ? $instance['brand_name'] : ( get_bloginfo( 'name' ) ? get_bloginfo( 'name' ) : 'CMS_CuoiKi' );
+        $brand_name         = ! empty( $instance['brand_name'] ) ? $instance['brand_name'] : 'Plan Do See Global Inc.';
         $brand_url          = ! empty( $instance['brand_url'] ) ? $instance['brand_url'] : home_url( '/' );
         $nav_menu           = ! empty( $instance['nav_menu'] ) ? (int) $instance['nav_menu'] : 0;
         $facebook_url       = ! empty( $instance['facebook_url'] ) ? $instance['facebook_url'] : 'https://facebook.com';
         $google_url         = ! empty( $instance['google_url'] ) ? $instance['google_url'] : 'https://google.com';
         $line_url           = ! empty( $instance['line_url'] ) ? $instance['line_url'] : 'https://line.me';
         $twitter_url        = ! empty( $instance['twitter_url'] ) ? $instance['twitter_url'] : 'https://twitter.com';
-        $default_copyright  = '&copy; {year} ' . ( get_bloginfo( 'name' ) ? get_bloginfo( 'name' ) : 'CMS_CuoiKi' ) . '. All rights reserved.';
-        $copyright_text     = ! empty( $instance['copyright_text'] ) ? $instance['copyright_text'] : $default_copyright;
+        $copyright_text     = ! empty( $instance['copyright_text'] ) ? $instance['copyright_text'] : '&copy; {year} Plan Do See Global Inc. All rights reserved.';
         
         $menus = wp_get_nav_menus();
         ?>
