@@ -1,11 +1,11 @@
 <?php
 /**
- * The template for displaying the footer
- * Module Footer chuẩn thiết kế 100% theo mẫu hình ảnh: Plan Do See Global Inc.
+ * Giao diện mẫu hiển thị chân trang (Footer)
+ * Module Footer chuẩn thiết kế: CMS_CuoiKi
  * 
- * 1. Newsletter Subscription Bar (Màu cam, Icon phong bì, Nút Subscribe viền trắng)
- * 2. Middle Section (Nền xám sáng #F5F6F8, Brand "Plan Do See Global Inc.", Menu 5 link, 4 Icon MXH tròn)
- * 3. Bottom Bar (Dải đen nâu #1A1410, Bản quyền căn giữa tuyệt đối)
+ * 1. Dải đăng ký nhận bản tin (Màu cam, Icon phong bì, Nút Subscribe viền trắng)
+ * 2. Khối nội dung trung tâm (Nền xám sáng #F5F6F8, Thương hiệu "CMS_CuoiKi", Menu 5 liên kết, 4 Icon Mạng xã hội tròn)
+ * 3. Dải chân trang dưới cùng (Dải đen nâu #1A1410, Dòng chữ bản quyền căn giữa tuyệt đối)
  * 
  * @package JobScout
  */
@@ -222,7 +222,7 @@ do_action( 'jobscout_before_footer' );
     align-items: center;
   }
 
-  /* Tên thương hiệu Plan Do See Global Inc. */
+  /* Tên thương hiệu CMS_CuoiKi */
   .site-footer-module .ft-brand {
     display: inline-flex;
     align-items: center;

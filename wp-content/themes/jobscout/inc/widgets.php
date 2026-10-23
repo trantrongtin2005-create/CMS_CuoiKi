@@ -49,7 +49,7 @@ function jobscout_widgets_init(){
             'description' => __( 'Add footer four widgets here.', 'jobscout' ),
         ),
         'footer-module'=> array(
-            'name'        => __( 'Footer Module (Plan Do See)', 'jobscout' ),
+            'name'        => __( 'Footer Module (CMS_CuoiKi)', 'jobscout' ),
             'id'          => 'footer-module', 
             'description' => __( 'Khu vực quản lý Footer Module. Chỉnh sửa nội dung tại Widget [CMS] Module Footer.', 'jobscout' ),
         )
@@ -96,7 +96,7 @@ class CMS_Footer_Module_Widget extends WP_Widget {
     public function __construct() {
         parent::__construct(
             'cms_footer_module_widget',
-            __( '[CMS] Module Footer - Plan Do See', 'jobscout' ),
+            __( '[CMS] Module Footer - CMS_CuoiKi', 'jobscout' ),
             array(
                 'description' => __( 'Tùy chỉnh nội dung Module Footer: Bản tin, Tên thương hiệu, Menu, Mạng xã hội và Bản quyền.', 'jobscout' ),
                 'classname'   => 'widget_cms_footer_module',
@@ -105,19 +105,19 @@ class CMS_Footer_Module_Widget extends WP_Widget {
     }
 
     public function widget( $args, $instance ) {
-        $newsletter_title_1   = get_theme_mod( 'footer_newsletter_title_1', ! empty( $instance['newsletter_title_1'] ) ? $instance['newsletter_title_1'] : 'ĐĂNG KÝ NHẬN' );
-        $newsletter_title_2   = get_theme_mod( 'footer_newsletter_title_2', ! empty( $instance['newsletter_title_2'] ) ? $instance['newsletter_title_2'] : 'BẢN TIN CỦA CHÚNG TÔI' );
-        $placeholder          = get_theme_mod( 'footer_newsletter_placeholder', ! empty( $instance['placeholder'] ) ? $instance['placeholder'] : 'Nhập địa chỉ email của bạn...' );
-        $btn_text             = get_theme_mod( 'footer_newsletter_btn_text', ! empty( $instance['btn_text'] ) ? $instance['btn_text'] : 'ĐĂNG KÝ' );
-        $brand_name           = get_theme_mod( 'footer_brand_name', ! empty( $instance['brand_name'] ) ? $instance['brand_name'] : 'Plan Do See Global Inc.' );
-        $brand_url            = get_theme_mod( 'footer_brand_url', ! empty( $instance['brand_url'] ) ? $instance['brand_url'] : home_url( '/' ) );
-        $customizer_menu      = (int) get_theme_mod( 'footer_menu_select', 0 );
-        $nav_menu             = ! empty( $instance['nav_menu'] ) ? (int) $instance['nav_menu'] : $customizer_menu;
-        $facebook_url         = get_theme_mod( 'footer_facebook_url', ! empty( $instance['facebook_url'] ) ? $instance['facebook_url'] : 'https://facebook.com' );
-        $google_url           = get_theme_mod( 'footer_google_url', ! empty( $instance['google_url'] ) ? $instance['google_url'] : 'https://google.com' );
-        $line_url             = get_theme_mod( 'footer_line_url', ! empty( $instance['line_url'] ) ? $instance['line_url'] : 'https://line.me' );
-        $twitter_url          = get_theme_mod( 'footer_twitter_url', ! empty( $instance['twitter_url'] ) ? $instance['twitter_url'] : 'https://twitter.com' );
-        $copyright_text       = get_theme_mod( 'footer_copyright_text', ! empty( $instance['copyright_text'] ) ? $instance['copyright_text'] : '&copy; {year} Plan Do See Global Inc. All rights reserved.' );
+        $newsletter_title_1   = ! empty( $instance['newsletter_title_1'] ) ? $instance['newsletter_title_1'] : 'Subscribe To';
+        $newsletter_title_2   = ! empty( $instance['newsletter_title_2'] ) ? $instance['newsletter_title_2'] : 'Our Newsletter';
+        $placeholder          = ! empty( $instance['placeholder'] ) ? $instance['placeholder'] : 'Input your email address';
+        $btn_text             = ! empty( $instance['btn_text'] ) ? $instance['btn_text'] : 'SUBSCRIBE';
+        $brand_name           = ! empty( $instance['brand_name'] ) ? $instance['brand_name'] : ( get_bloginfo( 'name' ) ? get_bloginfo( 'name' ) : 'CMS_CuoiKi' );
+        $brand_url            = ! empty( $instance['brand_url'] ) ? $instance['brand_url'] : home_url( '/' );
+        $nav_menu             = ! empty( $instance['nav_menu'] ) ? (int) $instance['nav_menu'] : 0;
+        $facebook_url         = ! empty( $instance['facebook_url'] ) ? $instance['facebook_url'] : 'https://facebook.com';
+        $google_url           = ! empty( $instance['google_url'] ) ? $instance['google_url'] : 'https://google.com';
+        $line_url             = ! empty( $instance['line_url'] ) ? $instance['line_url'] : 'https://line.me';
+        $twitter_url          = ! empty( $instance['twitter_url'] ) ? $instance['twitter_url'] : 'https://twitter.com';
+        $default_copyright    = '&copy; {year} ' . ( get_bloginfo( 'name' ) ? get_bloginfo( 'name' ) : 'CMS_CuoiKi' ) . '. All rights reserved.';
+        $copyright_text       = ! empty( $instance['copyright_text'] ) ? $instance['copyright_text'] : $default_copyright;
         $copyright_text       = str_replace( '{year}', date( 'Y' ), $copyright_text );
         ?>
 
@@ -164,12 +164,63 @@ class CMS_Footer_Module_Widget extends WP_Widget {
                     <span class="ft-brand-title"><?php echo esc_html( $brand_name ); ?></span>
                 </a>
 
-                <nav class="ft-nav-wrap" aria-label="<?php echo esc_attr__( 'Footer Navigation', 'jobscout' ); ?>">
-                    <?php echo jobscout_get_footer_nav_menu_html( $nav_menu, $instance ); ?>
+                <nav aria-label="<?php echo esc_attr__( 'Footer Navigation', 'jobscout' ); ?>">
+                    <?php 
+                    if ( $nav_menu && wp_get_nav_menu_object( $nav_menu ) ) :
+                        wp_nav_menu( array(
+                            'menu'        => $nav_menu,
+                            'container'   => false,
+                            'menu_class'  => 'ft-nav-menu',
+                            'fallback_cb' => false,
+                            'depth'       => 1,
+                        ) );
+                    else : 
+                    ?>
+                    <ul class="ft-nav-menu">
+                        <li class="ft-nav-item"><a href="<?php echo esc_url( home_url( '/jobs/' ) ); ?>" class="ft-nav-link">JOBS</a></li>
+                        <li class="ft-nav-item"><a href="<?php echo esc_url( home_url( '/jobs/' ) ); ?>" class="ft-nav-link">COMPANIES</a></li>
+                        <li class="ft-nav-item"><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" class="ft-nav-link">BLOG</a></li>
+                        <li class="ft-nav-item"><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="ft-nav-link">ABOUT</a></li>
+                        <li class="ft-nav-item"><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="ft-nav-link">CONTACT</a></li>
+                    </ul>
+                    <?php endif; ?>
                 </nav>
 
                 <div class="ft-social-row" aria-label="Social Media">
-                    <?php echo jobscout_get_footer_social_row_html( $facebook_url, $google_url, $line_url, $twitter_url ); ?>
+                    <?php if ( ! empty( $facebook_url ) ) : ?>
+                    <a href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" rel="noopener noreferrer" class="ft-social-btn ft-social-facebook" title="Facebook" aria-label="Facebook">
+                        <svg class="ft-social-svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14 13.5h2.5l1-4H14v-2c0-1.03.3-1.75 1.75-1.75H17.5V2.31C16.85 2.22 15.65 2.1 14.28 2.1c-2.85 0-4.78 1.74-4.78 4.92v2.48H6.5v4h3v9.5h4.5v-9.5z"/>
+                        </svg>
+                    </a>
+                    <?php endif; ?>
+
+                    <?php if ( ! empty( $google_url ) ) : ?>
+                    <a href="<?php echo esc_url( $google_url ); ?>" target="_blank" rel="noopener noreferrer" class="ft-social-btn ft-social-google" title="Google" aria-label="Google">
+                        <svg class="ft-social-svg" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+                            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.16 0 9.94 0 12s.45 3.84 1.25 5.42l4.03-3.15z"/>
+                            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+                        </svg>
+                    </a>
+                    <?php endif; ?>
+
+                    <?php if ( ! empty( $line_url ) ) : ?>
+                    <a href="<?php echo esc_url( $line_url ); ?>" target="_blank" rel="noopener noreferrer" class="ft-social-btn ft-social-line" title="LINE" aria-label="LINE">
+                        <svg class="ft-social-svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M21.9 10.5c0-4.69-4.88-8.5-10.9-8.5C4.98 2 0.1 5.81 0.1 10.5c0 4.2 3.86 7.72 9.09 8.37.35.08.83.23.95.53.11.27.07.7.04.97-.06.42-.27 1.65-.29 1.81-.08.47-.38 1.86 1.63 1.01 2.01-.84 5.43-3.2 7.41-5.48 1.97-2.22 2.97-4.49 2.97-7.21zm-14.7 2.22H5.66c-.3 0-.54-.24-.54-.54V8.41c0-.3.24-.54.54-.54h1.54c.3 0 .54.24.54.54 0 .3-.24.54-.54.54h-1v1.17h1c.3 0 .54.24.54.54 0 .3-.24.54-.54.54zm2.63-.54c0 .3-.24.54-.54.54s-.54-.24-.54-.54V8.41c0-.3.24-.54.54-.54s.54.24.54.54v3.77zm4.27 0c0 .24-.16.45-.39.52-.05.01-.1.02-.15.02-.19 0-.37-.1-.47-.26l-1.89-2.58v2.32c0 .3-.24.54-.54.54s-.54-.24-.54-.54V8.41c0-.24.16-.45.39-.52.05-.01.1-.02.15-.02.19 0 .37.1.47.26l1.89 2.58V8.41c0-.3.24-.54.54-.54s.54.24.54.54v3.77zm3.17-2.6h-1v.79h1c.3 0 .54.24.54.54 0 .3-.24.54-.54.54h-1.54c-.3 0-.54-.24-.54-.54V8.41c0-.3.24-.54.54-.54h1.54c.3 0 .54.24.54.54 0 .3-.24.54-.54.54h-1v.74h1c.3 0 .54.24.54.54 0 .3-.24.54-.54.54z"/>
+                        </svg>
+                    </a>
+                    <?php endif; ?>
+
+                    <?php if ( ! empty( $twitter_url ) ) : ?>
+                    <a href="<?php echo esc_url( $twitter_url ); ?>" target="_blank" rel="noopener noreferrer" class="ft-social-btn ft-social-twitter" title="Twitter / X" aria-label="Twitter / X">
+                        <svg class="ft-social-svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.936 9.936 0 0024 4.59z"/>
+                        </svg>
+                    </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </section>
@@ -184,18 +235,19 @@ class CMS_Footer_Module_Widget extends WP_Widget {
     }
 
     public function form( $instance ) {
-        $newsletter_title_1 = ! empty( $instance['newsletter_title_1'] ) ? $instance['newsletter_title_1'] : 'ĐĂNG KÝ NHẬN';
-        $newsletter_title_2 = ! empty( $instance['newsletter_title_2'] ) ? $instance['newsletter_title_2'] : 'BẢN TIN CỦA CHÚNG TÔI';
-        $placeholder        = ! empty( $instance['placeholder'] ) ? $instance['placeholder'] : 'Nhập địa chỉ email của bạn...';
-        $btn_text           = ! empty( $instance['btn_text'] ) ? $instance['btn_text'] : 'ĐĂNG KÝ';
-        $brand_name         = ! empty( $instance['brand_name'] ) ? $instance['brand_name'] : 'Plan Do See Global Inc.';
+        $newsletter_title_1 = ! empty( $instance['newsletter_title_1'] ) ? $instance['newsletter_title_1'] : 'Subscribe To';
+        $newsletter_title_2 = ! empty( $instance['newsletter_title_2'] ) ? $instance['newsletter_title_2'] : 'Our Newsletter';
+        $placeholder        = ! empty( $instance['placeholder'] ) ? $instance['placeholder'] : 'Input your email address';
+        $btn_text           = ! empty( $instance['btn_text'] ) ? $instance['btn_text'] : 'SUBSCRIBE';
+        $brand_name         = ! empty( $instance['brand_name'] ) ? $instance['brand_name'] : ( get_bloginfo( 'name' ) ? get_bloginfo( 'name' ) : 'CMS_CuoiKi' );
         $brand_url          = ! empty( $instance['brand_url'] ) ? $instance['brand_url'] : home_url( '/' );
         $nav_menu           = ! empty( $instance['nav_menu'] ) ? (int) $instance['nav_menu'] : 0;
         $facebook_url       = ! empty( $instance['facebook_url'] ) ? $instance['facebook_url'] : 'https://facebook.com';
         $google_url         = ! empty( $instance['google_url'] ) ? $instance['google_url'] : 'https://google.com';
         $line_url           = ! empty( $instance['line_url'] ) ? $instance['line_url'] : 'https://line.me';
         $twitter_url        = ! empty( $instance['twitter_url'] ) ? $instance['twitter_url'] : 'https://twitter.com';
-        $copyright_text     = ! empty( $instance['copyright_text'] ) ? $instance['copyright_text'] : '&copy; {year} Plan Do See Global Inc. All rights reserved.';
+        $default_copyright  = '&copy; {year} ' . ( get_bloginfo( 'name' ) ? get_bloginfo( 'name' ) : 'CMS_CuoiKi' ) . '. All rights reserved.';
+        $copyright_text     = ! empty( $instance['copyright_text'] ) ? $instance['copyright_text'] : $default_copyright;
         
         $menus = wp_get_nav_menus();
         ?>
@@ -231,7 +283,7 @@ class CMS_Footer_Module_Widget extends WP_Widget {
             <p>
                 <label for="<?php echo esc_attr( $this->get_field_id( 'nav_menu' ) ); ?>">Chọn Menu hiển thị (hoặc để mặc định 5 link):</label>
                 <select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'nav_menu' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'nav_menu' ) ); ?>">
-                    <option value="0"><?php esc_html_e( '— Mặc định (VIỆC LÀM, CÔNG TY, BÀI VIẾT, GIỚI THIỆU, LIÊN HỆ) —', 'jobscout' ); ?></option>
+                    <option value="0"><?php esc_html_e( '— Mặc định (JOBS, COMPANIES, BLOG, ABOUT, CONTACT) —', 'jobscout' ); ?></option>
                     <?php foreach ( $menus as $menu ) : ?>
                         <option value="<?php echo esc_attr( $menu->term_id ); ?>" <?php selected( $nav_menu, $menu->term_id ); ?>>
                             <?php echo esc_html( $menu->name ); ?>
@@ -240,26 +292,6 @@ class CMS_Footer_Module_Widget extends WP_Widget {
                 </select>
             </p>
             <?php endif; ?>
-
-            <h4 style="margin: 16px 0 4px; color: #1e2022; font-weight: bold; border-top: 1px solid #ddd; padding-top: 10px;">2B. Tùy Chỉnh 5 Liên Kết Điều Hướng (Nếu không chọn Menu trên)</h4>
-            <?php
-            $default_link_labels = array(
-                1 => array( 'text' => 'VIỆC LÀM', 'url' => home_url( '/jobs/' ) ),
-                2 => array( 'text' => 'CÔNG TY', 'url' => home_url( '/jobs/' ) ),
-                3 => array( 'text' => 'BÀI VIẾT', 'url' => home_url( '/blog/' ) ),
-                4 => array( 'text' => 'GIỚI THIỆU', 'url' => home_url( '/about/' ) ),
-                5 => array( 'text' => 'LIÊN HỆ', 'url' => home_url( '/contact/' ) ),
-            );
-            for ( $i = 1; $i <= 5; $i++ ) :
-                $l_text = ! empty( $instance["link_{$i}_text"] ) ? $instance["link_{$i}_text"] : get_theme_mod( "footer_link_text_{$i}", $default_link_labels[$i]['text'] );
-                $l_url  = ! empty( $instance["link_{$i}_url"] ) ? $instance["link_{$i}_url"] : get_theme_mod( "footer_link_url_{$i}", $default_link_labels[$i]['url'] );
-            ?>
-            <p style="margin-bottom: 8px;">
-                <label><strong>Link <?php echo $i; ?> (Tên hiển thị &amp; URL):</strong></label><br>
-                <input class="widefat" style="width: 48%; display: inline-block;" id="<?php echo esc_attr( $this->get_field_id( "link_{$i}_text" ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( "link_{$i}_text" ) ); ?>" type="text" value="<?php echo esc_attr( $l_text ); ?>" placeholder="Tên hiển thị">
-                <input class="widefat" style="width: 49%; display: inline-block;" id="<?php echo esc_attr( $this->get_field_id( "link_{$i}_url" ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( "link_{$i}_url" ) ); ?>" type="url" value="<?php echo esc_attr( $l_url ); ?>" placeholder="Đường dẫn URL">
-            </p>
-            <?php endfor; ?>
 
             <h4 style="margin: 16px 0 4px; color: #1e2022; font-weight: bold; border-top: 1px solid #ddd; padding-top: 10px;">3. Liên Kết Mạng Xã Hội</h4>
             <p>
@@ -297,12 +329,6 @@ class CMS_Footer_Module_Widget extends WP_Widget {
         $instance['brand_name']         = ! empty( $new_instance['brand_name'] ) ? sanitize_text_field( $new_instance['brand_name'] ) : '';
         $instance['brand_url']          = ! empty( $new_instance['brand_url'] ) ? esc_url_raw( $new_instance['brand_url'] ) : '';
         $instance['nav_menu']           = ! empty( $new_instance['nav_menu'] ) ? (int) $new_instance['nav_menu'] : 0;
-        
-        for ( $i = 1; $i <= 5; $i++ ) {
-            $instance["link_{$i}_text"] = ! empty( $new_instance["link_{$i}_text"] ) ? sanitize_text_field( $new_instance["link_{$i}_text"] ) : '';
-            $instance["link_{$i}_url"]  = ! empty( $new_instance["link_{$i}_url"] ) ? esc_url_raw( $new_instance["link_{$i}_url"] ) : '';
-        }
-
         $instance['facebook_url']       = ! empty( $new_instance['facebook_url'] ) ? esc_url_raw( $new_instance['facebook_url'] ) : '';
         $instance['google_url']         = ! empty( $new_instance['google_url'] ) ? esc_url_raw( $new_instance['google_url'] ) : '';
         $instance['line_url']           = ! empty( $new_instance['line_url'] ) ? esc_url_raw( $new_instance['line_url'] ) : '';
