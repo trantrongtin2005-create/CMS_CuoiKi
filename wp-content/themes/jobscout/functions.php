@@ -114,7 +114,7 @@ add_action( 'init', function() {
  */
 function cms_about_page_editor_styles() {
     global $post;
-    if ( ! $post || ( ! in_array( (int)$post->ID, array( 1176, 1272 ), true ) && get_post_meta( $post->ID, '_wp_page_template', true ) !== 'page-about.php' && $post->post_name !== 'about' ) ) {
+    if ( ! $post || ( get_post_meta( $post->ID, '_wp_page_template', true ) !== 'page-about.php' && $post->post_name !== 'about' ) ) {
         return;
     }
     ?>

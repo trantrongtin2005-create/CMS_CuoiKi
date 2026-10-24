@@ -14,19 +14,39 @@
 
 get_header();
 
-// Fallback images theo chủ đề nhà hàng, khách sạn & văn hóa Nhật Bản
-$fallback_thumbs = array(
-	get_template_directory_uri() . '/images/tokyo-news-banner.jpg',
-	'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80',
-	'https://images.unsplash.com/photo-1528164344705-475426879c0d?auto=format&fit=crop&w=600&q=80',
-	'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=600&q=80',
-	'https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=600&q=80',
-);
+// Lấy toàn bộ dữ liệu trang Tin tức / Blog trực tiếp từ Database
+$posts_page_id = (int) get_option( 'page_for_posts' );
+$posts_page    = $posts_page_id ? get_post( $posts_page_id ) : null;
 
-$hero_title    = get_theme_mod( 'pds_news_hero_title', 'TIN TỨC & BÀI VIẾT' );
-$hero_subtitle = get_theme_mod( 'pds_news_hero_subtitle', 'Cập nhật tin tức thị trường, cẩm nang tuyển dụng & kiến thức nghề nghiệp mới nhất' );
-$section_title = get_theme_mod( 'pds_news_section_title', 'BÀI VIẾT MỚI NHẤT' );
-$banner_bg     = get_theme_mod( 'pds_news_hero_image', get_template_directory_uri() . '/images/tokyo-news-banner.jpg' );
+// 1. Tiêu đề: Lấy từ tiêu đề trang trong Database
+$hero_title = '';
+if ( $posts_page ) {
+	$hero_title = get_the_title( $posts_page );
+} elseif ( is_home() ) {
+	$hero_title = single_post_title( '', false );
+}
+if ( empty( $hero_title ) ) {
+	$hero_title = get_bloginfo( 'name' );
+}
+
+// 2. Mô tả: Lấy từ trích dẫn (Excerpt) hoặc nội dung trang trong Database
+$hero_subtitle = '';
+if ( $posts_page && ! empty( $posts_page->post_excerpt ) ) {
+	$hero_subtitle = $posts_page->post_excerpt;
+} elseif ( $posts_page && ! empty( $posts_page->post_content ) ) {
+	$hero_subtitle = wp_strip_all_tags( $posts_page->post_content );
+} else {
+	$hero_subtitle = get_bloginfo( 'description' );
+}
+
+// 3. Ảnh nền Banner: Lấy từ Ảnh đại diện (Featured Image) của trang trong Database nếu có
+$banner_bg = '';
+if ( $posts_page_id && has_post_thumbnail( $posts_page_id ) ) {
+	$banner_bg = get_the_post_thumbnail_url( $posts_page_id, 'full' );
+}
+if ( empty( $banner_bg ) ) {
+	$banner_bg = get_theme_mod( 'pds_news_hero_image', get_template_directory_uri() . '/images/tokyo-news-banner.jpg' );
+}
 ?>
 
 <!-- ========================================================
@@ -279,6 +299,12 @@ $banner_bg     = get_theme_mod( 'pds_news_hero_image', get_template_directory_ur
     border-color: #E2E8F0 !important;
   }
 
+  /* Khi bài viết trong database không có ảnh đại diện */
+  .pds-news-card.no-thumb .pds-news-card-body {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+  }
+
   /* Khung ảnh bài viết bên trái */
   .pds-news-thumb-link {
     flex: 0 0 170px !important;
@@ -527,30 +553,28 @@ $banner_bg     = get_theme_mod( 'pds_news_hero_image', get_template_directory_ur
 
   <!-- CONTAINER CHỨA NỘI DUNG CHÍNH -->
   <main class="pds-news-container">
-    <div class="pds-news-section-heading">
-      <h2 class="pds-news-section-title"><?php echo esc_html( $section_title ); ?></h2>
-      <p class="pds-news-section-desc">Khám phá các bài viết hữu ích về ngành dịch vụ, nhà hàng - khách sạn và định hướng nghề nghiệp</p>
-    </div>
+    <?php if ( ! empty( $hero_title ) ) : ?>
+      <div class="pds-news-section-heading">
+        <h2 class="pds-news-section-title"><?php echo esc_html( $hero_title ); ?></h2>
+        <?php if ( ! empty( $hero_subtitle ) ) : ?>
+          <p class="pds-news-section-desc"><?php echo esc_html( $hero_subtitle ); ?></p>
+        <?php endif; ?>
+      </div>
+    <?php endif; ?>
 
     <?php if ( have_posts() ) : ?>
       <div class="pds-news-grid">
         <?php
-        $post_index = 0;
         while ( have_posts() ) : the_post();
-          $post_index++;
-          // Lấy ảnh đại diện bài viết
-          $thumb_url = '';
-          if ( has_post_thumbnail() ) {
-            $thumb_url = get_the_post_thumbnail_url( get_the_ID(), 'medium_large' );
-          }
-          if ( empty( $thumb_url ) ) {
-            $thumb_url = $fallback_thumbs[ $post_index % count( $fallback_thumbs ) ];
-          }
+          $has_thumb = has_post_thumbnail();
+          $thumb_url = $has_thumb ? get_the_post_thumbnail_url( get_the_ID(), 'medium_large' ) : '';
         ?>
-          <article id="post-<?php the_ID(); ?>" <?php post_class( 'pds-news-card' ); ?>>
-            <a href="<?php the_permalink(); ?>" class="pds-news-thumb-link" aria-label="<?php the_title_attribute(); ?>">
-              <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php the_title_attribute(); ?>" class="pds-news-thumb-img" loading="lazy">
-            </a>
+          <article id="post-<?php the_ID(); ?>" <?php post_class( 'pds-news-card' . ( ! $has_thumb ? ' no-thumb' : '' ) ); ?>>
+            <?php if ( $has_thumb && ! empty( $thumb_url ) ) : ?>
+              <a href="<?php the_permalink(); ?>" class="pds-news-thumb-link" aria-label="<?php the_title_attribute(); ?>">
+                <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php the_title_attribute(); ?>" class="pds-news-thumb-img" loading="lazy">
+              </a>
+            <?php endif; ?>
 
             <div class="pds-news-card-body">
               <h3 class="pds-news-card-title">
