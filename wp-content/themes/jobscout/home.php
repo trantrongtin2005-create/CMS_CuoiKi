@@ -14,35 +14,11 @@
 
 get_header();
 
-// Lấy toàn bộ dữ liệu trang Tin tức / Blog trực tiếp từ Database
-$posts_page_id = (int) get_option( 'page_for_posts' );
-$posts_page    = $posts_page_id ? get_post( $posts_page_id ) : null;
-
-// 1. Tiêu đề: Lấy từ tiêu đề trang trong Database
-$hero_title = '';
-if ( $posts_page ) {
-	$hero_title = get_the_title( $posts_page );
-} elseif ( is_home() ) {
-	$hero_title = single_post_title( '', false );
-}
-if ( empty( $hero_title ) ) {
-	$hero_title = get_bloginfo( 'name' );
-}
-
-// 2. Mô tả: Chỉ lấy trích dẫn nếu trang trong Database có dữ liệu trích dẫn
-$hero_subtitle = '';
-if ( $posts_page && ! empty( $posts_page->post_excerpt ) ) {
-	$hero_subtitle = $posts_page->post_excerpt;
-}
-
-// 3. Ảnh nền Banner: Lấy từ Ảnh đại diện (Featured Image) của trang trong Database nếu có
-$banner_bg = '';
-if ( $posts_page_id && has_post_thumbnail( $posts_page_id ) ) {
-	$banner_bg = get_the_post_thumbnail_url( $posts_page_id, 'full' );
-}
-if ( empty( $banner_bg ) ) {
-	$banner_bg = get_theme_mod( 'pds_news_hero_image', get_template_directory_uri() . '/images/tokyo-news-banner.jpg' );
-}
+$hero_title    = get_theme_mod( 'pds_news_hero_title', 'TIN TỨC & BÀI VIẾT' );
+$hero_subtitle = get_theme_mod( 'pds_news_hero_subtitle', 'Cập nhật tin tức thị trường, cẩm nang tuyển dụng & kiến thức nghề nghiệp mới nhất' );
+$section_title = get_theme_mod( 'pds_news_section_title', 'BÀI VIẾT MỚI NHẤT' );
+$section_desc  = get_theme_mod( 'pds_news_section_desc', 'Khám phá các bài viết hữu ích về ngành dịch vụ, nhà hàng - khách sạn và định hướng nghề nghiệp' );
+$banner_bg     = get_theme_mod( 'pds_news_hero_image', get_template_directory_uri() . '/images/tokyo-news-banner.jpg' );
 ?>
 
 <!-- ========================================================
@@ -295,10 +271,34 @@ if ( empty( $banner_bg ) ) {
     border-color: #E2E8F0 !important;
   }
 
-  /* Khi bài viết trong database không có ảnh đại diện */
-  .pds-news-card.no-thumb .pds-news-card-body {
-    flex: 1 1 100% !important;
-    width: 100% !important;
+  /* Thông tin tác giả, ngày đăng, chuyên mục đồng bộ từ database */
+  .pds-news-card-meta {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 6px 12px !important;
+    font-size: 12px !important;
+    color: #64748B !important;
+    margin-bottom: 6px !important;
+  }
+
+  .pds-news-card-cat {
+    color: #EB6324 !important;
+    font-weight: 600 !important;
+    background: #FFF7ED !important;
+    padding: 2px 7px !important;
+    border-radius: 4px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+  }
+
+  .pds-news-card-date,
+  .pds-news-card-author {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    color: #64748B !important;
   }
 
   /* Khung ảnh bài viết bên trái */
@@ -539,34 +539,48 @@ if ( empty( $banner_bg ) ) {
 
 <div class="pds-news-page-wrap">
 
-  <!-- HERO BANNER TRÀN VIỀN 100% -->
+  <!-- HERO BANNER TRÀN VIỀN 100% TOÀN CẢNH TOKYO HOÀNG HÔN -->
   <header class="pds-news-hero">
     <div class="pds-news-hero-content">
       <h1 class="pds-news-hero-title"><?php echo esc_html( $hero_title ); ?></h1>
-      <?php if ( ! empty( $hero_subtitle ) ) : ?>
-        <p class="pds-news-hero-subtitle"><?php echo esc_html( $hero_subtitle ); ?></p>
-      <?php endif; ?>
+      <p class="pds-news-hero-subtitle"><?php echo esc_html( $hero_subtitle ); ?></p>
     </div>
   </header>
 
-  <!-- CONTAINER CHỨA NỘI DUNG CHÍNH (CHỈ CHỨA CÁC BÀI VIẾT THỰC TẾ TRONG DATABASE) -->
+  <!-- CONTAINER CHỨA NỘI DUNG CHÍNH -->
   <main class="pds-news-container">
+    <div class="pds-news-section-heading">
+      <h2 class="pds-news-section-title"><?php echo esc_html( $section_title ); ?></h2>
+      <p class="pds-news-section-desc"><?php echo esc_html( $section_desc ); ?></p>
+    </div>
 
     <?php if ( have_posts() ) : ?>
       <div class="pds-news-grid">
         <?php
         while ( have_posts() ) : the_post();
           $has_thumb = has_post_thumbnail();
-          $thumb_url = $has_thumb ? get_the_post_thumbnail_url( get_the_ID(), 'medium_large' ) : '';
+          $thumb_url = $has_thumb ? get_the_post_thumbnail_url( get_the_ID(), 'medium_large' ) : get_template_directory_uri() . '/images/tokyo-news-banner.jpg';
+          $categories = get_the_category();
+          $cat_name   = ! empty( $categories ) ? $categories[0]->name : '';
+          $author_name = get_the_author();
+          $post_date   = get_the_date();
         ?>
-          <article id="post-<?php the_ID(); ?>" <?php post_class( 'pds-news-card' . ( ! $has_thumb ? ' no-thumb' : '' ) ); ?>>
-            <?php if ( $has_thumb && ! empty( $thumb_url ) ) : ?>
-              <a href="<?php the_permalink(); ?>" class="pds-news-thumb-link" aria-label="<?php the_title_attribute(); ?>">
-                <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php the_title_attribute(); ?>" class="pds-news-thumb-img" loading="lazy">
-              </a>
-            <?php endif; ?>
+          <article id="post-<?php the_ID(); ?>" <?php post_class( 'pds-news-card' ); ?>>
+            <a href="<?php the_permalink(); ?>" class="pds-news-thumb-link" aria-label="<?php the_title_attribute(); ?>">
+              <img src="<?php echo esc_url( $thumb_url ); ?>" alt="<?php the_title_attribute(); ?>" class="pds-news-thumb-img" loading="lazy">
+            </a>
 
             <div class="pds-news-card-body">
+              <div class="pds-news-card-meta">
+                <?php if ( ! empty( $cat_name ) ) : ?>
+                  <span class="pds-news-card-cat"><i class="fas fa-folder-open"></i> <?php echo esc_html( $cat_name ); ?></span>
+                <?php endif; ?>
+                <span class="pds-news-card-date"><i class="far fa-calendar-alt"></i> <?php echo esc_html( $post_date ); ?></span>
+                <?php if ( ! empty( $author_name ) ) : ?>
+                  <span class="pds-news-card-author"><i class="far fa-user"></i> <?php echo esc_html( $author_name ); ?></span>
+                <?php endif; ?>
+              </div>
+
               <h3 class="pds-news-card-title">
                 <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
               </h3>
@@ -577,7 +591,7 @@ if ( empty( $banner_bg ) ) {
                   if ( empty( $excerpt ) ) {
                     $excerpt = wp_strip_all_tags( get_the_content() );
                   }
-                  echo esc_html( wp_trim_words( $excerpt, 22, '...' ) );
+                  echo esc_html( wp_trim_words( $excerpt, 20, '...' ) );
                 ?>
               </div>
 
