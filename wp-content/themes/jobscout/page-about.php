@@ -14,13 +14,19 @@ get_header(); ?>
      CSS CHO TRANG ABOUT US (TƯƠNG THÍCH GUTENBERG BLOCK EDITOR)
      ======================================================== -->
 <style id="jobscout-page-about-styles">
-  /* Ẩn thanh Secondary Top Bar và Breadcrumbs/Page-Header mặc định */
-  .page-template-page-about .header-t,
-  .page-about .header-t,
+  /* Ẩn Breadcrumbs/Page-Header mặc định và widget thừa */
   .page-template-page-about .breadcrumb-wrap,
   .page-about .breadcrumb-wrap,
   .page-template-page-about .page-header,
   .page-about .page-header,
+  .page-template-page-about .entry-header,
+  .page-about .entry-header,
+  .page-template-page-about .entry-title,
+  .page-about .entry-title,
+  .page-template-page-about .edit-link,
+  .page-about .edit-link,
+  .page-template-page-about .entry-footer,
+  .page-about .entry-footer,
   .page-template-page-about #secondary,
   .page-about #secondary {
     display: none !important;
@@ -258,6 +264,34 @@ get_header(); ?>
     justify-content: space-between;
     gap: 60px;
     margin-bottom: 0;
+  }
+
+  /* Khống chế kích thước ảnh khối thông tin doanh nghiệp (Facts) không bị quá to */
+  .about-facts-section .wp-block-column:last-child {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .about-facts-section .about-feature-img,
+  .about-facts-section .wp-block-image {
+    max-width: 320px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+  }
+
+  .about-facts-section .about-feature-img img,
+  .about-facts-section .wp-block-image img {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: 420px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08) !important;
+    display: block !important;
+    margin: 0 auto !important;
   }
 
   /* ----------------------------------------------------
