@@ -221,10 +221,10 @@ function cms_about_page_editor_styles() {
 add_action( 'admin_head', 'cms_about_page_editor_styles' );
 
 /**
- * Hiển thị tất cả trang (100 trang) trên 1 màn hình danh sách Trang
+ * Hiển thị tất cả bài viết và trang (100 mục) trên 1 màn hình quản trị
  */
 add_filter( 'edit_posts_per_page', function( $per_page, $post_type = 'post' ) {
-    if ( 'page' === $post_type ) {
+    if ( in_array( $post_type, array( 'post', 'page' ), true ) ) {
         return 100;
     }
     return $per_page;
