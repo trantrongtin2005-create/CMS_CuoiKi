@@ -8165,3 +8165,72 @@ RESPONSIVE STYLESHEET
 .wp-block-social-links {
   flex-wrap: wrap !important;
 }
+
+/* ========================================================
+   STYLES CHO TRANG VỀ CHÚNG TÔI (ABOUT US)
+   Đảm bảo 2 cột (cột trái & cột phải) hiển thị đều đẹp, không bị mất ảnh/mất nội dung
+   ======================================================== */
+.about-vision-section,
+.about-facts-section {
+  margin-top: 40px !important;
+  margin-bottom: 50px !important;
+  width: 100% !important;
+}
+
+.about-vision-section .wp-block-columns,
+.about-facts-section .wp-block-columns {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 40px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.about-vision-section .wp-block-column,
+.about-facts-section .wp-block-column {
+  flex: 1 1 320px !important;
+  min-width: 280px !important;
+  box-sizing: border-box !important;
+}
+
+.about-feature-img {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.about-feature-img img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  margin: 0 auto !important;
+  border-radius: 10px !important;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08) !important;
+  object-fit: cover !important;
+}
+
+.about-value-box,
+.about-fact-box {
+  margin-bottom: 24px !important;
+}
+
+.about-value-title,
+.about-fact-label {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 700 !important;
+  color: #1E2022 !important;
+  margin-bottom: 8px !important;
+}
+
+.about-value-text,
+.about-fact-value {
+  font-family: 'Open Sans', -apple-system, sans-serif !important;
+  color: #4B5563 !important;
+  line-height: 1.6 !important;
+}

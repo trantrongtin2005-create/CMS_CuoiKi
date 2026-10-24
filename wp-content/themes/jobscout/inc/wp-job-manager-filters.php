@@ -2745,6 +2745,8 @@ function jobscout_nav_menu_active_classes( $classes, $item ) {
 		|| is_tax( 'job_listing_category' )
 		|| is_tax( 'job_listing_type' );
 
+	$is_contact_page = is_page( 'contact' ) || is_page( 'contact-2' ) || ( strpos( $current_req_uri, '/contact' ) !== false );
+
 	if ( $is_blog_section ) {
 		// Ở khu vực Bài viết: Chỉ mục Bài viết (Blog) nhận active, gỡ bỏ active của Trang chủ
 		if ( strpos( $item->url, '/blog' ) !== false ) {
@@ -2759,6 +2761,17 @@ function jobscout_nav_menu_active_classes( $classes, $item ) {
 			$classes[] = 'current-menu-item';
 			$classes[] = 'current_page_item';
 		} else {
+			$classes = array_diff( $classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current_page_parent', 'current_page_ancestor' ) );
+		}
+	} elseif ( $is_contact_page ) {
+		// Ở trang Liên hệ: Chỉ mục Liên hệ nhận active, xóa active ở các mục khác
+		if ( strpos( $item->url, '/contact' ) !== false || strpos( $item->url, '/lien-he' ) !== false ) {
+			$classes[] = 'current-menu-item';
+			$classes[] = 'current_page_item';
+		} else {
+			$classes = array_diff( $classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current_page_parent', 'current_page_ancestor' ) );
+		}
+		if ( rtrim( $item->url, '/' ) === $home_url_clean ) {
 			$classes = array_diff( $classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current_page_parent', 'current_page_ancestor' ) );
 		}
 	} elseif ( $is_post_job ) {
@@ -2795,7 +2808,7 @@ function jobscout_nav_menu_active_classes( $classes, $item ) {
 			$classes = array_diff( $classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current_page_parent', 'current_page_ancestor' ) );
 		}
 	} else {
-		// Ở các trang khác (Liên hệ...): Việc làm không nhận active
+		// Ở các trang khác (Về chúng tôi...): Việc làm không nhận active
 		if ( strpos( $item->url, '/jobs/' ) !== false || strpos( $item->url, '/post-a-job/' ) !== false || strpos( $item->url, '/job-dashboard/' ) !== false ) {
 			$classes = array_diff( $classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current_page_parent', 'current_page_ancestor' ) );
 		}
