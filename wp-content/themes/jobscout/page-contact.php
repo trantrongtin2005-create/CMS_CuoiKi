@@ -7,7 +7,7 @@
  *    - Menu điều hướng với gạch chân cam active duy nhất tại mục LIÊN HỆ (CONTACT) - không bị 2 đường gạch
  *    - Submenu dropdown tại VIỆC LÀM hiển thị chuẩn dọc, chữ 1 dòng không bị gãy từ
  * 2. Hero Banner: Hình cô gái Kimono Kyoto ô đỏ + Tiêu đề "LIÊN HỆ VỚI CHÚNG TÔI" (đã bỏ nút dịch)
- * 3. Section 1 (Nền trắng):
+ * 3. Section 1 (Nền trắng):<br>
  *    - "Địa chỉ trụ sở chính của chúng tôi"
  *    - "60 Nguyễn Văn Thủ, Phường Đa Kao, Quận 1, TP. Hồ Chí Minh, Việt Nam"
  * 4. Section 2 (Nền xám nhạt #F5F6F8):
@@ -313,7 +313,7 @@ get_header(); ?>
      ======================================================== */
   .cp-section-address {
     background-color: #FFFFFF;
-    padding: 58px 24px 52px;
+    padding: 85px 24px 55px;
     text-align: center;
     border-bottom: 1px solid #ECEFF2;
   }
@@ -467,7 +467,6 @@ get_header(); ?>
     .cp-hero-banner {
       min-height: 280px;
     }
-    .cp-hero-title {
     .contact-hero-title,
     .cp-hero-title {
       font-size: 26px !important;
@@ -515,7 +514,7 @@ get_header(); ?>
 
   .page-template-page-contact .contact-section-address {
     background: #FFFFFF !important;
-    padding: 65px 24px 55px !important;
+    padding: 100px 24px 60px !important;
     text-align: center !important;
     margin: 0 !important;
   }
@@ -526,6 +525,7 @@ get_header(); ?>
     font-weight: 700 !important;
     color: #1E2022 !important;
     margin: 0 0 16px !important;
+    padding-top: 10px !important;
   }
 
   .page-template-page-contact .contact-address-text {
