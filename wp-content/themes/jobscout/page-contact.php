@@ -51,8 +51,7 @@ get_header(); ?>
   .page-template-page-contact .entry-footer,
   .page-template-page-contact #secondary,
   .page-template-page-contact .breadcrumbs,
-  .page-template-page-contact .breadcrumb-wrap,
-  .page-template-page-contact .header-t {
+  .page-template-page-contact .breadcrumb-wrap {
     display: none !important;
   }
 
@@ -81,9 +80,7 @@ get_header(); ?>
   .page-template-page-contact .site-header {
     background: #FFFFFF !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    position: sticky;
-    top: 0;
-    z-index: 999;
+    position: relative !important;
   }
 
   .page-template-page-contact .header-main .container {

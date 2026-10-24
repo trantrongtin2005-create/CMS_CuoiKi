@@ -14,9 +14,7 @@ get_header(); ?>
      CSS CHO TRANG ABOUT US (TƯƠNG THÍCH GUTENBERG BLOCK EDITOR)
      ======================================================== -->
 <style id="jobscout-page-about-styles">
-  /* Ẩn thanh Secondary Top Bar và Breadcrumbs/Page-Header mặc định */
-  .page-template-page-about .header-t,
-  .page-about .header-t,
+  /* Ẩn Breadcrumbs/Page-Header mặc định và widget thừa */
   .page-template-page-about .breadcrumb-wrap,
   .page-about .breadcrumb-wrap,
   .page-template-page-about .page-header,
