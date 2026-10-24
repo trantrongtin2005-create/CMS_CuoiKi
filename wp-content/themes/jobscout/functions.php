@@ -229,5 +229,3 @@ add_filter( 'edit_posts_per_page', function( $per_page, $post_type = 'post' ) {
     }
     return $per_page;
 }, 10, 2 );
-
-
