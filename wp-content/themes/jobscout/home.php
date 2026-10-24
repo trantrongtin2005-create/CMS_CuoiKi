@@ -29,14 +29,10 @@ if ( empty( $hero_title ) ) {
 	$hero_title = get_bloginfo( 'name' );
 }
 
-// 2. Mô tả: Lấy từ trích dẫn (Excerpt) hoặc nội dung trang trong Database
+// 2. Mô tả: Chỉ lấy trích dẫn nếu trang trong Database có dữ liệu trích dẫn
 $hero_subtitle = '';
 if ( $posts_page && ! empty( $posts_page->post_excerpt ) ) {
 	$hero_subtitle = $posts_page->post_excerpt;
-} elseif ( $posts_page && ! empty( $posts_page->post_content ) ) {
-	$hero_subtitle = wp_strip_all_tags( $posts_page->post_content );
-} else {
-	$hero_subtitle = get_bloginfo( 'description' );
 }
 
 // 3. Ảnh nền Banner: Lấy từ Ảnh đại diện (Featured Image) của trang trong Database nếu có
@@ -543,24 +539,18 @@ if ( empty( $banner_bg ) ) {
 
 <div class="pds-news-page-wrap">
 
-  <!-- HERO BANNER TRÀN VIỀN 100% TOÀN CẢNH TOKYO HOÀNG HÔN -->
+  <!-- HERO BANNER TRÀN VIỀN 100% -->
   <header class="pds-news-hero">
     <div class="pds-news-hero-content">
       <h1 class="pds-news-hero-title"><?php echo esc_html( $hero_title ); ?></h1>
-      <p class="pds-news-hero-subtitle"><?php echo esc_html( $hero_subtitle ); ?></p>
+      <?php if ( ! empty( $hero_subtitle ) ) : ?>
+        <p class="pds-news-hero-subtitle"><?php echo esc_html( $hero_subtitle ); ?></p>
+      <?php endif; ?>
     </div>
   </header>
 
-  <!-- CONTAINER CHỨA NỘI DUNG CHÍNH -->
+  <!-- CONTAINER CHỨA NỘI DUNG CHÍNH (CHỈ CHỨA CÁC BÀI VIẾT THỰC TẾ TRONG DATABASE) -->
   <main class="pds-news-container">
-    <?php if ( ! empty( $hero_title ) ) : ?>
-      <div class="pds-news-section-heading">
-        <h2 class="pds-news-section-title"><?php echo esc_html( $hero_title ); ?></h2>
-        <?php if ( ! empty( $hero_subtitle ) ) : ?>
-          <p class="pds-news-section-desc"><?php echo esc_html( $hero_subtitle ); ?></p>
-        <?php endif; ?>
-      </div>
-    <?php endif; ?>
 
     <?php if ( have_posts() ) : ?>
       <div class="pds-news-grid">
