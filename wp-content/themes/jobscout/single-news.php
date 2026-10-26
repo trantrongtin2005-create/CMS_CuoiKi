@@ -814,10 +814,13 @@ while ( have_posts() ) :
 									<a href="<?php echo esc_url( $rel_link ); ?>"><?php echo esc_html( $rel_title ); ?></a>
 								</h3>
 								<div class="news-card-excerpt">
-									<?php echo wp_trim_words( get_the_excerpt(), 14, '...' ); ?>
+									<?php 
+									$card_excerpt = get_the_excerpt();
+									echo esc_html( wp_trim_words( $card_excerpt, 14, '...' ) ); 
+									?>
 								</div>
 								<a href="<?php echo esc_url( $rel_link ); ?>" class="news-card-readmore">
-									<?php esc_html_e( 'Read More', 'jobscout' ); ?> &rarr;
+									Read More &rarr;
 								</a>
 							</div>
 						</div>
