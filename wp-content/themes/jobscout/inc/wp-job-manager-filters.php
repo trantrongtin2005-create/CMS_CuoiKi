@@ -588,6 +588,8 @@ function jobscout_dynamic_site_host_url( $url ) {
 add_filter( 'wp_get_attachment_url', 'jobscout_normalize_media_host', 99 );
 add_filter( 'the_company_logo', 'jobscout_normalize_media_host', 99 );
 add_filter( 'wp_get_attachment_image_src', 'jobscout_normalize_media_image_src', 99 );
+add_filter( 'the_editor_content', 'jobscout_normalize_media_host', 99 );
+add_filter( 'content_edit_pre', 'jobscout_normalize_media_host', 99 );
 function jobscout_normalize_media_host( $url ) {
 	if ( empty( $url ) || ! is_string( $url ) ) {
 		return $url;
@@ -603,6 +605,20 @@ function jobscout_normalize_media_image_src( $image ) {
 		$image[0] = jobscout_normalize_media_host( $image[0] );
 	}
 	return $image;
+}
+
+/**
+ * Đảm bảo hình ảnh career-banner luôn tải ảnh gốc độ phân giải cao và không bị lỗi 404 khi Gutenberg yêu cầu thumbnail
+ */
+add_filter( 'image_downsize', 'jobscout_career_banner_downsize_fallback', 10, 3 );
+function jobscout_career_banner_downsize_fallback( $out, $id, $size ) {
+	if ( 1313 === (int) $id ) {
+		$url = wp_get_attachment_url( $id );
+		if ( $url ) {
+			return array( jobscout_normalize_media_host( $url ), 1920, 1080, false );
+		}
+	}
+	return $out;
 }
 
 /**
@@ -3334,4 +3350,94 @@ add_action( 'untrash_job_listing', 'jobscout_clear_all_job_caches', 20 );
 add_action( 'job_manager_my_job_do_action', function( $action, $job_id ) {
 	jobscout_clear_all_job_caches( $job_id );
 }, 20, 2 );
+
+/**
+ * FIX TRIỆT ĐỂ LỖI NÚT XÓA ẢNH LOGO / FILE ĐÍNH KÈM
+ * Loại bỏ hoàn toàn SVG 'X' ::before bị đè lên icon thùng rác,
+ * Hiển thị nút xóa [ 🗑️ Xóa ảnh ] sạch đẹp, hiện đại, rõ ràng.
+ */
+function jobscout_fix_uploaded_file_preview_styles() {
+	?>
+	<style id="jobscout-fix-uploaded-file-css" type="text/css">
+	.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file {
+		display: inline-flex !important;
+		align-items: center !important;
+		gap: 12px !important;
+		background: #ffffff !important;
+		border: 1px solid #e2e8f0 !important;
+		border-radius: 8px !important;
+		padding: 8px 14px !important;
+		margin-bottom: 10px !important;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+	}
+	.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file .job-manager-uploaded-file-preview {
+		display: inline-flex !important;
+		align-items: center !important;
+		gap: 12px !important;
+		position: static !important;
+		padding: 0 !important;
+		border: none !important;
+		box-shadow: none !important;
+	}
+	.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file .job-manager-uploaded-file-preview img {
+		width: 56px !important;
+		height: 56px !important;
+		object-fit: contain !important;
+		border-radius: 6px !important;
+		border: 1px solid #cbd5e1 !important;
+		background: #ffffff !important;
+		padding: 2px !important;
+		box-sizing: border-box !important;
+	}
+	.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file .job-manager-uploaded-file-preview a,
+	.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file a.job-manager-remove-uploaded-file,
+	.job-manager-uploaded-file a.job-manager-remove-uploaded-file {
+		position: static !important;
+		top: auto !important;
+		right: auto !important;
+		width: auto !important;
+		height: auto !important;
+		line-height: normal !important;
+		background: #fee2e2 !important;
+		border: 1px solid #fecaca !important;
+		color: #ef4444 !important;
+		font-size: 13px !important;
+		font-weight: 600 !important;
+		text-decoration: none !important;
+		padding: 6px 12px !important;
+		border-radius: 6px !important;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+		text-indent: 0 !important;
+		overflow: visible !important;
+		display: inline-flex !important;
+		align-items: center !important;
+		gap: 6px !important;
+		cursor: pointer !important;
+		transition: all 0.2s ease !important;
+	}
+	.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file .job-manager-uploaded-file-preview a:hover,
+	.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file a.job-manager-remove-uploaded-file:hover,
+	.job-manager-uploaded-file a.job-manager-remove-uploaded-file:hover {
+		background: #fecaca !important;
+		color: #dc2626 !important;
+		border-color: #fca5a5 !important;
+		transform: translateY(-1px) !important;
+	}
+	/* TRIỆT TIÊU HOÀN TOÀN ICON SVG X ::before TRÁNH BỊ CHỒNG ĐÈ */
+	.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file .job-manager-uploaded-file-preview a::before,
+	.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file a.job-manager-remove-uploaded-file::before,
+	.job-manager-uploaded-file a.job-manager-remove-uploaded-file::before,
+	.job-manager-remove-uploaded-file::before {
+		content: none !important;
+		display: none !important;
+		background-image: none !important;
+		width: 0 !important;
+		height: 0 !important;
+	}
+	</style>
+	<?php
+}
+add_action( 'wp_head', 'jobscout_fix_uploaded_file_preview_styles', 999 );
+add_action( 'admin_head', 'jobscout_fix_uploaded_file_preview_styles', 999 );
+
 
