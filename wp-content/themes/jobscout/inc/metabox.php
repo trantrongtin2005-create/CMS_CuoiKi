@@ -477,4 +477,351 @@ function jobscout_save_home_career_meta( $post_id ) {
         set_theme_mod( 'cta_career_btn_url', esc_url_raw( $_POST['cta_career_btn_url'] ) );
     }
 }
-add_action( 'save_post_page', 'jobscout_save_home_career_meta' );
+add_action( 'save_post_page', 'jobscout_save_home_career_meta' );
+
+/**
+ * ========================================================
+ * META BOX: CẤU HÌNH TRANG DANH SÁCH VIỆC LÀM (JOBS LISTING)
+ * Cho phép chỉnh sửa toàn bộ nội dung: Banner, Tiêu đề, Nút xem thêm
+ * ========================================================
+ */
+function jobscout_add_jobs_page_metabox( $post_type = '', $post = null ) {
+    if ( ! ( $post instanceof WP_Post ) ) {
+        $post_id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : ( isset( $_POST['post_ID'] ) ? absint( $_POST['post_ID'] ) : 0 );
+        if ( $post_id > 0 ) {
+            $post = get_post( $post_id );
+        }
+    }
+    if ( ! $post ) return;
+
+    $template = get_post_meta( $post->ID, '_wp_page_template', true );
+    $slug     = $post->post_name;
+    $content  = $post->post_content;
+
+    if ( 986 === (int) $post->ID || 'page-jobs.php' === $template || in_array( $slug, array( 'jobs', 'all-jobs', 'danh-sach-viec-lam', 'viec-lam' ), true ) || false !== strpos( $content, '[jobs]' ) ) {
+        add_meta_box(
+            'jobscout_jobs_page_meta',
+            __( '⭐ Cấu hình Trang Danh sách Việc làm (Jobs Listing)', 'jobscout' ),
+            'jobscout_jobs_page_meta_callback',
+            'page',
+            'normal',
+            'high'
+        );
+    }
+}
+add_action( 'add_meta_boxes', 'jobscout_add_jobs_page_metabox', 10, 2 );
+
+function jobscout_jobs_page_meta_callback( $post ) {
+    wp_nonce_field( 'jobscout_jobs_page_nonce_action', 'jobscout_jobs_page_nonce' );
+
+    $banner_img  = get_post_meta( $post->ID, '_jobs_banner_image', true );
+    if ( empty( $banner_img ) ) {
+        $banner_img = get_theme_mod( 'jobs_page_banner_image', get_template_directory_uri() . '/images/career-banner.jpg' );
+    }
+    $banner_title = get_post_meta( $post->ID, '_jobs_banner_title', true );
+    if ( empty( $banner_title ) ) {
+        $banner_title = get_theme_mod( 'jobs_page_banner_title', 'CƠ HỘI NGHỀ NGHIỆP' );
+    }
+    $banner_subtitle = get_post_meta( $post->ID, '_jobs_banner_subtitle', true );
+    if ( empty( $banner_subtitle ) ) {
+        $banner_subtitle = get_theme_mod( 'jobs_page_banner_subtitle', 'Khám phá các vị trí tuyển dụng mới nhất năm 2026 và đồng hành phát triển sự nghiệp cùng chúng tôi.' );
+    }
+    $sec_title   = get_post_meta( $post->ID, '_jobs_section_title', true );
+    if ( empty( $sec_title ) ) {
+        $sec_title = get_theme_mod( 'jobs_page_section_title', 'TẤT CẢ VIỆC LÀM' );
+    }
+    $btn_text    = get_post_meta( $post->ID, '_jobs_load_more_text', true );
+    if ( empty( $btn_text ) ) {
+        $btn_text = get_theme_mod( 'jobs_page_load_more_text', 'XEM THÊM VIỆC LÀM' );
+    }
+
+    $default_bg    = get_template_directory_uri() . '/images/career-banner.jpg';
+    $customize_url = admin_url( 'customize.php?autofocus[section]=jobscout_jobs_page_section' );
+    ?>
+    <div style="padding: 6px 0 16px;">
+        <div style="background: #F8FAFC; border-left: 4px solid #E87722; padding: 12px 16px; margin-bottom: 20px; border-radius: 0 4px 4px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div>
+                <strong style="color: #1E293B; font-size: 13.5px;">Quản lý nội dung Trang Việc làm (Jobs Listing)</strong>
+                <p style="margin: 4px 0 0; color: #64748B; font-size: 12.5px;">Bạn có thể thay đổi ảnh bìa, tiêu đề trực tiếp tại đây hoặc mở Tùy biến để xem trực tiếp sự thay đổi.</p>
+            </div>
+            <a href="<?php echo esc_url( $customize_url ); ?>" class="button button-secondary" target="_blank" style="font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                <span class="dashicons dashicons-admin-appearance" style="font-size: 16px; line-height: 1.6;"></span> Mở trong Tùy biến (Customizer)
+            </a>
+        </div>
+
+        <table class="form-table" style="margin-top: 0;">
+            <!-- 1. Ảnh bìa Banner -->
+            <tr>
+                <th style="width: 170px; vertical-align: top; padding-top: 14px;">
+                    <label style="font-weight: 600; font-size: 13.5px;"><?php esc_html_e( 'Ảnh bìa Banner:', 'jobscout' ); ?></label>
+                </th>
+                <td>
+                    <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                        <div style="position: relative; width: 320px; height: 120px; border: 2px solid #CBD5E1; border-radius: 6px; overflow: hidden; background: #0F172A; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+                            <img id="jobs-banner-preview" src="<?php echo esc_url( $banner_img ); ?>" style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="Banner Preview" />
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <input type="hidden" name="jobs_banner_image" id="jobs_banner_image" value="<?php echo esc_attr( $banner_img ); ?>" />
+                            <button type="button" class="button button-primary" id="jobs-banner-select-btn" style="font-weight: 600;">
+                                <span class="dashicons dashicons-upload" style="font-size: 16px; line-height: 1.7;"></span> Chọn ảnh từ Thư viện Media
+                            </button>
+                            <button type="button" class="button" id="jobs-banner-reset-btn" style="color: #64748B;">
+                                <span class="dashicons dashicons-image-rotate" style="font-size: 16px; line-height: 1.7;"></span> Khôi phục ảnh mặc định
+                            </button>
+                            <span class="description" style="margin-top: 4px; color: #64748B;">Khuyến nghị: Ảnh tỉ lệ rộng (khoảng 1920x600px), định dạng JPG/PNG chất lượng cao.</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- 2. Tiêu đề Banner -->
+            <tr>
+                <th><label for="jobs_banner_title" style="font-weight: 600;"><?php esc_html_e( 'Tiêu đề Banner:', 'jobscout' ); ?></label></th>
+                <td>
+                    <input type="text" name="jobs_banner_title" id="jobs_banner_title" value="<?php echo esc_attr( $banner_title ); ?>" class="large-text" placeholder="CƠ HỘI NGHỀ NGHIỆP" />
+                    <p class="description"><?php esc_html_e( 'Tiêu đề lớn màu trắng hiển thị chính giữa ảnh bìa banner (mặc định: CƠ HỘI NGHỀ NGHIỆP).', 'jobscout' ); ?></p>
+                </td>
+            </tr>
+
+            <!-- 2b. Mô tả ngắn Banner -->
+            <tr>
+                <th><label for="jobs_banner_subtitle" style="font-weight: 600;"><?php esc_html_e( 'Mô tả ngắn Banner:', 'jobscout' ); ?></label></th>
+                <td>
+                    <input type="text" name="jobs_banner_subtitle" id="jobs_banner_subtitle" value="<?php echo esc_attr( $banner_subtitle ); ?>" class="large-text" placeholder="Khám phá các vị trí tuyển dụng mới nhất năm 2026 và đồng hành phát triển sự nghiệp cùng chúng tôi." />
+                    <p class="description"><?php esc_html_e( 'Đoạn mô tả phụ hiển thị bên dưới tiêu đề lớn trên ảnh bìa.', 'jobscout' ); ?></p>
+                </td>
+            </tr>
+
+            <!-- 3. Tiêu đề danh sách -->
+            <tr>
+                <th><label for="jobs_section_title" style="font-weight: 600;"><?php esc_html_e( 'Tiêu đề danh sách:', 'jobscout' ); ?></label></th>
+                <td>
+                    <input type="text" name="jobs_section_title" id="jobs_section_title" value="<?php echo esc_attr( $sec_title ); ?>" class="large-text" placeholder="TẤT CẢ VIỆC LÀM" />
+                    <p class="description"><?php esc_html_e( 'Tiêu đề phía trên lưới công việc (mặc định: TẤT CẢ VIỆC LÀM).', 'jobscout' ); ?></p>
+                </td>
+            </tr>
+
+            <!-- 4. Chữ nút Xem thêm -->
+            <tr>
+                <th><label for="jobs_load_more_text" style="font-weight: 600;"><?php esc_html_e( 'Chữ nút Tải thêm:', 'jobscout' ); ?></label></th>
+                <td>
+                    <input type="text" name="jobs_load_more_text" id="jobs_load_more_text" value="<?php echo esc_attr( $btn_text ); ?>" class="regular-text" placeholder="XEM THÊM VIỆC LÀM" />
+                    <p class="description"><?php esc_html_e( 'Chữ trên nút phân trang tải thêm việc làm (mặc định: XEM THÊM VIỆC LÀM).', 'jobscout' ); ?></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+    jQuery(document).ready(function($) {
+        var defaultImg = <?php echo wp_json_encode( $default_bg ); ?>;
+        $('#jobs-banner-select-btn').on('click', function(e) {
+            e.preventDefault();
+            var frame = wp.media({
+                title: 'Chọn ảnh bìa cho Trang Việc làm',
+                button: { text: 'Sử dụng ảnh này' },
+                multiple: false
+            });
+            frame.on('select', function() {
+                var attachment = frame.state().get('selection').first().toJSON();
+                var selectedUrl = attachment.url;
+                $('#jobs_banner_image').val(selectedUrl);
+                $('#jobs-banner-preview').attr('src', selectedUrl);
+            });
+            frame.open();
+        });
+
+        $('#jobs-banner-reset-btn').on('click', function(e) {
+            e.preventDefault();
+            if (confirm('Khôi phục ảnh bìa về ảnh chuẩn của giao diện?')) {
+                $('#jobs_banner_image').val(defaultImg);
+                $('#jobs-banner-preview').attr('src', defaultImg);
+            }
+        });
+    });
+    </script>
+    <?php
+}
+
+function jobscout_save_jobs_page_meta( $post_id ) {
+    if ( ! isset( $_POST['jobscout_jobs_page_nonce'] ) || ! wp_verify_nonce( $_POST['jobscout_jobs_page_nonce'], 'jobscout_jobs_page_nonce_action' ) ) {
+        return;
+    }
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+    if ( ! current_user_can( 'edit_page', $post_id ) ) {
+        return;
+    }
+
+    if ( isset( $_POST['jobs_banner_image'] ) ) {
+        $val = esc_url_raw( $_POST['jobs_banner_image'] );
+        update_post_meta( $post_id, '_jobs_banner_image', $val );
+        set_theme_mod( 'jobs_page_banner_image', $val );
+    }
+    if ( isset( $_POST['jobs_banner_title'] ) ) {
+        $val = sanitize_text_field( $_POST['jobs_banner_title'] );
+        update_post_meta( $post_id, '_jobs_banner_title', $val );
+        set_theme_mod( 'jobs_page_banner_title', $val );
+    }
+    if ( isset( $_POST['jobs_banner_subtitle'] ) ) {
+        $val = sanitize_text_field( $_POST['jobs_banner_subtitle'] );
+        update_post_meta( $post_id, '_jobs_banner_subtitle', $val );
+        set_theme_mod( 'jobs_page_banner_subtitle', $val );
+    }
+    if ( isset( $_POST['jobs_section_title'] ) ) {
+        $val = sanitize_text_field( $_POST['jobs_section_title'] );
+        update_post_meta( $post_id, '_jobs_section_title', $val );
+        set_theme_mod( 'jobs_page_section_title', $val );
+    }
+    if ( isset( $_POST['jobs_load_more_text'] ) ) {
+        $val = sanitize_text_field( $_POST['jobs_load_more_text'] );
+        update_post_meta( $post_id, '_jobs_load_more_text', $val );
+        set_theme_mod( 'jobs_page_load_more_text', $val );
+    }
+}
+add_action( 'save_post_page', 'jobscout_save_jobs_page_meta' );
+
+/**
+ * Đồng bộ hai chiều: Khi lưu trong Tùy biến (Customizer) -> Tự động đồng bộ vào meta trang Việc làm
+ */
+function jobscout_sync_customizer_to_jobs_page() {
+    $jobs_page = get_page_by_path( 'jobs' );
+    $jobs_page_id = $jobs_page ? $jobs_page->ID : 986;
+    if ( $jobs_page_id > 0 ) {
+        $banner_img = get_theme_mod( 'jobs_page_banner_image' );
+        if ( $banner_img ) {
+            update_post_meta( $jobs_page_id, '_jobs_banner_image', esc_url_raw( $banner_img ) );
+        }
+        $banner_title = get_theme_mod( 'jobs_page_banner_title' );
+        if ( $banner_title ) {
+            update_post_meta( $jobs_page_id, '_jobs_banner_title', sanitize_text_field( $banner_title ) );
+        }
+        $banner_subtitle = get_theme_mod( 'jobs_page_banner_subtitle' );
+        if ( $banner_subtitle ) {
+            update_post_meta( $jobs_page_id, '_jobs_banner_subtitle', sanitize_text_field( $banner_subtitle ) );
+        }
+        $section_title = get_theme_mod( 'jobs_page_section_title' );
+        if ( $section_title ) {
+            update_post_meta( $jobs_page_id, '_jobs_section_title', sanitize_text_field( $section_title ) );
+        }
+        $load_more = get_theme_mod( 'jobs_page_load_more_text' );
+        if ( $load_more ) {
+            update_post_meta( $jobs_page_id, '_jobs_load_more_text', sanitize_text_field( $load_more ) );
+        }
+
+        // Cập nhật nội dung khối Gutenberg của trang Việc làm để khi mở trang soạn thảo thấy đúng thông tin mới nhất
+        $page_record = get_post( $jobs_page_id );
+        if ( $page_record && ! empty( $page_record->post_content ) ) {
+            $updated_content = $page_record->post_content;
+            if ( $banner_title ) {
+                $updated_content = preg_replace(
+                    '/(<h1[^>]*class="[^"]*jobs-banner-title[^"]*"[^>]*>).*?(<\/h1>)/s',
+                    '${1}' . esc_html( $banner_title ) . '${2}',
+                    $updated_content
+                );
+            }
+            if ( $banner_subtitle ) {
+                $updated_content = preg_replace(
+                    '/(<p[^>]*class="[^"]*jobs-banner-subtitle[^"]*"[^>]*>).*?(<\/p>)/s',
+                    '${1}' . esc_html( $banner_subtitle ) . '${2}',
+                    $updated_content
+                );
+            }
+            if ( $section_title ) {
+                $updated_content = preg_replace(
+                    '/(<h2[^>]*class="[^"]*jobs-section-heading[^"]*"[^>]*>).*?(<\/h2>)/s',
+                    '${1}' . esc_html( $section_title ) . '${2}',
+                    $updated_content
+                );
+            }
+            if ( $banner_img ) {
+                $updated_content = preg_replace(
+                    '/(wp:cover\s*\{[^}]*"url":")[^"]*(")/s',
+                    '${1}' . esc_url( $banner_img ) . '${2}',
+                    $updated_content
+                );
+                $updated_content = preg_replace(
+                    '/(<img[^>]*class="[^"]*wp-block-cover__image-background[^"]*"[^>]*src=")[^"]*(")/s',
+                    '${1}' . esc_url( $banner_img ) . '${2}',
+                    $updated_content
+                );
+            }
+            if ( $updated_content !== $page_record->post_content ) {
+                remove_action( 'save_post_page', 'jobscout_sync_jobs_gutenberg_editor_save', 25 );
+                wp_update_post( array(
+                    'ID'           => $jobs_page_id,
+                    'post_content' => $updated_content,
+                ) );
+                add_action( 'save_post_page', 'jobscout_sync_jobs_gutenberg_editor_save', 25, 2 );
+            }
+        }
+    }
+}
+add_action( 'customize_save_after', 'jobscout_sync_customizer_to_jobs_page' );
+
+/**
+ * Tự động đồng bộ khi người dùng chỉnh sửa trực tiếp các khối Gutenberg (Cover, Tiêu đề) trên trang Việc làm
+ */
+function jobscout_sync_jobs_gutenberg_editor_save( $post_id, $post ) {
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+    if ( wp_is_post_revision( $post_id ) ) return;
+    if ( ! current_user_can( 'edit_page', $post_id ) ) return;
+
+    $slug = $post->post_name;
+    if ( 986 !== (int) $post_id && 'jobs' !== $slug ) return;
+
+    if ( ! function_exists( 'parse_blocks' ) ) return;
+
+    $blocks = parse_blocks( $post->post_content );
+    foreach ( $blocks as $block ) {
+        if ( 'core/cover' === $block['blockName'] ) {
+            if ( ! empty( $block['attrs']['url'] ) ) {
+                $cover_url = esc_url_raw( $block['attrs']['url'] );
+                update_post_meta( $post_id, '_jobs_banner_image', $cover_url );
+                set_theme_mod( 'jobs_page_banner_image', $cover_url );
+            }
+            if ( ! empty( $block['innerBlocks'] ) ) {
+                foreach ( $block['innerBlocks'] as $inner ) {
+                    if ( 'core/heading' === $inner['blockName'] ) {
+                        $raw_title = wp_strip_all_tags( render_block( $inner ) );
+                        $clean_title = sanitize_text_field( trim( $raw_title ) );
+                        if ( ! empty( $clean_title ) ) {
+                            update_post_meta( $post_id, '_jobs_banner_title', $clean_title );
+                            set_theme_mod( 'jobs_page_banner_title', $clean_title );
+                        }
+                    } elseif ( 'core/paragraph' === $inner['blockName'] ) {
+                        $raw_sub = wp_strip_all_tags( render_block( $inner ) );
+                        $clean_sub = sanitize_text_field( trim( $raw_sub ) );
+                        if ( ! empty( $clean_sub ) ) {
+                            update_post_meta( $post_id, '_jobs_banner_subtitle', $clean_sub );
+                            set_theme_mod( 'jobs_page_banner_subtitle', $clean_sub );
+                        }
+                    }
+                }
+            }
+        } elseif ( 'core/group' === $block['blockName'] && ! empty( $block['innerBlocks'] ) ) {
+            foreach ( $block['innerBlocks'] as $inner ) {
+                if ( 'core/heading' === $inner['blockName'] ) {
+                    $raw_heading = wp_strip_all_tags( render_block( $inner ) );
+                    $clean_heading = sanitize_text_field( trim( $raw_heading ) );
+                    if ( ! empty( $clean_heading ) && false === stripos( $clean_heading, 'CƠ HỘI NGHỀ NGHIỆP' ) ) {
+                        update_post_meta( $post_id, '_jobs_section_title', $clean_heading );
+                        set_theme_mod( 'jobs_page_section_title', $clean_heading );
+                    }
+                }
+            }
+        } elseif ( 'core/heading' === $block['blockName'] ) {
+            $raw_heading = wp_strip_all_tags( render_block( $block ) );
+            $clean_heading = sanitize_text_field( trim( $raw_heading ) );
+            if ( ! empty( $clean_heading ) && false === stripos( $clean_heading, 'CƠ HỘI NGHỀ NGHIỆP' ) ) {
+                update_post_meta( $post_id, '_jobs_section_title', $clean_heading );
+                set_theme_mod( 'jobs_page_section_title', $clean_heading );
+            }
+        }
+    }
+}
+add_action( 'save_post_page', 'jobscout_sync_jobs_gutenberg_editor_save', 25, 2 );
+
+
+
