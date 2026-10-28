@@ -347,6 +347,9 @@ jQuery(document).ready(function($) {
 						'<span class="job-manager-uploaded-file-preview" style="display: inline-flex; align-items: center; gap: 12px;">' +
 						'<img src="' + e.target.result + '" style="width: 52px; height: 52px; object-fit: contain; border-radius: 6px; border: 1px solid #cbd5e1; background: #ffffff; padding: 2px;" />' +
 						'<span style="font-size: 13.5px; font-weight: 600; color: #1e293b;">' + file.name + '</span>' +
+						'<a class="job-manager-remove-uploaded-file" href="#" style="color: #ef4444; font-size: 13px; font-weight: 600; text-decoration: none; padding: 5px 10px; border-radius: 5px; background: #fee2e2; border: 1px solid #fecaca; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s ease;">' +
+						'<i class="fas fa-trash-alt"></i> Xóa ảnh' +
+						'</a>' +
 						'</span>' +
 						'</div>'
 					);
@@ -354,6 +357,16 @@ jQuery(document).ready(function($) {
 			};
 			reader.readAsDataURL(file);
 		}
+	});
+
+	// Xử lý khi nhấn nút xóa ảnh logo đã tải
+	$(document).on('click', '.fieldset-company_logo .job-manager-remove-uploaded-file', function(e) {
+		e.preventDefault();
+		$('#company_logo').val('');
+		$(this).closest('.job-manager-uploaded-file').remove();
+		$('.fieldset-company_logo .job-manager-uploaded-files').empty();
+		$('#company_logo').show();
+		$('.fieldset-company_logo small.description').show();
 	});
 });
 </script>

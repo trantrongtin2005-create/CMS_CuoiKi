@@ -133,12 +133,19 @@ if ( $all_jobs_query->have_posts() ) {
 			}
 		}
 		$def_bullets = array(
-			'Be responsible for the effective operational management of the department / hotel.',
-			'Excellent salary bonuses & recognition activities.',
-			'Foreign language allowance and career development opportunities.',
+			'Chịu trách nhiệm quản lý, điều hành và tối ưu hóa hiệu quả hoạt động bộ phận.',
+			'Chế độ đãi ngộ hấp dẫn, thưởng hiệu suất và lộ trình thăng tiến rõ ràng.',
+			'Phụ cấp ngoại ngữ, đào tạo nâng cao chuyên môn và bảo hiểm toàn diện.',
 		);
 		while ( count( $bullets ) < 3 ) {
 			$bullets[] = array_shift( $def_bullets );
+		}
+
+		// Định dạng ngày theo tiếng Việt và đảm bảo năm luôn là 2026
+		$raw_date_time = get_post_time( 'U', true, $jid );
+		$job_date_vn   = date_i18n( 'd/m/Y', $raw_date_time );
+		if ( false === strpos( $job_date_vn, '2026' ) ) {
+			$job_date_vn = date_i18n( 'd/m', $raw_date_time ) . '/2026';
 		}
 
 		$jobs_dataset[] = array(
@@ -147,8 +154,8 @@ if ( $all_jobs_query->have_posts() ) {
 			'permalink'      => get_permalink( $jid ),
 			'company'        => html_entity_decode( $company ?: $title, ENT_QUOTES, 'UTF-8' ),
 			'logo'           => $logo,
-			'date_formatted' => get_the_date( 'M d, Y', $jid ),
-			'date_timestamp' => get_post_time( 'U', true, $jid ),
+			'date_formatted' => $job_date_vn,
+			'date_timestamp' => $raw_date_time,
 			'salary_raw'     => $salary,
 			'min_sal'        => $min_sal,
 			'max_sal'        => $max_sal,
@@ -171,6 +178,171 @@ $init_location = isset( $_GET['search_location'] ) ? sanitize_text_field( wp_uns
 $init_category = isset( $_GET['search_category'] ) ? sanitize_text_field( wp_unslash( $_GET['search_category'] ) ) : '';
 
 $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_empty' => false ) );
+
+// Cấu hình động: Cho phép chỉnh sửa trực tiếp trong Tùy biến (Customizer) hoặc Chỉnh sửa trang (Edit Page)
+$current_page_id = get_queried_object_id();
+if ( ! $current_page_id ) {
+	$jobs_page = get_page_by_path( 'jobs' );
+	$current_page_id = $jobs_page ? $jobs_page->ID : 986;
+}
+
+// Tách các khối Gutenberg để hiển thị nội dung trực quan do người dùng soạn thảo
+$gutenberg_banner_img      = '';
+$gutenberg_banner_title    = '';
+$gutenberg_banner_subtitle = '';
+$gutenberg_section_title   = '';
+$gutenberg_section_desc    = '';
+$before_jobs_content       = '';
+$after_jobs_content        = '';
+$has_reached_jobs          = false;
+
+if ( $current_page_id ) {
+	$page_obj = get_post( $current_page_id );
+	if ( $page_obj && ! empty( $page_obj->post_content ) && function_exists( 'parse_blocks' ) ) {
+		$blocks = parse_blocks( $page_obj->post_content );
+		foreach ( $blocks as $b ) {
+			// 1. Khối Cover (Ảnh bìa Banner, Tiêu đề lớn & Mô tả ngắn)
+			if ( 'core/cover' === $b['blockName'] ) {
+				if ( ! empty( $b['attrs']['url'] ) ) {
+					$gutenberg_banner_img = $b['attrs']['url'];
+				}
+				if ( ! empty( $b['innerBlocks'] ) ) {
+					foreach ( $b['innerBlocks'] as $inner ) {
+						if ( 'core/heading' === $inner['blockName'] ) {
+							$raw_t = wp_strip_all_tags( render_block( $inner ) );
+							if ( ! empty( $raw_t ) ) {
+								$gutenberg_banner_title = trim( $raw_t );
+							}
+						} elseif ( 'core/paragraph' === $inner['blockName'] ) {
+							$raw_sub = wp_strip_all_tags( render_block( $inner ) );
+							if ( ! empty( $raw_sub ) ) {
+								$gutenberg_banner_subtitle = trim( $raw_sub );
+							}
+						}
+					}
+				}
+				continue;
+			}
+			
+			// 2. Khối Shortcode [jobs]
+			if ( ( 'core/shortcode' === $b['blockName'] && false !== strpos( $b['innerHTML'], '[jobs]' ) ) || false !== strpos( render_block( $b ), '[jobs]' ) ) {
+				$has_reached_jobs = true;
+				continue;
+			}
+
+			// 3. Khối Tiêu đề danh sách (Group hoặc Heading đặt trước [jobs])
+			if ( ! $has_reached_jobs ) {
+				if ( 'core/group' === $b['blockName'] && ! empty( $b['innerBlocks'] ) ) {
+					foreach ( $b['innerBlocks'] as $inner ) {
+						if ( 'core/heading' === $inner['blockName'] && empty( $gutenberg_section_title ) ) {
+							$raw_h = wp_strip_all_tags( render_block( $inner ) );
+							if ( ! empty( $raw_h ) ) {
+								$gutenberg_section_title = trim( $raw_h );
+							}
+						} elseif ( 'core/paragraph' === $inner['blockName'] && empty( $gutenberg_section_desc ) ) {
+							$raw_p = wp_strip_all_tags( render_block( $inner ) );
+							if ( ! empty( $raw_p ) ) {
+								$gutenberg_section_desc = trim( $raw_p );
+							}
+						}
+					}
+					continue;
+				}
+
+				if ( 'core/heading' === $b['blockName'] && empty( $gutenberg_section_title ) ) {
+					$raw_h = wp_strip_all_tags( render_block( $b ) );
+					if ( ! empty( $raw_h ) ) {
+						$gutenberg_section_title = trim( $raw_h );
+					}
+					continue;
+				}
+
+				if ( 'core/paragraph' === $b['blockName'] && empty( $gutenberg_section_desc ) ) {
+					$raw_p = wp_strip_all_tags( render_block( $b ) );
+					if ( ! empty( $raw_p ) ) {
+						$gutenberg_section_desc = trim( $raw_p );
+					}
+					continue;
+				}
+
+				$before_jobs_content .= render_block( $b );
+			} else {
+				$after_jobs_content .= render_block( $b );
+			}
+		}
+	}
+}
+
+// 1. Ảnh nền Banner: Ưu tiên Khối Gutenberg Cover > Customizer > Post Meta > Ảnh đại diện > Mặc định
+$banner_bg_url = $gutenberg_banner_img;
+if ( empty( $banner_bg_url ) ) {
+	$banner_bg_url = get_theme_mod( 'jobs_page_banner_image', '' );
+}
+if ( empty( $banner_bg_url ) && $current_page_id ) {
+	$banner_bg_url = get_post_meta( $current_page_id, '_jobs_banner_image', true );
+}
+if ( empty( $banner_bg_url ) && $current_page_id && has_post_thumbnail( $current_page_id ) ) {
+	$banner_bg_url = get_the_post_thumbnail_url( $current_page_id, 'full' );
+}
+if ( empty( $banner_bg_url ) ) {
+	$banner_bg_url = get_template_directory_uri() . '/images/career-banner.jpg';
+}
+if ( function_exists( 'jobscout_normalize_media_host' ) ) {
+	$banner_bg_url = jobscout_normalize_media_host( $banner_bg_url );
+}
+// Cache buster ép trình duyệt tải ảnh mới không dính cache
+$banner_bg_url = add_query_arg( 'v', '20261027', $banner_bg_url );
+
+// 2. Tiêu đề Banner: Ưu tiên Khối Gutenberg Cover > Customizer > Post Meta > Mặc định
+$banner_title = $gutenberg_banner_title;
+if ( empty( $banner_title ) ) {
+	$banner_title = get_theme_mod( 'jobs_page_banner_title', '' );
+}
+if ( empty( $banner_title ) && $current_page_id ) {
+	$banner_title = get_post_meta( $current_page_id, '_jobs_banner_title', true );
+}
+if ( empty( $banner_title ) ) {
+	$banner_title = 'CƠ HỘI NGHỀ NGHIỆP';
+}
+
+// 2b. Mô tả ngắn Banner: Ưu tiên Khối Gutenberg Cover > Customizer > Post Meta
+$banner_subtitle = $gutenberg_banner_subtitle;
+if ( empty( $banner_subtitle ) ) {
+	$banner_subtitle = get_theme_mod( 'jobs_page_banner_subtitle', '' );
+}
+if ( empty( $banner_subtitle ) && $current_page_id ) {
+	$banner_subtitle = get_post_meta( $current_page_id, '_jobs_banner_subtitle', true );
+}
+
+// 3. Tiêu đề danh sách việc làm (mặc định tiếng Việt: TẤT CẢ VIỆC LÀM)
+$section_title = $gutenberg_section_title;
+if ( empty( $section_title ) ) {
+	$section_title = get_theme_mod( 'jobs_page_section_title', '' );
+}
+if ( empty( $section_title ) && $current_page_id ) {
+	$section_title = get_post_meta( $current_page_id, '_jobs_section_title', true );
+}
+if ( empty( $section_title ) ) {
+	$section_title = 'TẤT CẢ VIỆC LÀM';
+}
+
+// 4. Chữ nút Xem thêm (mặc định tiếng Việt: XEM THÊM VIỆC LÀM)
+$load_more_text = get_theme_mod( 'jobs_page_load_more_text', '' );
+if ( empty( $load_more_text ) && $current_page_id ) {
+	$load_more_text = get_post_meta( $current_page_id, '_jobs_load_more_text', true );
+}
+if ( empty( $load_more_text ) ) {
+	$load_more_text = 'XEM THÊM VIỆC LÀM';
+}
+if ( empty( $load_more_text ) ) {
+	$load_more_text = 'XEM THÊM VIỆC LÀM';
+}
+
+// 5. Số công việc mỗi lần hiển thị
+$jobs_per_page = absint( get_theme_mod( 'jobs_page_per_page', 6 ) );
+if ( $jobs_per_page < 1 ) {
+	$jobs_per_page = 6;
+}
 ?>
 
 <!-- ============================================================
@@ -193,12 +365,23 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 		background-color: #F5F5F5 !important;
 	}
 
-	.post-type-archive-job_listing .site-content > header.entry-header,
-	.post-type-archive-job_listing .site-content > header.page-header,
-	.page-template-page-jobs .site-content > header.entry-header,
+	.post-type-archive-job_listing header.page-header,
+	.post-type-archive-job_listing .page-header,
+	.post-type-archive-job_listing .breadcrumb-wrap,
+	.post-type-archive-job_listing header.entry-header,
 	.post-type-archive-job_listing #secondary,
-	.page-template-page-jobs #secondary,
 	.post-type-archive-job_listing .breadcrumbs,
+	.page-jobs header.page-header,
+	.page-jobs .page-header,
+	.page-jobs .breadcrumb-wrap,
+	.page-jobs header.entry-header,
+	.page-jobs #secondary,
+	.page-jobs .breadcrumbs,
+	.page-template-page-jobs header.page-header,
+	.page-template-page-jobs .page-header,
+	.page-template-page-jobs .breadcrumb-wrap,
+	.page-template-page-jobs header.entry-header,
+	.page-template-page-jobs #secondary,
 	.page-template-page-jobs .breadcrumbs { 
 		display: none !important; 
 	}
@@ -216,10 +399,11 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 	.aj-hero-banner {
 		position: relative;
 		width: 100%;
-		height: 300px;
+		height: 350px;
 		background-color: #1a1a1a;
-		background: url('<?php echo esc_url( home_url( '/wp-content/uploads/2026/10/career-banner.jpg' ) ); ?>') center center / cover no-repeat,
-		            url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1920&q=80') center center / cover no-repeat;
+		background-position: center 52%;
+		background-size: cover;
+		background-repeat: no-repeat;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -228,7 +412,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 	.aj-hero-overlay {
 		position: absolute;
 		inset: 0;
-		background: rgba(0, 0, 0, 0.45);
+		background: rgba(0, 0, 0, 0.32);
 	}
 	.aj-hero-content {
 		position: relative;
@@ -764,14 +948,24 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
      MÃ NGUỒN HTML: TRANG DANH SÁCH VIỆC LÀM (CHUẨN THIẾT KẾ)
      ============================================================ -->
 <!-- ẢNH BÌA BANNER: CAREER WITH US -->
-<div class="aj-hero-banner">
+<div class="aj-hero-banner" style="background-image: url('<?php echo esc_url( $banner_bg_url ); ?>');">
 	<div class="aj-hero-overlay"></div>
 	<div class="aj-hero-content">
-		<h1 class="aj-hero-title">CAREER WITH US</h1>
+		<h1 class="aj-hero-title" id="aj-hero-banner-title"><?php echo esc_html( $banner_title ); ?></h1>
+		<?php if ( ! empty( $banner_subtitle ) ) : ?>
+			<p class="aj-hero-subtitle" id="aj-hero-banner-subtitle" style="color: rgba(255,255,255,0.92); font-size: 15px; margin: 10px auto 0; max-width: 650px; font-weight: 500; line-height: 1.5;"><?php echo esc_html( $banner_subtitle ); ?></p>
+		<?php endif; ?>
 	</div>
 </div>
 
 <div class="aj-page-container">
+
+	<?php
+	// Hiển thị nội dung khối Gutenberg trực quan trước danh sách việc làm
+	if ( ! empty( $before_jobs_content ) ) {
+		echo '<div class="aj-gutenberg-before-content" style="margin-bottom: 30px;">' . apply_filters( 'the_content', $before_jobs_content ) . '</div>';
+	}
+	?>
 
 	<!-- THẺ TÌM KIẾM & BỘ LỌC NHANH -->
 	<div class="aj-search-filter-card">
@@ -867,7 +1061,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 	<!-- THANH TRÊN: TIÊU ĐỀ + Bộ đếm kết quả + Menu sắp xếp -->
 	<div class="aj-top-bar">
 		<div class="aj-top-left">
-			<h2 class="aj-heading">ALL JOBS</h2>
+			<h2 class="aj-heading" id="aj-section-title"><?php echo esc_html( $section_title ); ?></h2>
 			<span class="aj-count-badge" id="aj-count-badge">(Hiển thị 0 / 0 công việc)</span>
 		</div>
 		<div class="aj-top-right">
@@ -885,7 +1079,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 
 	<!-- NÚT "XEM THÊM VIỆC LÀM" -->
 	<div class="aj-load-more-wrap" id="aj-load-more-wrap">
-		<button type="button" class="aj-load-more-btn" id="aj-load-more-btn">LOAD MORE JOBS</button>
+		<button type="button" class="aj-load-more-btn" id="aj-load-more-btn"><?php echo esc_html( $load_more_text ); ?></button>
 	</div>
 
 	<!-- THÔNG BÁO KHI KHÔNG CÓ KẾT QUẢ PHÙ HỢP -->
@@ -904,6 +1098,13 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 
 </div><!-- .aj-page-container -->
 
+<?php
+// Hiển thị nội dung khối Gutenberg trực quan sau danh sách việc làm (nếu có)
+if ( ! empty( $after_jobs_content ) ) {
+	echo '<div class="aj-gutenberg-after-content" style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">' . apply_filters( 'the_content', $after_jobs_content ) . '</div>';
+}
+?>
+
 <!-- ============================================================
      JAVASCRIPT: Xử lý tìm kiếm, lọc, sắp xếp và phân trang thời gian thực
      ============================================================ -->
@@ -916,7 +1117,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 	var currentType     = 'all';
 	var currentSalary   = 'all';
 	var currentSort     = 'latest';
-	var itemsPerPage    = 6;
+	var itemsPerPage    = <?php echo (int) $jobs_per_page; ?>;
 	var visibleCount    = itemsPerPage;
 
 	// Khai báo các phần tử giao diện DOM
@@ -1116,7 +1317,7 @@ $all_categories = get_terms( array( 'taxonomy' => 'job_listing_category', 'hide_
 					'</div>' +
 					'<div class="aj-job-card-info">' +
 						'<h3 class="aj-job-card-name">' + escapeHtml(job.title) + '</h3>' +
-						'<div class="aj-job-card-date">Created: ' + escapeHtml(job.date_formatted) + '</div>' +
+						'<div class="aj-job-card-date">Ngày đăng: ' + escapeHtml(job.date_formatted) + '</div>' +
 						'<div class="aj-job-card-tags">' +
 							'<span class="aj-tag">' + escapeHtml(job.type_label) + '</span>' +
 							'<span class="aj-tag">' + escapeHtml(job.cat_label) + '</span>' +

@@ -5814,46 +5814,83 @@ POST JOB PAGE
   padding-bottom: 5px;
 }
 
+.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
 .job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file .job-manager-uploaded-file-preview {
-  display: inline-block;
-  position: relative;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
-  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  position: static;
+  padding: 0;
+  border: none;
+  box-shadow: none;
 }
 
 .job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file .job-manager-uploaded-file-preview img {
-  height: auto;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  padding: 2px;
 }
 
-.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file .job-manager-uploaded-file-preview a {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 25px;
-  height: 25px;
-  padding: 0;
-  line-height: 25px;
-  background: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
-  border-radius: 100%;
-  text-indent: 30px;
-  overflow: hidden;
+.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file .job-manager-uploaded-file-preview a,
+.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file a.job-manager-remove-uploaded-file,
+.job-manager-uploaded-file a.job-manager-remove-uploaded-file {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  width: auto !important;
+  height: auto !important;
+  line-height: normal !important;
+  background: #fee2e2 !important;
+  border: 1px solid #fecaca !important;
+  color: #ef4444 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  padding: 6px 12px !important;
+  border-radius: 6px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  text-indent: 0 !important;
+  overflow: visible !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
 }
 
-.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file .job-manager-uploaded-file-preview a::before {
-  content: "";
-  background-image: url('data:image/svg+xml; utf-8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="%23f00" d="M207.6 256l107.72-107.72c6.23-6.23 6.23-16.34 0-22.58l-25.03-25.03c-6.23-6.23-16.34-6.23-22.58 0L160 208.4 52.28 100.68c-6.23-6.23-16.34-6.23-22.58 0L4.68 125.7c-6.23 6.23-6.23 16.34 0 22.58L112.4 256 4.68 363.72c-6.23 6.23-6.23 16.34 0 22.58l25.03 25.03c6.23 6.23 16.34 6.23 22.58 0L160 303.6l107.72 107.72c6.23 6.23 16.34 6.23 22.58 0l25.03-25.03c6.23-6.23 6.23-16.34 0-22.58L207.6 256z"></path></svg>');
-  background-repeat: no-repeat;
-  width: 9px;
-  height: 15px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  margin: auto;
-  bottom: 0;
+.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file .job-manager-uploaded-file-preview a:hover,
+.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file a.job-manager-remove-uploaded-file:hover,
+.job-manager-uploaded-file a.job-manager-remove-uploaded-file:hover {
+  background: #fecaca !important;
+  color: #dc2626 !important;
+  border-color: #fca5a5 !important;
+  transform: translateY(-1px) !important;
+}
+
+.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file .job-manager-uploaded-file-preview a::before,
+.job-manager-form fieldset .job-manager-uploaded-files .job-manager-uploaded-file a.job-manager-remove-uploaded-file::before,
+.job-manager-uploaded-file a.job-manager-remove-uploaded-file::before,
+.job-manager-remove-uploaded-file::before {
+  content: none !important;
+  display: none !important;
+  background-image: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .job-manager-form fieldset .wp-editor-container {
