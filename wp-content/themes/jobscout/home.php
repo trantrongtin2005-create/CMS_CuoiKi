@@ -14,11 +14,27 @@
 
 get_header();
 
-$hero_title    = get_theme_mod( 'pds_news_hero_title', 'TIN TỨC & BÀI VIẾT' );
-$hero_subtitle = get_theme_mod( 'pds_news_hero_subtitle', 'Cập nhật tin tức thị trường, cẩm nang tuyển dụng & kiến thức nghề nghiệp mới nhất' );
-$section_title = get_theme_mod( 'pds_news_section_title', 'BÀI VIẾT MỚI NHẤT' );
-$section_desc  = get_theme_mod( 'pds_news_section_desc', 'Khám phá các bài viết hữu ích về ngành dịch vụ, nhà hàng - khách sạn và định hướng nghề nghiệp' );
-$banner_bg     = get_theme_mod( 'pds_news_hero_image', get_template_directory_uri() . '/images/tokyo-news-banner.jpg' );
+$hero_title     = get_theme_mod( 'pds_news_hero_title', 'TIN TỨC & BÀI VIẾT' );
+$hero_subtitle  = get_theme_mod( 'pds_news_hero_subtitle', 'Cập nhật tin tức thị trường, cẩm nang tuyển dụng & kiến thức nghề nghiệp mới nhất' );
+$section_title  = get_theme_mod( 'pds_news_section_title', 'BÀI VIẾT MỚI NHẤT' );
+$section_desc   = get_theme_mod( 'pds_news_section_desc', 'Khám phá các bài viết hữu ích về ngành dịch vụ, nhà hàng - khách sạn và định hướng nghề nghiệp' );
+
+$current_page_id = (int) get_option( 'page_for_posts' );
+$banner_bg       = get_theme_mod( 'pds_news_hero_image', '' );
+if ( empty( $banner_bg ) && $current_page_id && has_post_thumbnail( $current_page_id ) ) {
+    $banner_bg = get_the_post_thumbnail_url( $current_page_id, 'full' );
+}
+if ( empty( $banner_bg ) ) {
+    $banner_bg = home_url( '/wp-content/uploads/2026/10/hinhnen-2.png' );
+}
+if ( function_exists( 'jobscout_normalize_media_host' ) ) {
+    $banner_bg = jobscout_normalize_media_host( $banner_bg );
+}
+$banner_bg = add_query_arg( 'v', '20261028', $banner_bg );
+
+$show_banner    = get_theme_mod( 'pds_news_show_banner', true );
+$read_more_text = get_theme_mod( 'pds_news_read_more_text', 'Xem chi tiết' );
+$hero_height    = get_theme_mod( 'pds_news_hero_height', '520px' );
 ?>
 
 <!-- ========================================================
@@ -28,6 +44,23 @@ $banner_bg     = get_theme_mod( 'pds_news_hero_image', get_template_directory_ur
   /* ----------------------------------------------------
      PHÁ VỠ GIỚI HẠN CONTAINER ĐỂ HÌNH BANNER TRÀN VIỀN 100%
      ---------------------------------------------------- */
+  body.blog .site-header,
+  body.blog header.site-header {
+    margin-bottom: 0 !important;
+  }
+
+  body.blog .breadcrumb-wrap,
+  body.blog .breadcrumbs,
+  body.blog header.page-header,
+  body.blog .page-header,
+  body.blog #secondary {
+    display: none !important;
+  }
+
+  body.blog #page,
+  body.blog #acc-content,
+  body.blog #content,
+  body.blog .site-content,
   body.blog #content.site-content,
   body.blog #content.site-content > .container,
   body.home #content.site-content,
@@ -37,14 +70,19 @@ $banner_bg     = get_theme_mod( 'pds_news_hero_image', get_template_directory_ur
     padding-left: 0 !important;
     padding-right: 0 !important;
     padding-top: 0 !important;
+    margin-top: 0 !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
 
-  body.blog #acc-content,
-  body.home #acc-content {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
+  body.blog #primary,
+  body.blog #main,
+  body.blog .site-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    float: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
   /* Font & Reset chung */
@@ -72,17 +110,18 @@ $banner_bg     = get_theme_mod( 'pds_news_hero_image', get_template_directory_ur
     right: 50% !important;
     margin-left: -50vw !important;
     margin-right: -50vw !important;
-    height: 350px !important;
-    min-height: 290px !important;
-    background-image: linear-gradient(rgba(15, 23, 42, 0.58), rgba(15, 23, 42, 0.68)), url('<?php echo esc_url( $banner_bg ); ?>') !important;
+    margin-top: 0 !important;
+    height: <?php echo esc_attr( $hero_height ); ?> !important;
+    min-height: 480px !important;
+    background-image: linear-gradient(rgba(15, 23, 42, 0.40), rgba(15, 23, 42, 0.52)), url('<?php echo esc_url( $banner_bg ); ?>') !important;
     background-size: cover !important;
-    background-position: center center !important;
+    background-position: center 36% !important;
     background-repeat: no-repeat !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
-    padding: 24px 20px !important;
+    padding: 30px 20px !important;
     box-shadow: inset 0 -10px 25px rgba(0, 0, 0, 0.2) !important;
   }
 
@@ -540,18 +579,20 @@ $banner_bg     = get_theme_mod( 'pds_news_hero_image', get_template_directory_ur
 <div class="pds-news-page-wrap">
 
   <!-- HERO BANNER TRÀN VIỀN 100% TOÀN CẢNH TOKYO HOÀNG HÔN -->
-  <header class="pds-news-hero">
+  <?php if ( $show_banner ) : ?>
+  <header class="pds-news-hero" id="pds-news-hero-banner" style="background-image: linear-gradient(rgba(15, 23, 42, 0.40), rgba(15, 23, 42, 0.52)), url('<?php echo esc_url( $banner_bg ); ?>') !important; background-position: center 36% !important; height: <?php echo esc_attr( $hero_height ); ?> !important; min-height: 480px !important;">
     <div class="pds-news-hero-content">
-      <h1 class="pds-news-hero-title"><?php echo esc_html( $hero_title ); ?></h1>
-      <p class="pds-news-hero-subtitle"><?php echo esc_html( $hero_subtitle ); ?></p>
+      <h1 class="pds-news-hero-title" id="pds-news-hero-title"><?php echo esc_html( $hero_title ); ?></h1>
+      <p class="pds-news-hero-subtitle" id="pds-news-hero-subtitle"><?php echo esc_html( $hero_subtitle ); ?></p>
     </div>
   </header>
+  <?php endif; ?>
 
   <!-- CONTAINER CHỨA NỘI DUNG CHÍNH -->
   <main class="pds-news-container">
     <div class="pds-news-section-heading">
-      <h2 class="pds-news-section-title"><?php echo esc_html( $section_title ); ?></h2>
-      <p class="pds-news-section-desc"><?php echo esc_html( $section_desc ); ?></p>
+      <h2 class="pds-news-section-title" id="pds-news-section-title"><?php echo esc_html( $section_title ); ?></h2>
+      <p class="pds-news-section-desc" id="pds-news-section-desc"><?php echo esc_html( $section_desc ); ?></p>
     </div>
 
     <?php if ( have_posts() ) : ?>
@@ -597,7 +638,7 @@ $banner_bg     = get_theme_mod( 'pds_news_hero_image', get_template_directory_ur
 
               <div class="pds-news-card-footer">
                 <a href="<?php the_permalink(); ?>" class="pds-news-card-link">
-                  Xem chi tiết <i class="fas fa-arrow-right"></i>
+                  <?php echo esc_html( $read_more_text ); ?> <i class="fas fa-arrow-right"></i>
                 </a>
               </div>
             </div>
