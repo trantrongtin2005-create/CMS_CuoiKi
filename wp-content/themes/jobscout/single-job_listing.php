@@ -271,6 +271,7 @@ while ( have_posts() ) : the_post();
 		align-items: stretch;
 		min-width: 150px;
 		flex-shrink: 0;
+		position: relative;
 	}
 	.jd-btn-share {
 		display: inline-flex;
@@ -291,11 +292,165 @@ while ( have_posts() ) : the_post();
 		transition: all 0.2s;
 		font-family: inherit;
 	}
-	.jd-btn-share:hover {
+	.jd-btn-share:hover,
+	.jd-btn-share.is-active {
 		background: #1a1a1a;
 		color: #fff;
 	}
-	.jd-btn-share svg { width: 14px; height: 14px; }
+	.jd-btn-share svg { width: 14px; height: 14px; transition: transform 0.2s ease; }
+	.jd-btn-share.is-active svg { transform: rotate(30deg); }
+
+	/* Form Share Dropdown chuẩn 100% Hình 2 */
+	.jd-social-dropdown {
+		position: absolute;
+		top: calc(100% + 10px);
+		right: 0;
+		background: #FFFFFF;
+		border: 1px solid #DBEAFE;
+		border-radius: 8px;
+		padding: 8px 14px;
+		box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.06);
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		z-index: 999;
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(-8px);
+		transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+		white-space: nowrap;
+	}
+
+	.jd-social-dropdown.is-open {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0);
+	}
+
+	.jd-social-dropdown .jd-share-label {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-family: inherit;
+		font-size: 13.5px;
+		font-weight: 800;
+		letter-spacing: 0.6px;
+		color: #1E293B;
+		text-transform: uppercase;
+		user-select: none;
+	}
+
+	.jd-social-dropdown .jd-share-label svg {
+		color: #E87722;
+		flex-shrink: 0;
+	}
+
+	.jd-social-dropdown .jd-social-buttons {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.jd-social-btn {
+		width: 36px;
+		height: 36px;
+		min-width: 36px;
+		border-radius: 6px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none !important;
+		border: 1px solid #E2E8F0;
+		cursor: pointer;
+		position: relative;
+		transition: all 0.2s ease;
+		background: #FFFFFF;
+		padding: 0;
+	}
+
+	.jd-social-facebook {
+		background: #EFF6FF;
+		border-color: #DBEAFE;
+		color: #1877F2;
+	}
+	.jd-social-facebook:hover {
+		background: #1877F2;
+		color: #FFFFFF;
+		border-color: #1877F2;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 10px rgba(24, 119, 242, 0.35);
+	}
+
+	.jd-social-twitter {
+		background: #F8FAFC;
+		border-color: #E2E8F0;
+		color: #0F1419;
+	}
+	.jd-social-twitter:hover {
+		background: #000000;
+		color: #FFFFFF;
+		border-color: #000000;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.28);
+	}
+
+	.jd-social-linkedin {
+		background: #EFF6FF;
+		border-color: #DBEAFE;
+		color: #0A66C2;
+	}
+	.jd-social-linkedin:hover {
+		background: #0A66C2;
+		color: #FFFFFF;
+		border-color: #0A66C2;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 10px rgba(10, 102, 194, 0.35);
+	}
+
+	.jd-social-copy {
+		background: #FFFFFF;
+		border-color: #E2E8F0;
+		color: #475569;
+	}
+	.jd-social-copy:hover {
+		background: #E87722;
+		color: #FFFFFF;
+		border-color: #E87722;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 10px rgba(232, 119, 34, 0.35);
+	}
+
+	.jd-social-btn:active {
+		transform: translateY(0);
+	}
+
+	.jd-social-btn::after {
+		content: attr(data-tooltip);
+		position: absolute;
+		bottom: -32px;
+		left: 50%;
+		transform: translateX(-50%) translateY(4px);
+		background: #1E293B;
+		color: #FFFFFF;
+		font-family: inherit;
+		font-size: 11px;
+		font-weight: 600;
+		white-space: nowrap;
+		padding: 4px 8px;
+		border-radius: 4px;
+		pointer-events: none;
+		opacity: 0;
+		visibility: hidden;
+		transition: all 0.2s ease;
+		z-index: 1000;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+	}
+
+	.jd-social-btn:hover::after {
+		opacity: 1;
+		visibility: visible;
+		transform: translateX(-50%) translateY(0);
+	}
 
 	.jd-btn-apply-top {
 		display: inline-flex;
@@ -1079,9 +1234,79 @@ while ( have_posts() ) : the_post();
 
 		<!-- Right Buttons -->
 		<div class="jd-header-actions">
-			<button type="button" class="jd-btn-share" id="jd-share-btn" title="Copy link to clipboard">
+			<button type="button" class="jd-btn-share" id="jd-share-btn" aria-expanded="false" aria-controls="jd-social-dropdown" title="<?php esc_attr_e( 'Chia sẻ việc làm', 'jobscout' ); ?>">
 				SHARE
 			</button>
+
+			<!-- FORM SHARE DROPDOWN CHUẨN 100% THEO HÌNH 2 -->
+			<div class="jd-social-dropdown" id="jd-social-dropdown" role="dialog" aria-hidden="true">
+				<span class="jd-share-label">
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E87722" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<circle cx="18" cy="5" r="3"></circle>
+						<circle cx="6" cy="12" r="3"></circle>
+						<circle cx="18" cy="19" r="3"></circle>
+						<line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+						<line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+					</svg>
+					<span>SHARE</span>
+				</span>
+				<div class="jd-social-buttons">
+					<!-- Facebook -->
+					<a 
+						href="https://www.facebook.com/sharer/sharer.php?u=<?php echo rawurlencode( get_permalink() ); ?>" 
+						class="jd-social-btn jd-social-facebook js-social-share-popup" 
+						data-tooltip="Facebook"
+						title="<?php esc_attr_e( 'Chia sẻ lên Facebook', 'jobscout' ); ?>"
+						aria-label="Facebook"
+						target="_blank" 
+						rel="noopener noreferrer"
+					>
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+					</a>
+
+					<!-- Twitter / X -->
+					<a 
+						href="https://twitter.com/intent/tweet?url=<?php echo rawurlencode( get_permalink() ); ?>&text=<?php echo rawurlencode( get_the_title() ); ?>" 
+						class="jd-social-btn jd-social-twitter js-social-share-popup" 
+						data-tooltip="Twitter / X"
+						title="<?php esc_attr_e( 'Chia sẻ lên Twitter / X', 'jobscout' ); ?>"
+						aria-label="Twitter / X"
+						target="_blank" 
+						rel="noopener noreferrer"
+					>
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+					</a>
+
+					<!-- LinkedIn -->
+					<a 
+						href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo rawurlencode( get_permalink() ); ?>" 
+						class="jd-social-btn jd-social-linkedin js-social-share-popup" 
+						data-tooltip="LinkedIn"
+						title="<?php esc_attr_e( 'Chia sẻ lên LinkedIn', 'jobscout' ); ?>"
+						aria-label="LinkedIn"
+						target="_blank" 
+						rel="noopener noreferrer"
+					>
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+					</a>
+
+					<!-- Copy Link -->
+					<button 
+						type="button" 
+						class="jd-social-btn jd-social-copy js-copy-link-btn" 
+						data-url="<?php echo esc_url( get_permalink() ); ?>" 
+						data-tooltip="<?php echo esc_attr__( 'Sao chép link', 'jobscout' ); ?>"
+						title="<?php echo esc_attr__( 'Sao chép liên kết việc làm', 'jobscout' ); ?>"
+						aria-label="Sao chép liên kết"
+					>
+						<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+							<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+
 			<?php if ( $can_apply ) : ?>
 				<button type="button" class="jd-btn-apply-top" id="jd-btn-open-apply" onclick="jdOpenApplyModal()">
 					APPLY JOB
@@ -1490,11 +1715,64 @@ while ( have_posts() ) : the_post();
 <!-- JavaScript: Share, Lightbox, Apply Modal -->
 <script>
 (function(){
-	// ===== SHARE =====
+	// ===== SHARE DROPDOWN & SOCIAL SHARING =====
 	var shareBtn = document.getElementById('jd-share-btn');
-	if (shareBtn) {
-		shareBtn.addEventListener('click', function() {
-			var url = window.location.href;
+	var shareDropdown = document.getElementById('jd-social-dropdown');
+
+	if (shareBtn && shareDropdown) {
+		shareBtn.addEventListener('click', function(e) {
+			e.stopPropagation();
+			var isOpen = shareDropdown.classList.toggle('is-open');
+			shareBtn.classList.toggle('is-active', isOpen);
+			shareBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+			shareDropdown.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+		});
+
+		shareDropdown.addEventListener('click', function(e) {
+			e.stopPropagation();
+		});
+
+		document.addEventListener('click', function() {
+			if (shareDropdown.classList.contains('is-open')) {
+				shareDropdown.classList.remove('is-open');
+				shareBtn.classList.remove('is-active');
+				shareBtn.setAttribute('aria-expanded', 'false');
+				shareDropdown.setAttribute('aria-hidden', 'true');
+			}
+		});
+
+		document.addEventListener('keydown', function(e) {
+			if (e.key === 'Escape' && shareDropdown.classList.contains('is-open')) {
+				shareDropdown.classList.remove('is-open');
+				shareBtn.classList.remove('is-active');
+				shareBtn.setAttribute('aria-expanded', 'false');
+				shareDropdown.setAttribute('aria-hidden', 'true');
+				shareBtn.focus();
+			}
+		});
+	}
+
+	// Xử lý mở popup chia sẻ (Facebook, Twitter/X, LinkedIn)
+	var socialPopups = document.querySelectorAll('.js-social-share-popup');
+	socialPopups.forEach(function(link) {
+		link.addEventListener('click', function(e) {
+			var href = link.getAttribute('href');
+			if (href && href.indexOf('http') === 0) {
+				e.preventDefault();
+				var w = 600, h = 540;
+				var left = Math.max(0, (window.innerWidth - w) / 2 + (window.screenX || 0));
+				var top = Math.max(0, (window.innerHeight - h) / 2 + (window.screenY || 0));
+				var popup = window.open(href, 'SocialShareWindow', 'width=' + w + ',height=' + h + ',top=' + top + ',left=' + left + ',scrollbars=yes,resizable=yes');
+				if (popup && popup.focus) popup.focus();
+			}
+		});
+	});
+
+	// Xử lý nút Sao chép liên kết (Copy Link)
+	var copyBtns = document.querySelectorAll('.js-copy-link-btn');
+	copyBtns.forEach(function(btn) {
+		btn.addEventListener('click', function() {
+			var url = btn.getAttribute('data-url') || window.location.href;
 			if (navigator.clipboard && navigator.clipboard.writeText) {
 				navigator.clipboard.writeText(url).then(function() { showShareToast(); });
 			} else {
@@ -1505,12 +1783,14 @@ while ( have_posts() ) : the_post();
 				document.body.removeChild(ta);
 			}
 		});
-	}
+	});
+
 	function showShareToast() {
 		var toast = document.getElementById('jd-share-toast');
 		if (!toast) return;
+		toast.textContent = '✓ Đã sao chép liên kết vào bộ nhớ tạm!';
 		toast.classList.add('show');
-		setTimeout(function() { toast.classList.remove('show'); }, 2200);
+		setTimeout(function() { toast.classList.remove('show'); }, 2500);
 	}
 
 	// ===== LIGHTBOX =====

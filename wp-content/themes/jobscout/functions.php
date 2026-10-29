@@ -98,6 +98,11 @@ require get_template_directory() . '/inc/newsletter.php';
 require get_template_directory() . '/inc/job-application-handler.php';
 
 /**
+ * Module Cấu trúc STAR & Bộ công cụ Social Share (Facebook, Twitter/X, LinkedIn)
+ */
+require get_template_directory() . '/inc/star-framework.php';
+
+/**
  * Tùy biến truy vấn trang Tin tức / Blog: Hiển thị 8 bài viết (4 hàng x 2 cột) chuẩn mẫu thiết kế
  */
 add_action( 'pre_get_posts', function( $query ) {
