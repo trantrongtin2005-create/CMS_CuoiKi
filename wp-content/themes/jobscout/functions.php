@@ -93,6 +93,11 @@ endif;
 require get_template_directory() . '/inc/newsletter.php';
 
 /**
+ * Module xử lý nộp hồ sơ ứng tuyển việc làm (APPLY JOB) qua AJAX & wp_mail()
+ */
+require get_template_directory() . '/inc/job-application-handler.php';
+
+/**
  * Tùy biến truy vấn trang Tin tức / Blog: Hiển thị 8 bài viết (4 hàng x 2 cột) chuẩn mẫu thiết kế
  */
 add_action( 'pre_get_posts', function( $query ) {
