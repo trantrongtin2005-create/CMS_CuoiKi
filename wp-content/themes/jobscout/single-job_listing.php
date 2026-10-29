@@ -701,6 +701,329 @@ while ( have_posts() ) : the_post();
 	}
 	.jd-share-toast.show { opacity: 1; }
 
+	/* ===== MODAL POPUP NỘP ĐƠN ỨNG TUYỂN (APPLY JOB MODAL) ===== */
+	.jd-modal-overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(17, 24, 39, 0.65);
+		backdrop-filter: blur(4px);
+		z-index: 99999;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 20px;
+		box-sizing: border-box;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.25s ease, visibility 0.25s ease;
+	}
+	.jd-modal-overlay.active {
+		opacity: 1;
+		visibility: visible;
+	}
+	.jd-modal-card {
+		background: #ffffff;
+		width: 100%;
+		max-width: 540px;
+		border-radius: 8px;
+		box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+		overflow: hidden;
+		transform: scale(0.95) translateY(12px);
+		transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+		max-height: 90vh;
+		display: flex;
+		flex-direction: column;
+		font-family: inherit;
+		box-sizing: border-box;
+	}
+	.jd-modal-overlay.active .jd-modal-card {
+		transform: scale(1) translateY(0);
+	}
+	.jd-modal-header {
+		padding: 20px 24px 18px;
+		background: #fafafa;
+		border-bottom: 1px solid #e5e7eb;
+		position: relative;
+	}
+	.jd-modal-subtitle {
+		font-size: 11px;
+		font-weight: 700;
+		color: #E87722;
+		text-transform: uppercase;
+		letter-spacing: 0.8px;
+		margin-bottom: 4px;
+	}
+	.jd-modal-title {
+		font-size: 17px;
+		font-weight: 800;
+		color: #111827;
+		margin: 0;
+		line-height: 1.35;
+		padding-right: 32px;
+	}
+	.jd-modal-company {
+		font-size: 12.5px;
+		color: #6b7280;
+		font-weight: 500;
+		margin-top: 4px;
+	}
+	.jd-modal-close {
+		position: absolute;
+		top: 18px;
+		right: 18px;
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		border: none;
+		background: #e5e7eb;
+		color: #4b5563;
+		font-size: 20px;
+		line-height: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+	.jd-modal-close:hover {
+		background: #d1d5db;
+		color: #111827;
+	}
+	.jd-modal-body {
+		padding: 22px 24px 26px;
+		overflow-y: auto;
+		box-sizing: border-box;
+	}
+	.jd-form-group {
+		margin-bottom: 16px;
+	}
+	.jd-form-group:last-child {
+		margin-bottom: 0;
+	}
+	.jd-form-label {
+		display: block;
+		font-size: 13px;
+		font-weight: 700;
+		color: #374151;
+		margin-bottom: 6px;
+	}
+	.jd-form-label .req {
+		color: #ef4444;
+		margin-left: 2px;
+	}
+	.jd-form-input,
+	.jd-form-textarea {
+		width: 100%;
+		border: 1px solid #d1d5db;
+		border-radius: 4px;
+		padding: 10px 14px;
+		font-size: 13.5px;
+		font-family: inherit;
+		color: #111827;
+		box-sizing: border-box;
+		transition: border-color 0.2s, box-shadow 0.2s;
+		outline: none;
+		background: #fff;
+	}
+	.jd-form-input:focus,
+	.jd-form-textarea:focus {
+		border-color: #E87722;
+		box-shadow: 0 0 0 3px rgba(232, 119, 34, 0.15);
+	}
+	.jd-form-textarea {
+		resize: vertical;
+		min-height: 80px;
+		line-height: 1.5;
+	}
+	/* Upload Drag & Drop */
+	.jd-dropzone {
+		border: 2px dashed #d1d5db;
+		border-radius: 6px;
+		padding: 18px 16px;
+		text-align: center;
+		background: #f9fafb;
+		cursor: pointer;
+		transition: all 0.2s;
+		position: relative;
+	}
+	.jd-dropzone:hover,
+	.jd-dropzone.dragover {
+		border-color: #E87722;
+		background: #fffaf5;
+	}
+	.jd-dropzone input[type="file"] {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		width: 100%;
+		height: 100%;
+		cursor: pointer;
+		z-index: 2;
+	}
+	.jd-dropzone-icon {
+		color: #E87722;
+		margin-bottom: 6px;
+	}
+	.jd-dropzone-text {
+		font-size: 13px;
+		font-weight: 600;
+		color: #374151;
+		margin-bottom: 3px;
+	}
+	.jd-dropzone-subtext {
+		font-size: 11.5px;
+		color: #9ca3af;
+	}
+	/* Selected File Preview Box */
+	.jd-selected-file {
+		display: none;
+		align-items: center;
+		justify-content: space-between;
+		padding: 10px 14px;
+		background: #f0fdf4;
+		border: 1px solid #86efac;
+		border-radius: 4px;
+		margin-top: 8px;
+		font-size: 12.5px;
+	}
+	.jd-selected-file.show {
+		display: flex;
+	}
+	.jd-file-info {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		min-width: 0;
+	}
+	.jd-file-name {
+		font-weight: 600;
+		color: #166534;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 320px;
+	}
+	.jd-file-size {
+		color: #15803d;
+		font-size: 11px;
+	}
+	.jd-file-remove {
+		border: none;
+		background: transparent;
+		color: #991b1b;
+		cursor: pointer;
+		font-size: 18px;
+		line-height: 1;
+		padding: 2px 6px;
+	}
+	.jd-file-remove:hover {
+		color: #b91c1c;
+	}
+	/* Modal Alert Box */
+	.jd-modal-alert {
+		padding: 11px 14px;
+		border-radius: 4px;
+		margin-bottom: 16px;
+		font-size: 13px;
+		line-height: 1.5;
+		display: none;
+	}
+	.jd-modal-alert.error {
+		display: block;
+		background: #fef2f2;
+		border: 1px solid #fecaca;
+		color: #991b1b;
+	}
+	.jd-modal-alert.success {
+		display: block;
+		background: #f0fdf4;
+		border: 1px solid #bbf7d0;
+		color: #166534;
+	}
+	/* Actions */
+	.jd-modal-actions {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 10px;
+		margin-top: 22px;
+	}
+	.jd-btn-cancel {
+		padding: 10px 18px;
+		border: 1px solid #d1d5db;
+		background: #fff;
+		color: #4b5563;
+		font-size: 13px;
+		font-weight: 600;
+		border-radius: 4px;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+	.jd-btn-cancel:hover {
+		background: #f3f4f6;
+		color: #111827;
+	}
+	.jd-btn-submit-apply {
+		padding: 10px 24px;
+		border: 1px solid #E87722;
+		background: #E87722;
+		color: #fff;
+		font-size: 13px;
+		font-weight: 700;
+		border-radius: 4px;
+		cursor: pointer;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		transition: all 0.2s;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		min-width: 175px;
+	}
+	.jd-btn-submit-apply:hover {
+		background: #d46312;
+		border-color: #d46312;
+	}
+	.jd-btn-submit-apply:disabled {
+		background: #9ca3af;
+		border-color: #9ca3af;
+		cursor: not-allowed;
+		opacity: 0.8;
+	}
+	/* Success Screen Card */
+	.jd-success-card {
+		display: none;
+		text-align: center;
+		padding: 30px 20px 20px;
+	}
+	.jd-success-card.active {
+		display: block;
+	}
+	.jd-success-icon {
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		background: #dcfce7;
+		color: #16a34a;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto 16px;
+	}
+	.jd-success-title {
+		font-size: 18px;
+		font-weight: 800;
+		color: #111827;
+		margin: 0 0 10px;
+	}
+	.jd-success-desc {
+		font-size: 14px;
+		color: #4b5563;
+		line-height: 1.6;
+		margin-bottom: 22px;
+	}
+
 	/* Responsive */
 	@media (max-width: 960px) {
 		.jd-layout { grid-template-columns: 1fr; }
@@ -713,8 +1036,14 @@ while ( have_posts() ) : the_post();
 	}
 	@media (max-width: 640px) {
 		.jd-header-actions { flex-direction: column; }
+		.jd-modal-card { max-height: 94vh; }
+		.jd-modal-header { padding: 16px 18px; }
+		.jd-modal-body { padding: 18px; }
+		.jd-modal-actions { flex-direction: column; }
+		.jd-modal-actions > * { width: 100%; }
 	}
 </style>
+
 
 <!-- ============================================================
      HTML MARKUP
@@ -754,9 +1083,9 @@ while ( have_posts() ) : the_post();
 				SHARE
 			</button>
 			<?php if ( $can_apply ) : ?>
-				<a href="<?php echo esc_url( $apply_url ); ?>" class="jd-btn-apply-top" <?php echo ! $is_email ? 'target="_blank" rel="noopener"' : ''; ?>>
+				<button type="button" class="jd-btn-apply-top" id="jd-btn-open-apply" onclick="jdOpenApplyModal()">
 					APPLY JOB
-				</a>
+				</button>
 			<?php else : ?>
 				<span class="jd-btn-apply-top disabled">CLOSED</span>
 			<?php endif; ?>
@@ -1045,7 +1374,120 @@ while ( have_posts() ) : the_post();
 <!-- SHARE TOAST -->
 <div class="jd-share-toast" id="jd-share-toast">✓ Link copied to clipboard!</div>
 
-<!-- JavaScript: Share, Lightbox -->
+<!-- ============================================================
+     MODAL POPUP NỘP ĐƠN ỨNG TUYỂN (APPLY JOB MODAL)
+     ============================================================ -->
+<div class="jd-modal-overlay" id="jdApplyModal" aria-hidden="true" role="dialog" aria-labelledby="jdModalTitle">
+	<div class="jd-modal-card">
+		<!-- Header -->
+		<div class="jd-modal-header">
+			<div class="jd-modal-subtitle">Nộp Đơn Ứng Tuyển Trực Tiếp</div>
+			<h3 class="jd-modal-title" id="jdModalTitle"><?php the_title(); ?></h3>
+			<?php if ( ! empty( $company_name ) ) : ?>
+				<div class="jd-modal-company"><?php echo esc_html( $company_name ); ?></div>
+			<?php endif; ?>
+			<button type="button" class="jd-modal-close" onclick="jdCloseApplyModal()" aria-label="Đóng">&times;</button>
+		</div>
+
+		<!-- Body Form -->
+		<div class="jd-modal-body">
+			<!-- Alert Notification -->
+			<div class="jd-modal-alert" id="jdApplyAlert"></div>
+
+			<!-- Main Form -->
+			<form id="jdApplyForm" novalidate enctype="multipart/form-data">
+				<input type="hidden" name="action" value="cms_submit_job_application">
+				<input type="hidden" name="job_id" value="<?php echo esc_attr( $job_id ); ?>">
+				<input type="hidden" name="job_title" value="<?php echo esc_attr( get_the_title( $job_id ) ); ?>">
+				<input type="hidden" name="security" value="<?php echo esc_attr( wp_create_nonce( 'jobscout_apply_nonce' ) ); ?>">
+
+				<!-- Họ và tên -->
+				<div class="jd-form-group">
+					<label class="jd-form-label" for="jd_fullname">Họ và tên <span class="req">*</span></label>
+					<input type="text" class="jd-form-input" id="jd_fullname" name="fullname" placeholder="Ví dụ: Nguyễn Văn An" required>
+				</div>
+
+				<!-- Email & Số điện thoại (2 cột) -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+					<div class="jd-form-group">
+						<label class="jd-form-label" for="jd_email">Địa chỉ Email <span class="req">*</span></label>
+						<input type="email" class="jd-form-input" id="jd_email" name="email" placeholder="email@example.com" required>
+					</div>
+					<div class="jd-form-group">
+						<label class="jd-form-label" for="jd_phone">Số điện thoại <span class="req">*</span></label>
+						<input type="tel" class="jd-form-input" id="jd_phone" name="phone" placeholder="0912 345 678" required>
+					</div>
+				</div>
+
+				<!-- Upload file CV -->
+				<div class="jd-form-group">
+					<label class="jd-form-label">Tập tin CV ứng tuyển <span class="req">*</span></label>
+					<div class="jd-dropzone" id="jdDropzone">
+						<input type="file" id="jd_cv_file" name="cv_file" accept=".pdf,.doc,.docx" required>
+						<div class="jd-dropzone-icon">
+							<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+								<polyline points="17 8 12 3 7 8"></polyline>
+								<line x1="12" y1="3" x2="12" y2="15"></line>
+							</svg>
+						</div>
+						<div class="jd-dropzone-text" id="jdDropText">Kéo thả hoặc nhấp để chọn tệp CV</div>
+						<div class="jd-dropzone-subtext">Hỗ trợ định dạng: .pdf, .doc, .docx (tối đa 10MB)</div>
+					</div>
+
+					<!-- Selected file preview -->
+					<div class="jd-selected-file" id="jdSelectedFile">
+						<div class="jd-file-info">
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2">
+								<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+								<polyline points="14 2 14 8 20 8"></polyline>
+								<line x1="16" y1="13" x2="8" y2="13"></line>
+								<line x1="16" y1="17" x2="8" y2="17"></line>
+							</svg>
+							<div>
+								<div class="jd-file-name" id="jdFileName">ten_file_cv.pdf</div>
+								<div class="jd-file-size" id="jdFileSize">1.2 MB</div>
+							</div>
+						</div>
+						<button type="button" class="jd-file-remove" id="jdFileRemove" title="Chọn tệp khác">&times;</button>
+					</div>
+				</div>
+
+				<!-- Lời nhắn / Giới thiệu -->
+				<div class="jd-form-group">
+					<label class="jd-form-label" for="jd_message">Thư giới thiệu / Lời nhắn (không bắt buộc)</label>
+					<textarea class="jd-form-textarea" id="jd_message" name="message" placeholder="Tóm tắt ngắn gọn kinh nghiệm và lý do bạn phù hợp với vị trí này..."></textarea>
+				</div>
+
+				<!-- Modal Actions -->
+				<div class="jd-modal-actions">
+					<button type="button" class="jd-btn-cancel" onclick="jdCloseApplyModal()">Hủy bỏ</button>
+					<button type="submit" class="jd-btn-submit-apply" id="jdBtnSubmitApply">
+						<span>NỘP HỒ SƠ ỨNG TUYỂN</span>
+					</button>
+				</div>
+			</form>
+
+			<!-- Success Card (hiển thị khi nộp thành công) -->
+			<div class="jd-success-card" id="jdSuccessCard">
+				<div class="jd-success-icon">
+					<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+						<polyline points="20 6 9 17 4 12"></polyline>
+					</svg>
+				</div>
+				<h4 class="jd-success-title">Nộp Hồ Sơ Thành Công!</h4>
+				<div class="jd-success-desc" id="jdSuccessDesc">
+					Hồ sơ ứng tuyển của bạn đã được gửi thành công đến nhà tuyển dụng. Chúng tôi sẽ sớm liên hệ với bạn qua email hoặc số điện thoại.
+				</div>
+				<button type="button" class="jd-btn-submit-apply" style="margin: 0 auto;" onclick="jdCloseApplyModal()">
+					HOÀN TẤT
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- JavaScript: Share, Lightbox, Apply Modal -->
 <script>
 (function(){
 	// ===== SHARE =====
@@ -1101,13 +1543,217 @@ while ( have_posts() ) : the_post();
 			if (e.target === overlay) jdCloseLightbox();
 		});
 	}
+
+	// ===== APPLY JOB MODAL & AJAX =====
+	var applyModal = document.getElementById('jdApplyModal');
+	var applyForm = document.getElementById('jdApplyForm');
+	var applyAlert = document.getElementById('jdApplyAlert');
+	var successCard = document.getElementById('jdSuccessCard');
+	var cvFileInput = document.getElementById('jd_cv_file');
+	var selectedFileBox = document.getElementById('jdSelectedFile');
+	var fileNameEl = document.getElementById('jdFileName');
+	var fileSizeEl = document.getElementById('jdFileSize');
+	var fileRemoveBtn = document.getElementById('jdFileRemove');
+	var dropzone = document.getElementById('jdDropzone');
+	var submitBtn = document.getElementById('jdBtnSubmitApply');
+
+	window.jdOpenApplyModal = function() {
+		if (!applyModal) return;
+		applyModal.classList.add('active');
+		applyModal.setAttribute('aria-hidden', 'false');
+		document.body.style.overflow = 'hidden';
+		if (applyAlert) {
+			applyAlert.className = 'jd-modal-alert';
+			applyAlert.style.display = 'none';
+			applyAlert.innerHTML = '';
+		}
+		// Focus vào trường Họ tên
+		var fn = document.getElementById('jd_fullname');
+		if (fn) setTimeout(function(){ fn.focus(); }, 150);
+	};
+
+	window.jdCloseApplyModal = function() {
+		if (!applyModal) return;
+		applyModal.classList.remove('active');
+		applyModal.setAttribute('aria-hidden', 'true');
+		document.body.style.overflow = '';
+	};
+
+	if (applyModal) {
+		applyModal.addEventListener('click', function(e) {
+			if (e.target === applyModal) jdCloseApplyModal();
+		});
+	}
+
+	// Xử lý tệp đính kèm CV
+	if (cvFileInput) {
+		cvFileInput.addEventListener('change', function(e) {
+			var file = this.files && this.files[0];
+			if (!file) return;
+
+			var ext = file.name.split('.').pop().toLowerCase();
+			var validExts = ['pdf', 'doc', 'docx'];
+			if (validExts.indexOf(ext) === -1) {
+				showModalAlert('Định dạng tệp không hợp lệ! Vui lòng chỉ chọn tệp .pdf, .doc, hoặc .docx.', 'error');
+				this.value = '';
+				if (selectedFileBox) selectedFileBox.classList.remove('show');
+				return;
+			}
+
+			if (file.size > 10 * 1024 * 1024) {
+				showModalAlert('Dung lượng tệp vượt quá 10MB! Vui lòng chọn tệp nhỏ hơn.', 'error');
+				this.value = '';
+				if (selectedFileBox) selectedFileBox.classList.remove('show');
+				return;
+			}
+
+			hideModalAlert();
+			if (fileNameEl) fileNameEl.textContent = file.name;
+			if (fileSizeEl) {
+				var sizeMb = (file.size / (1024 * 1024)).toFixed(2);
+				fileSizeEl.textContent = sizeMb >= 1 ? sizeMb + ' MB' : (file.size / 1024).toFixed(0) + ' KB';
+			}
+			if (selectedFileBox) selectedFileBox.classList.add('show');
+		});
+	}
+
+	if (fileRemoveBtn) {
+		fileRemoveBtn.addEventListener('click', function(e) {
+			e.preventDefault();
+			if (cvFileInput) cvFileInput.value = '';
+			if (selectedFileBox) selectedFileBox.classList.remove('show');
+		});
+	}
+
+	// Kéo thả tập tin (Drag and Drop)
+	if (dropzone) {
+		['dragenter', 'dragover'].forEach(function(evt) {
+			dropzone.addEventListener(evt, function(e) {
+				e.preventDefault();
+				dropzone.classList.add('dragover');
+			});
+		});
+		['dragleave', 'drop'].forEach(function(evt) {
+			dropzone.addEventListener(evt, function(e) {
+				e.preventDefault();
+				dropzone.classList.remove('dragover');
+			});
+		});
+	}
+
+	function showModalAlert(msg, type) {
+		if (!applyAlert) return;
+		applyAlert.className = 'jd-modal-alert ' + (type || 'error');
+		applyAlert.innerHTML = msg;
+		applyAlert.style.display = 'block';
+	}
+
+	function hideModalAlert() {
+		if (!applyAlert) return;
+		applyAlert.className = 'jd-modal-alert';
+		applyAlert.style.display = 'none';
+	}
+
+	// Gửi Form Ứng Tuyển bằng AJAX
+	if (applyForm) {
+		applyForm.addEventListener('submit', function(e) {
+			e.preventDefault();
+
+			var fullname = (document.getElementById('jd_fullname').value || '').trim();
+			var email    = (document.getElementById('jd_email').value || '').trim();
+			var phone    = (document.getElementById('jd_phone').value || '').trim();
+			var cvFile   = cvFileInput && cvFileInput.files ? cvFileInput.files[0] : null;
+
+			if (!fullname) {
+				showModalAlert('Vui lòng nhập Họ và tên của bạn!', 'error');
+				document.getElementById('jd_fullname').focus();
+				return;
+			}
+
+			var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			if (!email || !emailRegex.test(email)) {
+				showModalAlert('Vui lòng nhập địa chỉ Email hợp lệ!', 'error');
+				document.getElementById('jd_email').focus();
+				return;
+			}
+
+			if (!phone) {
+				showModalAlert('Vui lòng nhập Số điện thoại liên hệ!', 'error');
+				document.getElementById('jd_phone').focus();
+				return;
+			}
+
+			if (!cvFile) {
+				showModalAlert('Vui lòng chọn tập tin CV (.pdf, .doc, .docx) để đính kèm!', 'error');
+				return;
+			}
+
+			hideModalAlert();
+
+			// Trạng thái Loading
+			var origBtnHtml = submitBtn.innerHTML;
+			submitBtn.disabled = true;
+			submitBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="16" stroke-dashoffset="16" style="animation: jdSpin 0.9s linear infinite;"><circle cx="12" cy="12" r="10"/></svg> <span>ĐANG GỬI HỒ SƠ...</span>';
+
+			var formData = new FormData(applyForm);
+			var ajaxUrl = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
+
+			fetch(ajaxUrl, {
+				method: 'POST',
+				body: formData
+			})
+			.then(function(res) {
+				return res.json();
+			})
+			.then(function(res) {
+				submitBtn.disabled = false;
+				submitBtn.innerHTML = origBtnHtml;
+
+				if (res && res.success) {
+					// Ẩn form, hiển thị màn hình chúc mừng
+					applyForm.style.display = 'none';
+					if (successCard) {
+						if (res.data && res.data.message) {
+							var descEl = document.getElementById('jdSuccessDesc');
+							if (descEl) descEl.innerHTML = res.data.message;
+						}
+						successCard.classList.add('active');
+					}
+					// Toast thông báo bên ngoài
+					var toast = document.getElementById('jd-share-toast');
+					if (toast) {
+						toast.textContent = '✓ Đã nộp thành công hồ sơ ứng tuyển!';
+						toast.classList.add('show');
+						setTimeout(function(){ toast.classList.remove('show'); }, 3500);
+					}
+				} else {
+					var err = (res && res.data && res.data.message) ? res.data.message : 'Có lỗi xảy ra khi nộp hồ sơ. Vui lòng thử lại sau!';
+					showModalAlert(err, 'error');
+				}
+			})
+			.catch(function(err) {
+				submitBtn.disabled = false;
+				submitBtn.innerHTML = origBtnHtml;
+				showModalAlert('Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng và thử lại!', 'error');
+			});
+		});
+	}
+
+	// Đóng modal bằng phím ESC
 	document.addEventListener('keydown', function(e) {
-		if (e.key === 'Escape') jdCloseLightbox();
+		if (e.key === 'Escape') {
+			jdCloseLightbox();
+			jdCloseApplyModal();
+		}
 		if (e.key === 'ArrowLeft') jdLightboxNav(-1);
 		if (e.key === 'ArrowRight') jdLightboxNav(1);
 	});
 })();
 </script>
+<style>
+@keyframes jdSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+</style>
+
 
 <?php
 endwhile;
