@@ -242,139 +242,182 @@ while ( have_posts() ) :
 			color: #E87722;
 		}
 
-		/* CỤM NÚT CHIA SẺ MẠNG XÃ HỘI (SOCIAL SHARE UI) TẠI HEADER */
+		/* ============================================================
+		   CỤM NÚT CHIA SẺ MẠNG XÃ HỘI (DROPDOWN KHI NHẤN NÚT SHARE - HÌNH 2)
+		   ============================================================ */
 		.news-header-right {
 			flex-shrink: 0;
 			position: relative;
 		}
 
-		.news-social-share-group {
+		/* Nút SHARE hiển thị mặc định */
+		.news-share-btn {
+			background: #FFFFFF;
+			border: 1px solid #1A1D20;
+			border-radius: 4px;
+			padding: 9px 26px;
+			font-family: 'Montserrat', sans-serif;
+			font-size: 13px;
+			font-weight: 700;
+			letter-spacing: 0.8px;
+			text-transform: uppercase;
+			color: #1A1D20;
+			cursor: pointer;
 			display: inline-flex;
 			align-items: center;
-			gap: 10px;
-			background: #F8FAFC;
-			border: 1px solid #E2E8F0;
-			padding: 6px 12px;
-			border-radius: 8px;
-			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+			justify-content: center;
+			gap: 8px;
 			transition: all 0.25s ease;
 		}
 
-		.news-social-share-group:hover {
-			border-color: #CBD5E1;
-			background: #FFFFFF;
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+		.news-share-btn:hover,
+		.news-share-btn.is-active {
+			background: #1A1D20;
+			color: #FFFFFF;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 		}
 
-		.news-share-label {
-			font-family: 'Montserrat', sans-serif;
-			font-size: 11.5px;
-			font-weight: 800;
-			letter-spacing: 0.8px;
-			color: #475569;
-			text-transform: uppercase;
+		.news-share-btn svg {
+			width: 14px;
+			height: 14px;
+			transition: transform 0.2s ease;
+		}
+
+		.news-share-btn.is-active svg {
+			transform: rotate(30deg);
+		}
+
+		/* Khung Form Share hiển thị khi nhấn SHARE (Chuẩn 100% theo Hình 2) */
+		.news-social-dropdown {
+			position: absolute;
+			top: calc(100% + 10px);
+			right: 0;
+			background: #FFFFFF;
+			border: 1px solid #DBEAFE;
+			border-radius: 8px;
+			padding: 8px 14px;
+			box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.06);
+			display: inline-flex;
+			align-items: center;
+			gap: 12px;
+			z-index: 999;
+			opacity: 0;
+			visibility: hidden;
+			transform: translateY(-8px);
+			transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+			white-space: nowrap;
+		}
+
+		.news-social-dropdown.is-open {
+			opacity: 1;
+			visibility: visible;
+			transform: translateY(0);
+		}
+
+		/* Khối biểu tượng và chữ SHARE bên trái */
+		.news-social-dropdown .news-share-label {
 			display: flex;
 			align-items: center;
-			gap: 6px;
+			gap: 8px;
+			font-family: 'Montserrat', sans-serif;
+			font-size: 13.5px;
+			font-weight: 800;
+			letter-spacing: 0.6px;
+			color: #1E293B;
+			text-transform: uppercase;
 			user-select: none;
 		}
 
-		.news-share-label svg {
+		.news-social-dropdown .news-share-label svg {
 			color: #E87722;
 			flex-shrink: 0;
 		}
 
-		.news-social-buttons {
+		.news-social-dropdown .news-social-buttons {
 			display: flex;
 			align-items: center;
-			gap: 6px;
+			gap: 8px;
 		}
 
-		/* Từng icon nút mạng xã hội (Facebook, Twitter/X, LinkedIn, Copy Link) */
+		/* Từng icon nút mạng xã hội vuông bo góc nhẹ theo Hình 2 */
 		.news-social-btn {
-			width: 34px;
-			height: 34px;
-			min-width: 34px;
+			width: 36px;
+			height: 36px;
+			min-width: 36px;
 			border-radius: 6px;
 			display: inline-flex;
 			align-items: center;
 			justify-content: center;
 			text-decoration: none !important;
-			border: 1px solid transparent;
+			border: 1px solid #E2E8F0;
 			cursor: pointer;
 			position: relative;
-			transition: all 0.22s ease;
+			transition: all 0.2s ease;
 			background: #FFFFFF;
 			padding: 0;
 		}
 
-		.news-social-btn svg {
-			width: 15px;
-			height: 15px;
-			transition: transform 0.2s ease, fill 0.2s ease;
-		}
-
-		/* Facebook Button */
+		/* Facebook */
 		.news-social-facebook {
-			color: #1877F2;
-			border-color: #DBEAFE;
 			background: #EFF6FF;
+			border-color: #DBEAFE;
+			color: #1877F2;
 		}
 		.news-social-facebook:hover {
 			background: #1877F2;
 			color: #FFFFFF;
 			border-color: #1877F2;
 			transform: translateY(-2px);
-			box-shadow: 0 4px 12px rgba(24, 119, 242, 0.35);
+			box-shadow: 0 4px 10px rgba(24, 119, 242, 0.35);
 		}
 
-		/* Twitter / X Button */
+		/* Twitter / X */
 		.news-social-twitter {
-			color: #0F1419;
+			background: #F8FAFC;
 			border-color: #E2E8F0;
-			background: #F1F5F9;
+			color: #0F1419;
 		}
 		.news-social-twitter:hover {
 			background: #000000;
 			color: #FFFFFF;
 			border-color: #000000;
 			transform: translateY(-2px);
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.28);
 		}
 
-		/* LinkedIn Button */
+		/* LinkedIn */
 		.news-social-linkedin {
-			color: #0A66C2;
-			border-color: #BFDBFE;
 			background: #EFF6FF;
+			border-color: #DBEAFE;
+			color: #0A66C2;
 		}
 		.news-social-linkedin:hover {
 			background: #0A66C2;
 			color: #FFFFFF;
 			border-color: #0A66C2;
 			transform: translateY(-2px);
-			box-shadow: 0 4px 12px rgba(10, 102, 194, 0.35);
+			box-shadow: 0 4px 10px rgba(10, 102, 194, 0.35);
 		}
 
-		/* Copy Link Button */
+		/* Copy Link */
 		.news-social-copy {
-			color: #475569;
-			border-color: #E2E8F0;
 			background: #FFFFFF;
+			border-color: #E2E8F0;
+			color: #475569;
 		}
 		.news-social-copy:hover {
 			background: #E87722;
 			color: #FFFFFF;
 			border-color: #E87722;
 			transform: translateY(-2px);
-			box-shadow: 0 4px 12px rgba(232, 119, 34, 0.35);
+			box-shadow: 0 4px 10px rgba(232, 119, 34, 0.35);
 		}
 
 		.news-social-btn:active {
 			transform: translateY(0);
 		}
 
-		/* Tooltip hiển thị khi rê chuột qua icon */
+		/* Tooltip nhỏ */
 		.news-social-btn::after {
 			content: attr(data-tooltip);
 			position: absolute;
@@ -393,7 +436,7 @@ while ( have_posts() ) :
 			opacity: 0;
 			visibility: hidden;
 			transition: all 0.2s ease;
-			z-index: 100;
+			z-index: 1000;
 			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 		}
 
@@ -401,11 +444,6 @@ while ( have_posts() ) :
 			opacity: 1;
 			visibility: visible;
 			transform: translateX(-50%) translateY(0);
-		}
-
-		/* Nút SHARE cũ (Fallback) */
-		.news-share-btn {
-			display: none;
 		}
 
 		/* 4. NỘI DUNG BÀI VIẾT (MAIN ARTICLE CONTENT) */
@@ -492,120 +530,6 @@ while ( have_posts() ) :
 			margin-bottom: 8px;
 		}
 
-		/* ============================================================
-		   THANH CHIA SẺ BÀI VIẾT CUỐI BÀI (BOTTOM SOCIAL SHARE BAR)
-		   ============================================================ */
-		.news-article-share-footer {
-			margin-top: 42px;
-			padding-top: 28px;
-			border-top: 1px solid #E2E8F0;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			flex-wrap: wrap;
-			gap: 16px;
-		}
-
-		.news-share-footer-left {
-			display: flex;
-			align-items: center;
-			gap: 10px;
-		}
-
-		.news-share-footer-title {
-			font-size: 13.5px !important;
-			font-weight: 700 !important;
-			text-transform: uppercase;
-			letter-spacing: 0.6px;
-			color: #1E293B !important;
-			display: flex;
-			align-items: center;
-			gap: 8px;
-			margin: 0 !important;
-		}
-
-		.news-share-footer-title svg {
-			color: #E87722;
-			flex-shrink: 0;
-		}
-
-		.news-share-footer-links {
-			display: flex;
-			align-items: center;
-			gap: 8px;
-			flex-wrap: wrap;
-		}
-
-		.news-share-pill-btn {
-			display: inline-flex;
-			align-items: center;
-			gap: 8px;
-			padding: 8px 16px;
-			border-radius: 6px;
-			font-size: 12.5px;
-			font-weight: 700;
-			text-decoration: none !important;
-			border: 1px solid transparent;
-			cursor: pointer;
-			transition: all 0.22s ease;
-			font-family: 'Montserrat', sans-serif;
-			background: #FFFFFF;
-		}
-
-		.news-share-pill-btn svg {
-			width: 15px;
-			height: 15px;
-			flex-shrink: 0;
-		}
-
-		.news-share-pill-btn.share-fb {
-			background: #EFF6FF;
-			color: #1877F2;
-			border-color: #DBEAFE;
-		}
-		.news-share-pill-btn.share-fb:hover {
-			background: #1877F2;
-			color: #FFFFFF;
-			box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
-			transform: translateY(-2px);
-		}
-
-		.news-share-pill-btn.share-tw {
-			background: #F1F5F9;
-			color: #0F1419;
-			border-color: #E2E8F0;
-		}
-		.news-share-pill-btn.share-tw:hover {
-			background: #000000;
-			color: #FFFFFF;
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-			transform: translateY(-2px);
-		}
-
-		.news-share-pill-btn.share-in {
-			background: #EFF6FF;
-			color: #0A66C2;
-			border-color: #BFDBFE;
-		}
-		.news-share-pill-btn.share-in:hover {
-			background: #0A66C2;
-			color: #FFFFFF;
-			box-shadow: 0 4px 12px rgba(10, 102, 194, 0.3);
-			transform: translateY(-2px);
-		}
-
-		.news-share-pill-btn.share-copy {
-			background: #FFFFFF;
-			color: #475569;
-			border-color: #CBD5E1;
-		}
-		.news-share-pill-btn.share-copy:hover {
-			background: #E87722;
-			color: #FFFFFF;
-			border-color: #E87722;
-			box-shadow: 0 4px 12px rgba(232, 119, 34, 0.3);
-			transform: translateY(-2px);
-		}
 
 		/* ============================================================
 		   BỘ COMPONENT & CSS CẤU TRÚC STAR (S - T - A - R)
@@ -1188,6 +1112,7 @@ while ( have_posts() ) :
 		}
 
 		/* Tương thích Responsive trên Tablet & Mobile */
+		/* Tương thích Responsive trên Tablet & Mobile */
 		@media (max-width: 900px) {
 			.news-header-box {
 				flex-direction: column;
@@ -1197,21 +1122,13 @@ while ( have_posts() ) :
 			.news-header-right {
 				width: 100%;
 			}
-			.news-social-share-group {
+			.news-share-btn {
 				width: 100%;
+			}
+			.news-social-dropdown {
+				left: 0;
+				right: 0;
 				justify-content: space-between;
-			}
-			.news-article-share-footer {
-				flex-direction: column;
-				align-items: flex-start;
-				gap: 14px;
-			}
-			.news-share-footer-links {
-				width: 100%;
-			}
-			.news-share-pill-btn {
-				flex: 1 1 calc(50% - 6px);
-				justify-content: center;
 			}
 			.star-box.star-layout-grid .star-items-list {
 				grid-template-columns: 1fr;
@@ -1252,6 +1169,12 @@ while ( have_posts() ) :
 			.news-header-title {
 				font-size: 17px;
 			}
+			.news-social-dropdown {
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 10px;
+				padding: 10px 12px;
+			}
 			.news-article-card {
 				padding: 24px 18px;
 			}
@@ -1270,9 +1193,6 @@ while ( have_posts() ) :
 			.star-content-wrap {
 				padding: 16px 14px;
 			}
-			.news-share-pill-btn {
-				flex: 1 1 100%;
-			}
 			.news-blog-card {
 				flex-direction: column;
 				gap: 14px;
@@ -1281,6 +1201,7 @@ while ( have_posts() ) :
 				width: 100%;
 				height: 160px;
 			}
+
 			.news-newsletter-form {
 				flex-direction: column;
 				width: 100%;
@@ -1336,10 +1257,31 @@ while ( have_posts() ) :
 			</div>
 
 			<!-- CỤM NÚT CHIA SẺ MẠNG XÃ HỘI (SOCIAL SHARE UI: FACEBOOK, TWITTER/X, LINKEDIN, COPY LINK) -->
+			<!-- CỤM NÚT CHIA SẺ MẠNG XÃ HỘI (DROPDOWN KHI NHẤN NÚT SHARE) -->
 			<div class="news-header-right">
-				<div class="news-social-share-group" role="region" aria-label="<?php echo esc_attr__( 'Chia sẻ mạng xã hội', 'jobscout' ); ?>">
+				<!-- Nút SHARE chuẩn theo Hình 1 -->
+				<button 
+					type="button" 
+					class="news-share-btn" 
+					id="newsShareToggleBtn" 
+					aria-expanded="false" 
+					aria-controls="newsSocialDropdown"
+					title="<?php echo esc_attr__( 'Chia sẻ bài viết này', 'jobscout' ); ?>"
+				>
+					<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<circle cx="18" cy="5" r="3"></circle>
+						<circle cx="6" cy="12" r="3"></circle>
+						<circle cx="18" cy="19" r="3"></circle>
+						<line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+						<line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+					</svg>
+					<span><?php esc_html_e( 'SHARE', 'jobscout' ); ?></span>
+				</button>
+
+				<!-- FORM SHARE DROPDOWN CHUẨN 100% THEO HÌNH 2 -->
+				<div class="news-social-dropdown" id="newsSocialDropdown" role="dialog" aria-hidden="true">
 					<span class="news-share-label">
-						<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E87722" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 							<circle cx="18" cy="5" r="3"></circle>
 							<circle cx="6" cy="12" r="3"></circle>
 							<circle cx="18" cy="19" r="3"></circle>
@@ -1349,7 +1291,7 @@ while ( have_posts() ) :
 						<span><?php esc_html_e( 'SHARE', 'jobscout' ); ?></span>
 					</span>
 					<div class="news-social-buttons">
-						<!-- Facebook Share -->
+						<!-- Facebook -->
 						<a 
 							href="https://www.facebook.com/sharer/sharer.php?u=<?php echo rawurlencode( $post_link ); ?>" 
 							class="news-social-btn news-social-facebook js-social-share-popup" 
@@ -1359,10 +1301,10 @@ while ( have_posts() ) :
 							target="_blank" 
 							rel="noopener noreferrer"
 						>
-							<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
 						</a>
 
-						<!-- Twitter / X Share -->
+						<!-- Twitter / X -->
 						<a 
 							href="https://twitter.com/intent/tweet?url=<?php echo rawurlencode( $post_link ); ?>&text=<?php echo rawurlencode( $post_title ); ?>" 
 							class="news-social-btn news-social-twitter js-social-share-popup" 
@@ -1372,10 +1314,10 @@ while ( have_posts() ) :
 							target="_blank" 
 							rel="noopener noreferrer"
 						>
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
 						</a>
 
-						<!-- LinkedIn Share -->
+						<!-- LinkedIn -->
 						<a 
 							href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo rawurlencode( $post_link ); ?>" 
 							class="news-social-btn news-social-linkedin js-social-share-popup" 
@@ -1385,7 +1327,7 @@ while ( have_posts() ) :
 							target="_blank" 
 							rel="noopener noreferrer"
 						>
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
 						</a>
 
 						<!-- Copy Link Button -->
@@ -1397,7 +1339,7 @@ while ( have_posts() ) :
 							title="<?php echo esc_attr__( 'Sao chép liên kết bài viết', 'jobscout' ); ?>"
 							aria-label="Sao chép liên kết"
 						>
-							<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 								<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
 								<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
 							</svg>
@@ -1420,75 +1362,9 @@ while ( have_posts() ) :
 					'after'  => '</div>',
 				) );
 				?>
-
-				<!-- THANH CHIA SẺ BÀI VIẾT CUỐI BÀI (BOTTOM SOCIAL SHARE UI) -->
-				<div class="news-article-share-footer">
-					<div class="news-share-footer-left">
-						<h4 class="news-share-footer-title">
-							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E87722" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-								<circle cx="18" cy="5" r="3"></circle>
-								<circle cx="6" cy="12" r="3"></circle>
-								<circle cx="18" cy="19" r="3"></circle>
-								<line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-								<line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-							</svg>
-							<span><?php esc_html_e( 'Chia sẻ bài viết này:', 'jobscout' ); ?></span>
-						</h4>
-					</div>
-					<div class="news-share-footer-links">
-						<!-- Facebook Share -->
-						<a 
-							href="https://www.facebook.com/sharer/sharer.php?u=<?php echo rawurlencode( $post_link ); ?>" 
-							class="news-share-pill-btn share-fb js-social-share-popup" 
-							target="_blank" 
-							rel="noopener noreferrer"
-							title="<?php echo esc_attr__( 'Chia sẻ lên Facebook', 'jobscout' ); ?>"
-						>
-							<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-							<span>Facebook</span>
-						</a>
-
-						<!-- Twitter / X Share -->
-						<a 
-							href="https://twitter.com/intent/tweet?url=<?php echo rawurlencode( $post_link ); ?>&text=<?php echo rawurlencode( $post_title ); ?>" 
-							class="news-share-pill-btn share-tw js-social-share-popup" 
-							target="_blank" 
-							rel="noopener noreferrer"
-							title="<?php echo esc_attr__( 'Chia sẻ lên Twitter / X', 'jobscout' ); ?>"
-						>
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-							<span>Twitter / X</span>
-						</a>
-
-						<!-- LinkedIn Share -->
-						<a 
-							href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo rawurlencode( $post_link ); ?>" 
-							class="news-share-pill-btn share-in js-social-share-popup" 
-							target="_blank" 
-							rel="noopener noreferrer"
-							title="<?php echo esc_attr__( 'Chia sẻ lên LinkedIn', 'jobscout' ); ?>"
-						>
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-							<span>LinkedIn</span>
-						</a>
-
-						<!-- Copy Link Button -->
-						<button 
-							type="button" 
-							class="news-share-pill-btn share-copy js-copy-link-btn" 
-							data-url="<?php echo esc_url( $post_link ); ?>" 
-							title="<?php echo esc_attr__( 'Sao chép liên kết bài viết', 'jobscout' ); ?>"
-						>
-							<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-								<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-								<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-							</svg>
-							<span><?php esc_html_e( 'Sao chép link', 'jobscout' ); ?></span>
-						</button>
-					</div>
-				</div>
 			</div>
 		</article>
+
 
 		<!-- 5. BÀI VIẾT MỚI NHẤT (NEWEST BLOG ENTRIES) -->
 		<section class="news-newest-section" aria-labelledby="newest-blog-heading">
@@ -1642,7 +1518,47 @@ while ( have_posts() ) :
 			}, 3500);
 		}
 
-		// 2. Xử lý mở cửa sổ popup chuyên dụng cho các nút mạng xã hội (Facebook, Twitter/X, LinkedIn)
+		// 2. Xử lý bật / tắt Form Share Dropdown (Chuẩn Hình 2) khi nhấn nút SHARE
+		const shareToggleBtn = document.getElementById('newsShareToggleBtn');
+		const shareDropdown = document.getElementById('newsSocialDropdown');
+
+		if (shareToggleBtn && shareDropdown) {
+			shareToggleBtn.addEventListener('click', function(e) {
+				e.stopPropagation();
+				const isOpen = shareDropdown.classList.toggle('is-open');
+				shareToggleBtn.classList.toggle('is-active', isOpen);
+				shareToggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+				shareDropdown.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+			});
+
+			// Ngăn click bên trong dropdown làm đóng dropdown
+			shareDropdown.addEventListener('click', function(e) {
+				e.stopPropagation();
+			});
+
+			// Đóng dropdown khi click ra ngoài
+			document.addEventListener('click', function() {
+				if (shareDropdown.classList.contains('is-open')) {
+					shareDropdown.classList.remove('is-open');
+					shareToggleBtn.classList.remove('is-active');
+					shareToggleBtn.setAttribute('aria-expanded', 'false');
+					shareDropdown.setAttribute('aria-hidden', 'true');
+				}
+			});
+
+			// Đóng bằng phím Escape
+			document.addEventListener('keydown', function(e) {
+				if (e.key === 'Escape' && shareDropdown.classList.contains('is-open')) {
+					shareDropdown.classList.remove('is-open');
+					shareToggleBtn.classList.remove('is-active');
+					shareToggleBtn.setAttribute('aria-expanded', 'false');
+					shareDropdown.setAttribute('aria-hidden', 'true');
+					shareToggleBtn.focus();
+				}
+			});
+		}
+
+		// 3. Xử lý mở cửa sổ popup chuyên dụng cho các nút mạng xã hội (Facebook, Twitter/X, LinkedIn)
 		const shareLinks = document.querySelectorAll('.js-social-share-popup');
 		shareLinks.forEach(function(link) {
 			link.addEventListener('click', function(e) {
