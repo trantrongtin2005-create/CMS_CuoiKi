@@ -57,4 +57,57 @@
 			$style.text( '.site-branding .site-title a:hover, .site-branding .site-title a:focus { color: ' + to + ' !important; }' );
 		} );
 	} );
+
+	// ========================================================
+	// Jobs Page Live Preview: Banner Image, Titles & Content
+	// ========================================================
+	wp.customize( 'jobs_page_banner_title', function( value ) {
+		value.bind( function( to ) {
+			$( '.jobs-banner-title, #aj-hero-banner-title' ).text( to );
+		} );
+	} );
+
+	wp.customize( 'jobs_page_banner_subtitle', function( value ) {
+		value.bind( function( to ) {
+			$( '.jobs-banner-subtitle, #aj-hero-banner-subtitle' ).text( to );
+		} );
+	} );
+
+	wp.customize( 'jobs_page_section_title', function( value ) {
+		value.bind( function( to ) {
+			$( '.jobs-section-heading, #aj-section-title' ).text( to );
+		} );
+	} );
+
+	wp.customize( 'jobs_page_section_desc', function( value ) {
+		value.bind( function( to ) {
+			$( '.jobs-section-desc' ).text( to );
+		} );
+	} );
+
+	wp.customize( 'jobs_page_search_placeholder', function( value ) {
+		value.bind( function( to ) {
+			$( '#aj-keyword-input' ).attr( 'placeholder', to );
+		} );
+	} );
+
+	wp.customize( 'jobs_page_search_btn_text', function( value ) {
+		value.bind( function( to ) {
+			$( '#aj-search-btn' ).text( to );
+		} );
+	} );
+
+	wp.customize( 'jobs_page_load_more_text', function( value ) {
+		value.bind( function( to ) {
+			$( '#aj-load-more-btn' ).text( to );
+		} );
+	} );
+
+	wp.customize( 'jobs_page_banner_image', function( value ) {
+		value.bind( function( to ) {
+			$( '.jobs-hero-block img.wp-block-cover__image-background' ).attr( 'src', to );
+			$( '.jobs-hero-block' ).css( 'background-image', 'url(' + to + ')' );
+		} );
+	} );
+
 } )( jQuery );
