@@ -103,6 +103,11 @@ require get_template_directory() . '/inc/job-application-handler.php';
 require get_template_directory() . '/inc/star-framework.php';
 
 /**
+ * Module xử lý danh sách việc làm tương tác & shortcode [jobs]
+ */
+require get_template_directory() . '/inc/interactive-jobs.php';
+
+/**
  * Tùy biến truy vấn trang Tin tức / Blog: Hiển thị 8 bài viết (4 hàng x 2 cột) chuẩn mẫu thiết kế
  */
 add_action( 'pre_get_posts', function( $query ) {
@@ -231,6 +236,125 @@ function cms_about_page_editor_styles() {
 add_action( 'admin_head', 'cms_about_page_editor_styles' );
 
 /**
+ * Tự động đồng bộ giao diện trong Trình soạn thảo Gutenberg (wp-admin) cho trang Việc làm (Jobs Listing)
+ */
+function cms_jobs_page_editor_styles() {
+    global $post;
+    if ( ! $post ) {
+        return;
+    }
+    $template = get_post_meta( $post->ID, '_wp_page_template', true );
+    if ( (int) $post->ID !== 986 && $template !== 'page-jobs.php' && $post->post_name !== 'jobs' ) {
+        return;
+    }
+    ?>
+    <style id="cms-jobs-editor-styles">
+        /* Căn chỉnh khung editor chuẩn và font chữ Montserrat */
+        .editor-styles-wrapper {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+            background-color: #F8FAFC !important;
+        }
+
+        /* Khối Cover Banner Hero trong Editor */
+        .editor-styles-wrapper .jobs-hero-block.wp-block-cover,
+        .editor-styles-wrapper .wp-block-cover.jobs-hero-block,
+        .editor-styles-wrapper .wp-block-cover {
+            min-height: 360px !important;
+            border-radius: 4px;
+            margin-bottom: 30px !important;
+        }
+        .editor-styles-wrapper .jobs-banner-title,
+        .editor-styles-wrapper .jobs-hero-block .wp-block-heading,
+        .editor-styles-wrapper .wp-block-cover h1,
+        .editor-styles-wrapper .wp-block-cover .wp-block-heading {
+            font-size: 32px !important;
+            font-weight: 800 !important;
+            letter-spacing: 2px !important;
+            text-transform: uppercase !important;
+            color: #ffffff !important;
+            text-align: center !important;
+        }
+        .editor-styles-wrapper .jobs-banner-subtitle,
+        .editor-styles-wrapper .wp-block-cover p {
+            font-size: 16px !important;
+            color: rgba(255, 255, 255, 0.95) !important;
+            text-align: center !important;
+        }
+
+        /* Tiêu đề danh sách */
+        .editor-styles-wrapper .jobs-section-heading {
+            font-size: 26px !important;
+            font-weight: 800 !important;
+            letter-spacing: 1px !important;
+            text-transform: uppercase !important;
+            color: #1E293B !important;
+            margin-bottom: 6px !important;
+        }
+        .editor-styles-wrapper .jobs-section-desc {
+            font-size: 15px !important;
+            color: #64748B !important;
+            margin-bottom: 20px !important;
+        }
+
+        /* Thẻ đại diện trực quan cho Khối Shortcode [jobs] */
+        .editor-styles-wrapper .wp-block-shortcode {
+            background: #FFF7ED !important;
+            border: 2px dashed #EA580C !important;
+            border-radius: 6px !important;
+            padding: 20px 24px !important;
+            position: relative;
+        }
+        .editor-styles-wrapper .wp-block-shortcode::before {
+            content: "💼 KHỐI DANH SÁCH VIỆC LÀM TƯƠNG TÁC (TÌM KIẾM, BỘ LỌC & THẺ 2 CỘT)";
+            display: block;
+            font-weight: 800;
+            font-size: 13px;
+            color: #C2410C;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .editor-styles-wrapper .wp-block-shortcode::after {
+            content: "💡 Khối này sẽ tự động hiển thị thanh tìm kiếm, bộ lọc nhanh theo hình thức/mức lương, bộ đếm kết quả và lưới việc làm chuẩn trên giao diện web. Bạn có thể tự do bấm mũi tên lên/xuống để chuyển khối này lên trên hoặc xuống dưới các nội dung khác.";
+            display: block;
+            font-size: 12.5px;
+            color: #9A3412;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+    </style>
+    <?php
+}
+add_action( 'admin_head', 'cms_jobs_page_editor_styles' );
+
+/**
+ * Nạp CSS chuẩn trực tiếp vào iframe của Trình soạn thảo Gutenberg cho trang Việc làm
+ */
+function cms_jobs_page_enqueue_editor_assets() {
+    global $post;
+    if ( ! $post ) {
+        return;
+    }
+    $template = get_post_meta( $post->ID, '_wp_page_template', true );
+    if ( (int) $post->ID !== 986 && $template !== 'page-jobs.php' && $post->post_name !== 'jobs' ) {
+        return;
+    }
+    $editor_css = '
+        .editor-styles-wrapper { font-family: "Montserrat", sans-serif !important; background-color: #F8FAFC !important; }
+        .wp-block-cover { min-height: 360px !important; border-radius: 4px; margin-bottom: 30px !important; }
+        .jobs-banner-title, .wp-block-cover h1, .wp-block-cover .wp-block-heading { font-size: 32px !important; font-weight: 800 !important; letter-spacing: 2px !important; text-transform: uppercase !important; color: #ffffff !important; text-align: center !important; }
+        .jobs-banner-subtitle, .wp-block-cover p { font-size: 16px !important; color: rgba(255, 255, 255, 0.95) !important; text-align: center !important; }
+        .jobs-section-heading { font-size: 26px !important; font-weight: 800 !important; text-transform: uppercase !important; color: #1E293B !important; margin-bottom: 6px !important; }
+        .jobs-section-desc { font-size: 15px !important; color: #64748B !important; margin-bottom: 20px !important; }
+        .wp-block-shortcode { background: #FFF7ED !important; border: 2px dashed #EA580C !important; border-radius: 6px !important; padding: 20px 24px !important; position: relative; }
+        .wp-block-shortcode::before { content: "💼 KHỐI DANH SÁCH VIỆC LÀM TƯƠNG TÁC (TÌM KIẾM, BỘ LỌC & THẺ 2 CỘT)"; display: block; font-weight: 800; font-size: 13px; color: #C2410C; letter-spacing: 0.5px; margin-bottom: 8px; text-transform: uppercase; }
+        .wp-block-shortcode::after { content: "💡 Khối này sẽ tự động hiển thị thanh tìm kiếm, bộ lọc nhanh theo hình thức/mức lương, bộ đếm kết quả và lưới việc làm chuẩn trên giao diện web. Bạn có thể tự do bấm mũi tên lên/xuống để chuyển khối này lên trên hoặc xuống dưới các nội dung khác."; display: block; font-size: 12.5px; color: #9A3412; margin-top: 8px; line-height: 1.5; }
+    ';
+    wp_add_inline_style( 'jobscout-block-editor-style', $editor_css );
+}
+add_action( 'enqueue_block_editor_assets', 'cms_jobs_page_enqueue_editor_assets' );
+
+/**
  * Hiển thị tất cả bài viết và trang (100 mục) trên 1 màn hình quản trị
  */
 add_filter( 'edit_posts_per_page', function( $per_page, $post_type = 'post' ) {
@@ -239,3 +363,35 @@ add_filter( 'edit_posts_per_page', function( $per_page, $post_type = 'post' ) {
     }
     return $per_page;
 }, 10, 2 );
+
+/**
+ * Tự động truyền dữ liệu đang xem trước trong Customizer vào nội dung trang Việc làm
+ */
+function jobscout_filter_jobs_page_preview_content( $content ) {
+    if ( is_customize_preview() ) {
+        $preview_banner_img   = get_theme_mod( 'jobs_page_banner_image' );
+        $preview_banner_title = get_theme_mod( 'jobs_page_banner_title' );
+        $preview_banner_sub   = get_theme_mod( 'jobs_page_banner_subtitle' );
+        $preview_sec_title    = get_theme_mod( 'jobs_page_section_title' );
+        $preview_sec_desc     = get_theme_mod( 'jobs_page_section_desc' );
+
+        if ( $preview_banner_img ) {
+            $content = preg_replace( '/(wp:cover\s*\{[^}]*"url":")[^"]*(")/s', '${1}' . esc_url( $preview_banner_img ) . '${2}', $content );
+            $content = preg_replace( '/(<img[^>]*class="[^"]*wp-block-cover__image-background[^"]*"[^>]*src=")[^"]*(")/s', '${1}' . esc_url( $preview_banner_img ) . '${2}', $content );
+        }
+        if ( $preview_banner_title ) {
+            $content = preg_replace( '/(<h1[^>]*class="[^"]*jobs-banner-title[^"]*"[^>]*>).*?(<\/h1>)/s', '${1}' . esc_html( $preview_banner_title ) . '${2}', $content );
+        }
+        if ( $preview_banner_sub ) {
+            $content = preg_replace( '/(<p[^>]*class="[^"]*jobs-banner-subtitle[^"]*"[^>]*>).*?(<\/p>)/s', '${1}' . esc_html( $preview_banner_sub ) . '${2}', $content );
+        }
+        if ( $preview_sec_title ) {
+            $content = preg_replace( '/(<h2[^>]*class="[^"]*jobs-section-heading[^"]*"[^>]*>).*?(<\/h2>)/s', '${1}' . esc_html( $preview_sec_title ) . '${2}', $content );
+        }
+        if ( $preview_sec_desc ) {
+            $content = preg_replace( '/(<p[^>]*class="[^"]*jobs-section-desc[^"]*"[^>]*>).*?(<\/p>)/s', '${1}' . esc_html( $preview_sec_desc ) . '${2}', $content );
+        }
+    }
+    return $content;
+}
+add_filter( 'the_content', 'jobscout_filter_jobs_page_preview_content', 5 );
