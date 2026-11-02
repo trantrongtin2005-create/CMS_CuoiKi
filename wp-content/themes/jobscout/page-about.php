@@ -14,6 +14,11 @@ get_header(); ?>
      CSS CHO TRANG ABOUT US (TƯƠNG THÍCH GUTENBERG BLOCK EDITOR)
      ======================================================== -->
 <style id="jobscout-page-about-styles">
+  /* Hỗ trợ màu chữ tùy chỉnh từ trình soạn thảo Gutenberg Editor trong Admin đồng bộ 100% ra bên ngoài */
+  .about-page-wrapper [style*="color"] {
+    /* Ưu tiên màu inline style do admin chọn */
+  }
+
   /* Ẩn Breadcrumbs/Page-Header mặc định và widget thừa */
   .page-template-page-about .breadcrumb-wrap,
   .page-about .breadcrumb-wrap,
@@ -79,7 +84,7 @@ get_header(); ?>
   }
 
   .about-hero-headline {
-    color: #ffffff !important;
+    color: #ffffff;
     font-size: clamp(28px, 4.2vw, 44px) !important;
     font-weight: 700 !important;
     letter-spacing: 2px !important;
@@ -96,7 +101,7 @@ get_header(); ?>
   .about-main-title {
     font-size: 34px !important;
     font-weight: 800 !important;
-    color: #1E2022 !important;
+    color: #1E2022;
     letter-spacing: 1.5px !important;
     text-transform: uppercase !important;
     margin: 0 auto !important;
@@ -129,14 +134,14 @@ get_header(); ?>
   .about-value-title {
     font-size: 19px !important;
     font-weight: 700 !important;
-    color: #1E2022 !important;
+    color: #1E2022;
     margin: 0 0 8px 0 !important;
     font-family: 'Montserrat', sans-serif !important;
   }
 
   .about-value-quote {
     font-size: 15px !important;
-    color: #4A5568 !important;
+    color: #4A5568;
     margin: 0 0 4px 0 !important;
     font-style: italic !important;
     line-height: 1.6 !important;
@@ -144,7 +149,7 @@ get_header(); ?>
 
   .about-value-text {
     font-size: 15px !important;
-    color: #555555 !important;
+    color: #555555;
     line-height: 1.65 !important;
     margin: 0 !important;
   }
@@ -195,7 +200,7 @@ get_header(); ?>
   .about-highlight-section h3,
   .about-highlight-section h4,
   .about-highlight-subtitle {
-    color: #EB6324 !important;
+    color: #EB6324;
     font-size: 22px !important;
     font-weight: 700 !important;
     margin: 0 0 20px 0 !important;
@@ -206,7 +211,7 @@ get_header(); ?>
 
   .about-highlight-section p {
     font-size: 15.5px !important;
-    color: #4A5568 !important;
+    color: #4A5568;
     line-height: 1.75 !important;
     margin: 0 auto 16px auto !important;
     text-align: center !important;
@@ -243,7 +248,7 @@ get_header(); ?>
   .about-fact-label {
     font-size: 17.5px !important;
     font-weight: 700 !important;
-    color: #1E2022 !important;
+    color: #1E2022;
     margin: 0 0 4px 0 !important;
     font-family: 'Montserrat', sans-serif !important;
     text-align: center;
@@ -251,7 +256,7 @@ get_header(); ?>
 
   .about-fact-value {
     font-size: 15px !important;
-    color: #4A5568 !important;
+    color: #4A5568;
     margin: 0 !important;
     line-height: 1.6 !important;
     text-align: center;
