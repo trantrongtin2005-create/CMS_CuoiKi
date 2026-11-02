@@ -809,6 +809,13 @@ function jobscout_sync_jobs_gutenberg_editor_save( $post_id, $post ) {
                         update_post_meta( $post_id, '_jobs_section_title', $clean_heading );
                         set_theme_mod( 'jobs_page_section_title', $clean_heading );
                     }
+                } elseif ( 'core/paragraph' === $inner['blockName'] ) {
+                    $raw_desc = wp_strip_all_tags( render_block( $inner ) );
+                    $clean_desc = sanitize_text_field( trim( $raw_desc ) );
+                    if ( ! empty( $clean_desc ) && false === stripos( $clean_desc, 'Khám phá các vị trí tuyển dụng' ) ) {
+                        update_post_meta( $post_id, '_jobs_section_desc', $clean_desc );
+                        set_theme_mod( 'jobs_page_section_desc', $clean_desc );
+                    }
                 }
             }
         } elseif ( 'core/heading' === $block['blockName'] ) {
@@ -824,4 +831,4 @@ function jobscout_sync_jobs_gutenberg_editor_save( $post_id, $post ) {
 add_action( 'save_post_page', 'jobscout_sync_jobs_gutenberg_editor_save', 25, 2 );
 
 
-
+

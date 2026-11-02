@@ -242,16 +242,20 @@ while ( have_posts() ) :
 			color: #E87722;
 		}
 
-		/* Nút SHARE */
+		/* ============================================================
+		   CỤM NÚT CHIA SẺ MẠNG XÃ HỘI (DROPDOWN KHI NHẤN NÚT SHARE - HÌNH 2)
+		   ============================================================ */
 		.news-header-right {
 			flex-shrink: 0;
+			position: relative;
 		}
 
+		/* Nút SHARE hiển thị mặc định */
 		.news-share-btn {
 			background: #FFFFFF;
 			border: 1px solid #1A1D20;
-			border-radius: 3px;
-			padding: 10px 32px;
+			border-radius: 4px;
+			padding: 9px 26px;
 			font-family: 'Montserrat', sans-serif;
 			font-size: 13px;
 			font-weight: 700;
@@ -266,15 +270,180 @@ while ( have_posts() ) :
 			transition: all 0.25s ease;
 		}
 
-		.news-share-btn:hover {
+		.news-share-btn:hover,
+		.news-share-btn.is-active {
 			background: #1A1D20;
 			color: #FFFFFF;
-			transform: translateY(-1px);
 			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 		}
 
-		.news-share-btn:active {
+		.news-share-btn svg {
+			width: 14px;
+			height: 14px;
+			transition: transform 0.2s ease;
+		}
+
+		.news-share-btn.is-active svg {
+			transform: rotate(30deg);
+		}
+
+		/* Khung Form Share hiển thị khi nhấn SHARE (Chuẩn 100% theo Hình 2) */
+		.news-social-dropdown {
+			position: absolute;
+			top: calc(100% + 10px);
+			right: 0;
+			background: #FFFFFF;
+			border: 1px solid #DBEAFE;
+			border-radius: 8px;
+			padding: 8px 14px;
+			box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.06);
+			display: inline-flex;
+			align-items: center;
+			gap: 12px;
+			z-index: 999;
+			opacity: 0;
+			visibility: hidden;
+			transform: translateY(-8px);
+			transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+			white-space: nowrap;
+		}
+
+		.news-social-dropdown.is-open {
+			opacity: 1;
+			visibility: visible;
 			transform: translateY(0);
+		}
+
+		/* Khối biểu tượng và chữ SHARE bên trái */
+		.news-social-dropdown .news-share-label {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-family: 'Montserrat', sans-serif;
+			font-size: 13.5px;
+			font-weight: 800;
+			letter-spacing: 0.6px;
+			color: #1E293B;
+			text-transform: uppercase;
+			user-select: none;
+		}
+
+		.news-social-dropdown .news-share-label svg {
+			color: #E87722;
+			flex-shrink: 0;
+		}
+
+		.news-social-dropdown .news-social-buttons {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+
+		/* Từng icon nút mạng xã hội vuông bo góc nhẹ theo Hình 2 */
+		.news-social-btn {
+			width: 36px;
+			height: 36px;
+			min-width: 36px;
+			border-radius: 6px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			text-decoration: none !important;
+			border: 1px solid #E2E8F0;
+			cursor: pointer;
+			position: relative;
+			transition: all 0.2s ease;
+			background: #FFFFFF;
+			padding: 0;
+		}
+
+		/* Facebook */
+		.news-social-facebook {
+			background: #EFF6FF;
+			border-color: #DBEAFE;
+			color: #1877F2;
+		}
+		.news-social-facebook:hover {
+			background: #1877F2;
+			color: #FFFFFF;
+			border-color: #1877F2;
+			transform: translateY(-2px);
+			box-shadow: 0 4px 10px rgba(24, 119, 242, 0.35);
+		}
+
+		/* Twitter / X */
+		.news-social-twitter {
+			background: #F8FAFC;
+			border-color: #E2E8F0;
+			color: #0F1419;
+		}
+		.news-social-twitter:hover {
+			background: #000000;
+			color: #FFFFFF;
+			border-color: #000000;
+			transform: translateY(-2px);
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.28);
+		}
+
+		/* LinkedIn */
+		.news-social-linkedin {
+			background: #EFF6FF;
+			border-color: #DBEAFE;
+			color: #0A66C2;
+		}
+		.news-social-linkedin:hover {
+			background: #0A66C2;
+			color: #FFFFFF;
+			border-color: #0A66C2;
+			transform: translateY(-2px);
+			box-shadow: 0 4px 10px rgba(10, 102, 194, 0.35);
+		}
+
+		/* Copy Link */
+		.news-social-copy {
+			background: #FFFFFF;
+			border-color: #E2E8F0;
+			color: #475569;
+		}
+		.news-social-copy:hover {
+			background: #E87722;
+			color: #FFFFFF;
+			border-color: #E87722;
+			transform: translateY(-2px);
+			box-shadow: 0 4px 10px rgba(232, 119, 34, 0.35);
+		}
+
+		.news-social-btn:active {
+			transform: translateY(0);
+		}
+
+		/* Tooltip nhỏ */
+		.news-social-btn::after {
+			content: attr(data-tooltip);
+			position: absolute;
+			bottom: -32px;
+			left: 50%;
+			transform: translateX(-50%) translateY(4px);
+			background: #1E293B;
+			color: #FFFFFF;
+			font-family: 'Montserrat', sans-serif;
+			font-size: 11px;
+			font-weight: 600;
+			white-space: nowrap;
+			padding: 4px 8px;
+			border-radius: 4px;
+			pointer-events: none;
+			opacity: 0;
+			visibility: hidden;
+			transition: all 0.2s ease;
+			z-index: 1000;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+		}
+
+		.news-social-btn:hover::after {
+			opacity: 1;
+			visibility: visible;
+			transform: translateX(-50%) translateY(0);
 		}
 
 		/* 4. NỘI DUNG BÀI VIẾT (MAIN ARTICLE CONTENT) */
@@ -359,6 +528,339 @@ while ( have_posts() ) :
 
 		.news-article-body li {
 			margin-bottom: 8px;
+		}
+
+
+		/* ============================================================
+		   BỘ COMPONENT & CSS CẤU TRÚC STAR (S - T - A - R)
+		   S: Situation (Bối cảnh) | T: Task (Nhiệm vụ)
+		   A: Action (Hành động)   | R: Result (Kết quả)
+		   ============================================================ */
+
+		/* 1. Khung bao toàn bộ mô hình STAR (.star-box) */
+		.star-box {
+			background: #FFFFFF;
+			border: 1px solid #E2E8F0;
+			border-radius: 12px;
+			padding: 30px 28px;
+			margin: 34px 0;
+			box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+			position: relative;
+			overflow: hidden;
+		}
+
+		.star-box::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 4px;
+			background: linear-gradient(90deg, #2563EB 0%, #D97706 33%, #7C3AED 66%, #059669 100%);
+		}
+
+		.star-box-header {
+			margin-bottom: 26px;
+			padding-bottom: 16px;
+			border-bottom: 1px solid #F1F5F9;
+		}
+
+		.star-box-main-title {
+			font-size: 20px !important;
+			font-weight: 800 !important;
+			color: #0F172A !important;
+			margin: 0 0 6px 0 !important;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			flex-wrap: wrap;
+			line-height: 1.35 !important;
+		}
+
+		.star-box-badge-tag {
+			display: inline-block;
+			background: #0F172A;
+			color: #FFFFFF;
+			font-size: 11px;
+			font-weight: 800;
+			letter-spacing: 1px;
+			padding: 3px 8px;
+			border-radius: 4px;
+			text-transform: uppercase;
+		}
+
+		.star-box-subtitle {
+			font-size: 14px !important;
+			color: #64748B !important;
+			margin: 0 !important;
+			line-height: 1.5 !important;
+		}
+
+		/* 2. Danh sách các thành tố STAR & Hiệu ứng Timeline */
+		.star-items-list {
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+			position: relative;
+		}
+
+		.star-item {
+			display: flex;
+			align-items: flex-start;
+			gap: 20px;
+			position: relative;
+			transition: transform 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		/* Trục và Badge chữ cái STAR (S, T, A, R) */
+		.star-badge-wrap {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			flex-shrink: 0;
+			position: relative;
+		}
+
+		.star-badge {
+			width: 44px;
+			height: 44px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-family: 'Montserrat', sans-serif;
+			font-weight: 900;
+			font-size: 18px;
+			color: #FFFFFF;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+			position: relative;
+			z-index: 2;
+			flex-shrink: 0;
+			transition: transform 0.2s ease;
+		}
+
+		.star-item:hover .star-badge {
+			transform: scale(1.08);
+		}
+
+		.star-line-connector {
+			width: 2px;
+			flex-grow: 1;
+			min-height: 28px;
+			background: #E2E8F0;
+			margin: 8px 0 -16px;
+			position: relative;
+			z-index: 1;
+		}
+
+		.star-item:last-child .star-line-connector {
+			display: none;
+		}
+
+		/* Khung nội dung thành tố STAR */
+		.star-content-wrap {
+			flex: 1 1 auto;
+			min-width: 0;
+			background: #F8FAFC;
+			border: 1px solid #E2E8F0;
+			border-radius: 10px;
+			padding: 20px 22px;
+			transition: all 0.2s ease;
+			position: relative;
+		}
+
+		.star-item:hover .star-content-wrap {
+			background: #FFFFFF;
+			box-shadow: 0 6px 18px -3px rgba(0, 0, 0, 0.08);
+			transform: translateY(-2px);
+		}
+
+		.star-header {
+			margin-bottom: 12px;
+		}
+
+		.star-meta-info {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			margin-bottom: 6px;
+		}
+
+		.star-step-pill {
+			font-size: 11px;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			padding: 2px 8px;
+			border-radius: 12px;
+			line-height: 1.4;
+		}
+
+		.star-en-label {
+			font-size: 11.5px;
+			font-weight: 600;
+			color: #64748B;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+
+		.star-title {
+			font-size: 16.5px !important;
+			font-weight: 700 !important;
+			margin: 0 !important;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			line-height: 1.4 !important;
+		}
+
+		.star-header-icon {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			flex-shrink: 0;
+		}
+
+		.star-body {
+			font-size: 14.5px;
+			line-height: 1.75;
+			color: #334155;
+		}
+
+		.star-body p:last-child {
+			margin-bottom: 0 !important;
+		}
+
+		/* 3. Màu sắc & định dạng chuyên biệt cho 4 thành tố STAR */
+
+		/* --- S: SITUATION (Bối cảnh / Tình huống thực tế) --- */
+		.star-situation .star-badge {
+			background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
+			box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+		}
+		.star-situation .star-content-wrap {
+			border-left: 4px solid #2563EB;
+		}
+		.star-situation .star-step-pill {
+			background: #DBEAFE;
+			color: #1D4ED8;
+		}
+		.star-situation .star-title {
+			color: #1E40AF !important;
+		}
+		.star-situation .star-header-icon {
+			color: #2563EB;
+		}
+
+		/* --- T: TASK (Nhiệm vụ / Thách thức đặt ra) --- */
+		.star-task .star-badge {
+			background: linear-gradient(135deg, #B45309 0%, #F59E0B 100%);
+			box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+		}
+		.star-task .star-content-wrap {
+			border-left: 4px solid #D97706;
+		}
+		.star-task .star-step-pill {
+			background: #FEF3C7;
+			color: #B45309;
+		}
+		.star-task .star-title {
+			color: #B45309 !important;
+		}
+		.star-task .star-header-icon {
+			color: #D97706;
+		}
+
+		/* --- A: ACTION (Hành động / Giải pháp triển khai) --- */
+		.star-action .star-badge {
+			background: linear-gradient(135deg, #6D28D9 0%, #8B5CF6 100%);
+			box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+		}
+		.star-action .star-content-wrap {
+			border-left: 4px solid #7C3AED;
+		}
+		.star-action .star-step-pill {
+			background: #EDE9FE;
+			color: #6D28D9;
+		}
+		.star-action .star-title {
+			color: #6D28D9 !important;
+		}
+		.star-action .star-header-icon {
+			color: #7C3AED;
+		}
+
+		/* --- R: RESULT (Kết quả đo lường đạt được) --- */
+		.star-result .star-badge {
+			background: linear-gradient(135deg, #047857 0%, #10B981 100%);
+			box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
+		}
+		.star-result .star-content-wrap {
+			border-left: 4px solid #059669;
+		}
+		.star-result .star-step-pill {
+			background: #D1FAE5;
+			color: #047857;
+		}
+		.star-result .star-title {
+			color: #047857 !important;
+		}
+		.star-result .star-header-icon {
+			color: #059669;
+		}
+
+		/* 4. Định dạng khi một khối STAR đứng ĐỘC LẬP (Callout Box riêng lẻ) */
+		div.star-situation:not(.star-item),
+		div.star-task:not(.star-item),
+		div.star-action:not(.star-item),
+		div.star-result:not(.star-item) {
+			border-radius: 8px;
+			padding: 22px 24px;
+			margin: 26px 0;
+			position: relative;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+		}
+
+		div.star-situation:not(.star-item) {
+			background: #F0F7FF;
+			border: 1px solid #BFDBFE;
+			border-left: 5px solid #2563EB;
+		}
+		div.star-task:not(.star-item) {
+			background: #FFFBEB;
+			border: 1px solid #FDE68A;
+			border-left: 5px solid #D97706;
+		}
+		div.star-action:not(.star-item) {
+			background: #F5F3FF;
+			border: 1px solid #DDD6FE;
+			border-left: 5px solid #7C3AED;
+		}
+		div.star-result:not(.star-item) {
+			background: #ECFDF5;
+			border: 1px solid #A7F3D0;
+			border-left: 5px solid #059669;
+		}
+
+		/* Biến thể hiển thị Grid (Lưới 2 cột x 2 hàng) */
+		.star-box.star-layout-grid .star-items-list {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 20px;
+		}
+		.star-box.star-layout-grid .star-line-connector {
+			display: none !important;
+		}
+		.star-box.star-layout-grid .star-item {
+			height: 100%;
+		}
+		.star-box.star-layout-grid .star-content-wrap {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+		.star-box.star-layout-grid .star-body {
+			flex-grow: 1;
 		}
 
 		/* 5. BÀI VIẾT MỚI NHẤT (NEWEST BLOG ENTRIES) */
@@ -610,6 +1112,7 @@ while ( have_posts() ) :
 		}
 
 		/* Tương thích Responsive trên Tablet & Mobile */
+		/* Tương thích Responsive trên Tablet & Mobile */
 		@media (max-width: 900px) {
 			.news-header-box {
 				flex-direction: column;
@@ -621,6 +1124,14 @@ while ( have_posts() ) :
 			}
 			.news-share-btn {
 				width: 100%;
+			}
+			.news-social-dropdown {
+				left: 0;
+				right: 0;
+				justify-content: space-between;
+			}
+			.star-box.star-layout-grid .star-items-list {
+				grid-template-columns: 1fr;
 			}
 			.news-blog-grid {
 				grid-template-columns: 1fr;
@@ -658,8 +1169,29 @@ while ( have_posts() ) :
 			.news-header-title {
 				font-size: 17px;
 			}
+			.news-social-dropdown {
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 10px;
+				padding: 10px 12px;
+			}
 			.news-article-card {
 				padding: 24px 18px;
+			}
+			/* STAR Component responsive mobile */
+			.star-box {
+				padding: 20px 16px;
+			}
+			.star-item {
+				gap: 12px;
+			}
+			.star-badge {
+				width: 36px;
+				height: 36px;
+				font-size: 15px;
+			}
+			.star-content-wrap {
+				padding: 16px 14px;
 			}
 			.news-blog-card {
 				flex-direction: column;
@@ -669,6 +1201,7 @@ while ( have_posts() ) :
 				width: 100%;
 				height: 160px;
 			}
+
 			.news-newsletter-form {
 				flex-direction: column;
 				width: 100%;
@@ -723,14 +1256,16 @@ while ( have_posts() ) :
 				</div>
 			</div>
 
-			<!-- Nút SHARE tích hợp API chia sẻ động và sao chép link -->
+			<!-- CỤM NÚT CHIA SẺ MẠNG XÃ HỘI (SOCIAL SHARE UI: FACEBOOK, TWITTER/X, LINKEDIN, COPY LINK) -->
+			<!-- CỤM NÚT CHIA SẺ MẠNG XÃ HỘI (DROPDOWN KHI NHẤN NÚT SHARE) -->
 			<div class="news-header-right">
+				<!-- Nút SHARE chuẩn theo Hình 1 -->
 				<button 
 					type="button" 
 					class="news-share-btn" 
-					id="newsShareBtn" 
-					data-url="<?php echo esc_url( $post_link ); ?>" 
-					data-title="<?php echo esc_attr( $post_title ); ?>"
+					id="newsShareToggleBtn" 
+					aria-expanded="false" 
+					aria-controls="newsSocialDropdown"
 					title="<?php echo esc_attr__( 'Chia sẻ bài viết này', 'jobscout' ); ?>"
 				>
 					<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -742,6 +1277,75 @@ while ( have_posts() ) :
 					</svg>
 					<span><?php esc_html_e( 'SHARE', 'jobscout' ); ?></span>
 				</button>
+
+				<!-- FORM SHARE DROPDOWN CHUẨN 100% THEO HÌNH 2 -->
+				<div class="news-social-dropdown" id="newsSocialDropdown" role="dialog" aria-hidden="true">
+					<span class="news-share-label">
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E87722" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<circle cx="18" cy="5" r="3"></circle>
+							<circle cx="6" cy="12" r="3"></circle>
+							<circle cx="18" cy="19" r="3"></circle>
+							<line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+							<line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+						</svg>
+						<span><?php esc_html_e( 'SHARE', 'jobscout' ); ?></span>
+					</span>
+					<div class="news-social-buttons">
+						<!-- Facebook -->
+						<a 
+							href="https://www.facebook.com/sharer/sharer.php?u=<?php echo rawurlencode( $post_link ); ?>" 
+							class="news-social-btn news-social-facebook js-social-share-popup" 
+							data-tooltip="Facebook"
+							title="<?php echo esc_attr__( 'Chia sẻ lên Facebook', 'jobscout' ); ?>"
+							aria-label="Facebook"
+							target="_blank" 
+							rel="noopener noreferrer"
+						>
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+						</a>
+
+						<!-- Twitter / X -->
+						<a 
+							href="https://twitter.com/intent/tweet?url=<?php echo rawurlencode( $post_link ); ?>&text=<?php echo rawurlencode( $post_title ); ?>" 
+							class="news-social-btn news-social-twitter js-social-share-popup" 
+							data-tooltip="Twitter / X"
+							title="<?php echo esc_attr__( 'Chia sẻ lên Twitter / X', 'jobscout' ); ?>"
+							aria-label="Twitter / X"
+							target="_blank" 
+							rel="noopener noreferrer"
+						>
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+						</a>
+
+						<!-- LinkedIn -->
+						<a 
+							href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo rawurlencode( $post_link ); ?>" 
+							class="news-social-btn news-social-linkedin js-social-share-popup" 
+							data-tooltip="LinkedIn"
+							title="<?php echo esc_attr__( 'Chia sẻ lên LinkedIn', 'jobscout' ); ?>"
+							aria-label="LinkedIn"
+							target="_blank" 
+							rel="noopener noreferrer"
+						>
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+						</a>
+
+						<!-- Copy Link Button -->
+						<button 
+							type="button" 
+							class="news-social-btn news-social-copy js-copy-link-btn" 
+							data-url="<?php echo esc_url( $post_link ); ?>" 
+							data-tooltip="<?php echo esc_attr__( 'Sao chép link', 'jobscout' ); ?>"
+							title="<?php echo esc_attr__( 'Sao chép liên kết bài viết', 'jobscout' ); ?>"
+							aria-label="Sao chép liên kết"
+						>
+							<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+								<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+							</svg>
+						</button>
+					</div>
+				</div>
 			</div>
 		</header>
 
@@ -760,6 +1364,7 @@ while ( have_posts() ) :
 				?>
 			</div>
 		</article>
+
 
 		<!-- 5. BÀI VIẾT MỚI NHẤT (NEWEST BLOG ENTRIES) -->
 		<section class="news-newest-section" aria-labelledby="newest-blog-heading">
@@ -898,8 +1503,7 @@ while ( have_posts() ) :
 	<!-- JavaScript Xử Lý Tương Tác: Nút Share & Đăng ký nhận tin -->
 	<script>
 	document.addEventListener('DOMContentLoaded', function() {
-		// 1. Xử lý nút SHARE
-		const shareBtn = document.getElementById('newsShareBtn');
+		// 1. Quản lý Toast thông báo
 		const toast = document.getElementById('newsToast');
 		const toastMsg = document.getElementById('newsToastMsg');
 		let toastTimer = null;
@@ -914,19 +1518,80 @@ while ( have_posts() ) :
 			}, 3500);
 		}
 
-		if (shareBtn) {
-			shareBtn.addEventListener('click', function() {
-				const url = shareBtn.getAttribute('data-url') || window.location.href;
-				const title = shareBtn.getAttribute('data-title') || document.title;
+		// 2. Xử lý bật / tắt Form Share Dropdown (Chuẩn Hình 2) khi nhấn nút SHARE
+		const shareToggleBtn = document.getElementById('newsShareToggleBtn');
+		const shareDropdown = document.getElementById('newsSocialDropdown');
 
-				if (navigator.share) {
-					navigator.share({
-						title: title,
-						url: url
-					}).catch(function(err) {
-						// Nếu người dùng đóng modal share hoặc hủy
-					});
-				} else if (navigator.clipboard) {
+		if (shareToggleBtn && shareDropdown) {
+			shareToggleBtn.addEventListener('click', function(e) {
+				e.stopPropagation();
+				const isOpen = shareDropdown.classList.toggle('is-open');
+				shareToggleBtn.classList.toggle('is-active', isOpen);
+				shareToggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+				shareDropdown.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+			});
+
+			// Ngăn click bên trong dropdown làm đóng dropdown
+			shareDropdown.addEventListener('click', function(e) {
+				e.stopPropagation();
+			});
+
+			// Đóng dropdown khi click ra ngoài
+			document.addEventListener('click', function() {
+				if (shareDropdown.classList.contains('is-open')) {
+					shareDropdown.classList.remove('is-open');
+					shareToggleBtn.classList.remove('is-active');
+					shareToggleBtn.setAttribute('aria-expanded', 'false');
+					shareDropdown.setAttribute('aria-hidden', 'true');
+				}
+			});
+
+			// Đóng bằng phím Escape
+			document.addEventListener('keydown', function(e) {
+				if (e.key === 'Escape' && shareDropdown.classList.contains('is-open')) {
+					shareDropdown.classList.remove('is-open');
+					shareToggleBtn.classList.remove('is-active');
+					shareToggleBtn.setAttribute('aria-expanded', 'false');
+					shareDropdown.setAttribute('aria-hidden', 'true');
+					shareToggleBtn.focus();
+				}
+			});
+		}
+
+		// 3. Xử lý mở cửa sổ popup chuyên dụng cho các nút mạng xã hội (Facebook, Twitter/X, LinkedIn)
+		const shareLinks = document.querySelectorAll('.js-social-share-popup');
+		shareLinks.forEach(function(link) {
+			link.addEventListener('click', function(e) {
+				const href = link.getAttribute('href');
+				if (href && href.indexOf('http') === 0) {
+					e.preventDefault();
+					const width = 600;
+					const height = 540;
+					const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+					const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
+					const screenWidth = window.innerWidth || document.documentElement.clientWidth || screen.width;
+					const screenHeight = window.innerHeight || document.documentElement.clientHeight || screen.height;
+					const left = ((screenWidth / 2) - (width / 2)) + dualScreenLeft;
+					const top = ((screenHeight / 2) - (height / 2)) + dualScreenTop;
+
+					const popup = window.open(
+						href,
+						'SocialShareWindow',
+						'scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no,width=' + width + ',height=' + height + ',top=' + top + ',left=' + left
+					);
+					if (popup && popup.focus) {
+						popup.focus();
+					}
+				}
+			});
+		});
+
+		// 3. Xử lý nút SAO CHÉP LIÊN KẾT (Copy Link)
+		const copyBtns = document.querySelectorAll('.js-copy-link-btn');
+		copyBtns.forEach(function(btn) {
+			btn.addEventListener('click', function() {
+				const url = btn.getAttribute('data-url') || window.location.href;
+				if (navigator.clipboard && navigator.clipboard.writeText) {
 					navigator.clipboard.writeText(url).then(function() {
 						triggerToast('Đã sao chép liên kết bài viết vào bộ nhớ tạm!');
 					}).catch(function() {
@@ -936,7 +1601,7 @@ while ( have_posts() ) :
 					fallbackCopyText(url);
 				}
 			});
-		}
+		});
 
 		function fallbackCopyText(text) {
 			const tempInput = document.createElement('input');
