@@ -43,7 +43,6 @@ get_header(); ?>
   .page-template-page-contact .site-main,
   .page-template-page-contact-php .site-main {
     background-color: #FFFFFF !important;
-    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   .page-template-page-contact .site-content,
@@ -114,188 +113,23 @@ get_header(); ?>
     width: 100%;
   }
 
-  /* 2. Header: Logo, Menu & Nút Submit Job */
-  .page-template-page-contact .site-header {
-    background: #FFFFFF !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    position: relative !important;
-  }
-
-  .page-template-page-contact .header-main .container {
-    max-width: 1260px !important;
-    padding: 12px 24px !important;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .page-template-page-contact .site-branding .site-title a {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 23px !important;
-    font-weight: 800 !important;
-    color: #1A1D20 !important;
-    letter-spacing: -0.3px;
-    text-transform: none;
-    text-decoration: none;
-    line-height: 1.15;
-    display: block;
-  }
-
-  .page-template-page-contact .site-branding .site-description {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 11px !important;
-    font-weight: 700 !important;
-    letter-spacing: 2px !important;
-    text-transform: uppercase !important;
-    color: #666666 !important;
-    margin: 3px 0 0 0 !important;
-  }
-
-  /* CHỈ áp dụng flex cho menu cấp 1 (tránh làm vỡ submenu dropdown của Việc làm) */
-  .page-template-page-contact .main-navigation > div > ul,
-  .page-template-page-contact .main-navigation > ul {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    list-style: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  /* Menu items cấp 1 */
-  .page-template-page-contact .main-navigation > div > ul > li,
-  .page-template-page-contact .main-navigation > ul > li {
-    position: relative !important;
-    list-style: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .page-template-page-contact .main-navigation > div > ul > li > a,
-  .page-template-page-contact .main-navigation > ul > li > a {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 13.5px !important;
-    font-weight: 700 !important;
-    color: #1E2022 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-    padding: 12px 14px !important;
-    position: relative !important;
-    transition: color 0.2s ease, border-bottom 0.2s ease !important;
+  /* Đảm bảo mục Liên hệ trên Navbar luôn đổi sang chữ màu Cam và gạch cam đúng chuẩn như hình */
+  body.page-template-page-contact .main-navigation ul.nav-menu > li.menu-item-133 > a,
+  body.page-template-page-contact .main-navigation ul.nav-menu > li.current-menu-item > a,
+  body.page-template-page-contact-php .main-navigation ul.nav-menu > li.menu-item-133 > a,
+  body.page-template-page-contact-php .main-navigation ul.nav-menu > li.current-menu-item > a,
+  body.page-id-989 .main-navigation ul.nav-menu > li.menu-item-133 > a,
+  body.page-id-989 .main-navigation ul.nav-menu > li.current-menu-item > a {
+    color: #ea580c !important;
+    border-bottom: 3px solid #ea580c !important;
     text-decoration: none !important;
-    border-bottom: 2px solid transparent !important;
-    display: inline-block !important;
   }
 
-  .page-template-page-contact .main-navigation > div > ul > li > a:hover,
-  .page-template-page-contact .main-navigation > ul > li > a:hover {
-    color: #ea580c !important;
-  }
-
-  /* XÓA BỎ HOÀN TOÀN TẤT CẢ ::after TRÊN TOÀN BỘ NAVIGATION MENU ĐỂ KHÔNG BỊ GẠCH KÉP */
-  .page-template-page-contact .main-navigation a::after,
-  .page-template-page-contact .main-navigation li a::after,
-  .page-template-page-contact .main-navigation li::after {
-    display: none !important;
-    content: none !important;
-  }
-
-  /* DUY NHẤT MỤC LIÊN HỆ ACTIVE: CHỮ CAM + ĐÚNG 1 GẠCH CHÂN BORDER-BOTTOM 2PX GIỐNG HỆT HÌNH 2 */
-  .page-template-page-contact .main-navigation li.active-contact > a,
-  .page-template-page-contact .main-navigation li.menu-item-contact > a,
-  .page-template-page-contact .main-navigation li.current-menu-item > a,
-  .page-template-page-contact .main-navigation li.current_page_item > a {
-    color: #ea580c !important;
-    border-bottom: 2px solid #ea580c !important;
-  }
-
-  /* ========================================================
-     SỬA HÌNH 1: SUBMENU DROPDOWN VIỆC LÀM (HIỂN THỊ DỌC CHUẨN ĐẸP)
-     ======================================================== */
-  .page-template-page-contact .main-navigation ul.sub-menu,
-  .page-template-page-contact .main-navigation ul ul {
-    display: none !important;
-    position: absolute !important;
-    top: 100% !important;
-    left: 0 !important;
-    margin-left: 0 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    flex-direction: column !important;
-    background: #FFFFFF !important;
-    border: 1px solid #E2E8F0 !important;
-    border-radius: 8px !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
-    padding: 8px !important;
-    min-width: 250px !important;
-    width: max-content !important;
-    z-index: 9999 !important;
-    gap: 4px !important;
-    list-style: none !important;
-  }
-
-  /* Chỉ hiển thị khi hover chuột hoặc focus vào menu cha */
-  .page-template-page-contact .main-navigation li:hover > ul.sub-menu,
-  .page-template-page-contact .main-navigation li.hover > ul.sub-menu,
-  .page-template-page-contact .main-navigation li:focus-within > ul.sub-menu {
-    display: flex !important;
-  }
-
-  .page-template-page-contact .main-navigation ul.sub-menu li {
-    display: block !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    list-style: none !important;
-  }
-
-  /* Chữ submenu: hiển thị trên 1 hàng ngang trọn vẹn, không ngắt từng chữ một */
-  .page-template-page-contact .main-navigation ul.sub-menu li a {
-    display: block !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    padding: 10px 16px !important;
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 13.5px !important;
-    font-weight: 600 !important;
-    color: #334155 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.3px !important;
-    white-space: nowrap !important;
-    border-radius: 6px !important;
-    border-bottom: none !important;
-    background: transparent !important;
-    transition: all 0.2s ease !important;
-    text-align: left !important;
-  }
-
-  .page-template-page-contact .main-navigation ul.sub-menu li a:hover {
-    background: #EB6324 !important;
-    color: #FFFFFF !important;
-    box-shadow: 0 2px 8px rgba(235, 99, 36, 0.25) !important;
-  }
-
-  /* Nút SUBMIT JOB / ĐĂNG TIN TUYỂN DỤNG cam */
-  .page-template-page-contact .menu-wrap .btn-wrap a.btn,
-  .page-template-page-contact .header-main a.btn-primary {
-    background-color: #EB6324 !important;
-    border-color: #EB6324 !important;
-    color: #FFFFFF !important;
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 13px !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    padding: 11px 22px !important;
-    border-radius: 4px !important;
-    letter-spacing: 0.5px;
-    transition: all 0.25s ease;
-  }
-
-  .page-template-page-contact .menu-wrap .btn-wrap a.btn:hover,
-  .page-template-page-contact .header-main a.btn-primary:hover {
-    background-color: #d65115 !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(235, 99, 36, 0.25);
+  body.page-template-page-contact .main-navigation ul.nav-menu > li:not(.menu-item-133):not(.current-menu-item) > a,
+  body.page-template-page-contact-php .main-navigation ul.nav-menu > li:not(.menu-item-133):not(.current-menu-item) > a,
+  body.page-id-989 .main-navigation ul.nav-menu > li:not(.menu-item-133):not(.current-menu-item) > a {
+    color: #1e293b !important;
+    border-bottom: 3px solid transparent !important;
   }
 
   /* ========================================================
@@ -562,7 +396,7 @@ get_header(); ?>
   .page-template-page-contact-php .contact-hero-title,
   .page-template-page-contact .cp-hero-title,
   .page-template-page-contact-php .cp-hero-title {
-    color: #ffffff !important;
+    color: #ffffff;
     font-size: clamp(28px, 4.2vw, 44px) !important;
     font-weight: 700 !important;
     letter-spacing: 2px !important;
@@ -596,7 +430,7 @@ get_header(); ?>
     font-family: 'Montserrat', sans-serif !important;
     font-size: 24px !important;
     font-weight: 700 !important;
-    color: #1E2022 !important;
+    color: #1E2022;
     margin: 0 0 16px !important;
     padding-top: 10px !important;
   }
@@ -604,7 +438,7 @@ get_header(); ?>
   .page-template-page-contact .contact-address-text {
     font-family: 'Montserrat', sans-serif !important;
     font-size: 15.5px !important;
-    color: #4A5568 !important;
+    color: #4A5568;
     max-width: 820px !important;
     margin: 0 auto !important;
     line-height: 1.6 !important;
@@ -645,14 +479,14 @@ get_header(); ?>
     font-family: 'Montserrat', sans-serif !important;
     font-size: 22px !important;
     font-weight: 700 !important;
-    color: #1E2022 !important;
+    color: #1E2022;
     margin: 0 0 12px !important;
   }
 
   .page-template-page-contact .contact-col-subtitle {
     font-family: 'Montserrat', sans-serif !important;
     font-size: 14.5px !important;
-    color: #64748B !important;
+    color: #64748B;
     margin: 0 0 24px !important;
   }
 
@@ -660,7 +494,7 @@ get_header(); ?>
     font-family: 'Montserrat', sans-serif !important;
     font-size: 15px !important;
     font-weight: 700 !important;
-    color: #1E2022 !important;
+    color: #1E2022;
     margin: 18px 0 6px !important;
   }
 
@@ -668,7 +502,7 @@ get_header(); ?>
     font-family: 'Montserrat', sans-serif !important;
     font-size: 20px !important;
     font-weight: 800 !important;
-    color: #1E2022 !important;
+    color: #1E2022;
     margin: 0 0 16px !important;
     cursor: default !important;
     user-select: text !important;
@@ -689,7 +523,7 @@ get_header(); ?>
   .page-template-page-contact .contact-support-note {
     font-family: 'Montserrat', sans-serif !important;
     font-size: 14px !important;
-    color: #64748B !important;
+    color: #64748B;
     line-height: 1.6 !important;
     margin: 28px auto 0 !important;
     max-width: 440px !important;
@@ -698,7 +532,7 @@ get_header(); ?>
   .page-template-page-contact .contact-seeker-line {
     font-family: 'Montserrat', sans-serif !important;
     font-size: 15px !important;
-    color: #4A5568 !important;
+    color: #4A5568;
     line-height: 1.6 !important;
     margin: 0 0 16px !important;
   }
@@ -707,7 +541,7 @@ get_header(); ?>
     font-family: 'Montserrat', sans-serif !important;
     font-size: 16px !important;
     font-weight: 700 !important;
-    color: #1E2022 !important;
+    color: #1E2022;
     margin: 30px 0 12px !important;
   }
 
@@ -739,29 +573,21 @@ get_header(); ?>
      ======================================================== -->
 <script id="contact-page-script">
 (function() {
-  // Đánh dấu Active gạch chân cam duy nhất cho mục Liên hệ trên Header
-  const navItems = document.querySelectorAll('.page-template-page-contact .main-navigation li');
-  navItems.forEach(li => {
-    const link = li.querySelector('a');
-    if (!link) return;
-    const text = link.textContent.trim().toLowerCase();
-    const href = link.getAttribute('href') || '';
-    if (href.includes('contact') || href.includes('lien-he') || text === 'liên hệ' || text === 'contact') {
-      li.classList.add('active-contact', 'current-menu-item', 'current_page_item');
-    } else if (!li.closest('.sub-menu')) {
-      li.classList.remove('active-contact', 'current-menu-item', 'current_page_item');
+  // Đảm bảo chữ Liên hệ trên thanh menu đổi sang màu Cam và có gạch chân màu Cam chuẩn như hình
+  document.querySelectorAll('.main-navigation ul.nav-menu > li').forEach(function(li) {
+    var a = li.querySelector('a');
+    if (!a) return;
+    var txt = a.textContent.trim().toLowerCase();
+    var href = (a.getAttribute('href') || '').toLowerCase();
+    if (txt === 'liên hệ' || txt === 'contact' || href.indexOf('contact') !== -1 || li.classList.contains('menu-item-133')) {
+      li.classList.add('current-menu-item', 'current_page_item');
+      a.style.setProperty('color', '#ea580c', 'important');
+      a.style.setProperty('border-bottom', '3px solid #ea580c', 'important');
+    } else {
+      li.classList.remove('current-menu-item', 'current_page_item');
+      a.style.removeProperty('border-bottom');
     }
   });
-
-  // Tùy chỉnh Logo đồng bộ với hình mẫu
-  const brandingTitle = document.querySelector('.page-template-page-contact .site-branding .site-title a');
-  const brandingDesc = document.querySelector('.page-template-page-contact .site-branding .site-description');
-  if (brandingTitle && brandingTitle.textContent.trim() === 'CMS_CuoiKi') {
-    brandingTitle.textContent = 'Plan Do See Global Inc.';
-  }
-  if (brandingDesc && (brandingDesc.textContent.trim() === 'Canhr cu' || brandingDesc.textContent.trim() === 'Just another WordPress site')) {
-    brandingDesc.textContent = 'RECRUITING';
-  }
 
   // Đảm bảo tất cả các số hotline chỉ là văn bản thường, không click chuyển trang
   document.querySelectorAll('.contact-phone-item, .contact-phone-item a, .cp-phone-text, .contact-phone-link').forEach(function(el) {
