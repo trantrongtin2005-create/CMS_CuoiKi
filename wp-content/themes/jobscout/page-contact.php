@@ -105,7 +105,7 @@ get_header(); ?>
   }
 
   .contact-page-wrapper {
-    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: #333333;
     line-height: 1.6;
     background-color: #ffffff;
@@ -166,7 +166,7 @@ get_header(); ?>
   }
 
   .cp-hero-title {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-size: 40px;
     font-weight: 800;
     color: #FFFFFF;
@@ -174,7 +174,7 @@ get_header(); ?>
     letter-spacing: 2px;
     margin: 0;
     line-height: 1.2;
-    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+    text-shadow: none;
   }
 
   /* ========================================================
@@ -193,7 +193,7 @@ get_header(); ?>
   }
 
   .cp-address-title {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-size: 21px;
     font-weight: 700;
     color: #1E2022;
@@ -236,7 +236,7 @@ get_header(); ?>
   }
 
   .cp-col-title {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-size: 20px;
     font-weight: 700;
     color: #1E2022;
@@ -259,7 +259,7 @@ get_header(); ?>
   }
 
   .cp-city-title {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-size: 16px;
     font-weight: 700;
     color: #1E2022;
@@ -267,7 +267,7 @@ get_header(); ?>
   }
 
   .cp-phone-text {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-size: 17px;
     font-weight: 700;
     color: #1E2022;
@@ -314,7 +314,7 @@ get_header(); ?>
   }
 
   .cp-seeker-call-title {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-size: 16px;
     font-weight: 700;
     color: #1E2022;
@@ -338,7 +338,7 @@ get_header(); ?>
     .page-template-page-contact-php .contact-hero-banner.wp-block-cover,
     .page-template-page-contact .contact-hero-banner,
     .page-template-page-contact .cp-hero-banner {
-      min-height: 380px !important;
+      min-height: 300px;
     }
   }
 
@@ -348,15 +348,15 @@ get_header(); ?>
     .page-template-page-contact-php .contact-hero-banner.wp-block-cover,
     .page-template-page-contact .contact-hero-banner,
     .page-template-page-contact .cp-hero-banner {
-      min-height: 300px !important;
+      min-height: 260px;
     }
     .contact-hero-title,
     .cp-hero-title {
-      font-size: 26px !important;
+      font-size: 26px;
     }
     .contact-section-address,
     .cp-section-address {
-      padding: 42px 18px 38px !important;
+      padding: 55px 18px 40px !important;
     }
     .contact-section-columns,
     .cp-section-columns {
@@ -369,7 +369,9 @@ get_header(); ?>
     }
   }
 
-  /* Gutenberg block styling support: Banner tràn viền 100% giống trang Về chúng tôi */
+  /* ========================================================
+     Gutenberg block styling support: Banner tràn viền 100%
+     ======================================================== */
   .contact-hero-banner.wp-block-cover,
   .page-template-page-contact .contact-hero-banner.wp-block-cover,
   .page-template-page-contact-php .contact-hero-banner.wp-block-cover,
@@ -377,8 +379,8 @@ get_header(); ?>
   .page-template-page-contact-php .contact-hero-banner,
   .page-template-page-contact .cp-hero-banner,
   .page-template-page-contact-php .cp-hero-banner {
-    min-height: 480px !important;
-    padding: 40px 20px !important;
+    min-height: 320px;
+    padding: 30px 20px !important;
     position: relative !important;
     background-position: center 45% !important;
     background-size: cover !important;
@@ -397,21 +399,21 @@ get_header(); ?>
   .page-template-page-contact .cp-hero-title,
   .page-template-page-contact-php .cp-hero-title {
     color: #ffffff;
-    font-size: clamp(28px, 4.2vw, 44px) !important;
-    font-weight: 700 !important;
-    letter-spacing: 2px !important;
-    text-transform: uppercase !important;
-    line-height: 1.35 !important;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-size: clamp(28px, 4.2vw, 44px);
+    font-weight: 700;
+    line-height: 1.35;
     margin: 0 !important;
-    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.65) !important;
-    font-family: 'Montserrat', sans-serif !important;
-    text-align: center !important;
+    text-shadow: none;
+    text-align: center;
+    letter-spacing: normal;
   }
 
+  /* Khối địa chỉ trụ sở chính: Cách rộng rãi, thoáng đãng với Hero banner */
   .page-template-page-contact .contact-section-address,
   .page-template-page-contact-php .contact-section-address {
     background: #FFFFFF !important;
-    padding: 85px 24px 60px !important;
+    padding: 95px 24px 60px !important;
     text-align: center !important;
     margin: 0 auto !important;
     width: 100% !important;
@@ -427,21 +429,21 @@ get_header(); ?>
   }
 
   .page-template-page-contact .contact-address-title {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 24px !important;
-    font-weight: 700 !important;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
     color: #1E2022;
     margin: 0 0 16px !important;
-    padding-top: 10px !important;
+    padding-top: 5px !important;
   }
 
   .page-template-page-contact .contact-address-text {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 15.5px !important;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
     color: #4A5568;
     max-width: 820px !important;
     margin: 0 auto !important;
-    line-height: 1.6 !important;
+    line-height: 1.6;
   }
 
   .page-template-page-contact .contact-section-columns,
@@ -476,32 +478,32 @@ get_header(); ?>
   }
 
   .page-template-page-contact .contact-col-title {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 22px !important;
-    font-weight: 700 !important;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
     color: #1E2022;
     margin: 0 0 12px !important;
   }
 
   .page-template-page-contact .contact-col-subtitle {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 14.5px !important;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14.5px;
     color: #64748B;
     margin: 0 0 24px !important;
   }
 
   .page-template-page-contact .contact-city-title {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
     color: #1E2022;
     margin: 18px 0 6px !important;
   }
 
   .page-template-page-contact .contact-phone-item {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 20px !important;
-    font-weight: 800 !important;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 20px;
+    font-weight: 800;
     color: #1E2022;
     margin: 0 0 16px !important;
     cursor: default !important;
@@ -511,9 +513,9 @@ get_header(); ?>
 
   .page-template-page-contact .contact-phone-item a,
   .page-template-page-contact .contact-phone-link {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 20px !important;
-    font-weight: 800 !important;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 20px;
+    font-weight: 800;
     color: #1E2022 !important;
     text-decoration: none !important;
     pointer-events: none !important;
@@ -521,26 +523,26 @@ get_header(); ?>
   }
 
   .page-template-page-contact .contact-support-note {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 14px !important;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
     color: #64748B;
-    line-height: 1.6 !important;
+    line-height: 1.6;
     margin: 28px auto 0 !important;
     max-width: 440px !important;
   }
 
   .page-template-page-contact .contact-seeker-line {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 15px !important;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
     color: #4A5568;
-    line-height: 1.6 !important;
+    line-height: 1.6;
     margin: 0 0 16px !important;
   }
 
   .page-template-page-contact .contact-seeker-call-title {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 16px !important;
-    font-weight: 700 !important;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
     color: #1E2022;
     margin: 30px 0 12px !important;
   }
@@ -554,6 +556,14 @@ get_header(); ?>
   .page-template-page-contact .contact-orange-link:hover {
     color: #c2410c !important;
   }
+
+  /* Đảm bảo toàn bộ cài đặt Typography của Gutenberg luôn hiển thị chính xác */
+  .contact-page-wrapper .has-small-font-size { font-size: var(--wp--preset--font-size--small, 13px) !important; }
+  .contact-page-wrapper .has-medium-font-size { font-size: var(--wp--preset--font-size--medium, 20px) !important; }
+  .contact-page-wrapper .has-large-font-size { font-size: var(--wp--preset--font-size--large, 36px) !important; }
+  .contact-page-wrapper .has-x-large-font-size { font-size: var(--wp--preset--font-size--x-large, 42px) !important; }
+  .contact-page-wrapper .has-normal-font-size { font-size: var(--wp--preset--font-size--normal, 16px) !important; }
+  .contact-page-wrapper .has-huge-font-size { font-size: var(--wp--preset--font-size--huge, 42px) !important; }
 </style>
 
 <div id="primary" class="content-area contact-page-wrapper">
