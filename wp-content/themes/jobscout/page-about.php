@@ -66,7 +66,7 @@ get_header(); ?>
 
   /* Reset font chữ & layout chuẩn cho About page */
   .about-page-wrapper {
-    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: #333333;
     line-height: 1.6;
     background-color: #ffffff;
@@ -85,28 +85,26 @@ get_header(); ?>
 
   .about-hero-headline {
     color: #ffffff;
-    font-size: clamp(28px, 4.2vw, 44px) !important;
-    font-weight: 700 !important;
-    letter-spacing: 2px !important;
-    text-transform: uppercase !important;
-    line-height: 1.35 !important;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-size: clamp(28px, 4.2vw, 44px);
+    font-weight: 700;
+    line-height: 1.35;
     margin: 0 !important;
-    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.65);
-    font-family: 'Montserrat', sans-serif !important;
+    text-shadow: none;
+    letter-spacing: normal;
   }
 
   /* ----------------------------------------------------
      2. TIÊU ĐỀ: VỀ CHÚNG TÔI
      ---------------------------------------------------- */
   .about-main-title {
-    font-size: 34px !important;
-    font-weight: 800 !important;
+    font-family: 'Times New Roman', Times, Georgia, serif;
+    font-size: 34px;
+    font-weight: 800;
     color: #1E2022;
-    letter-spacing: 1.5px !important;
-    text-transform: uppercase !important;
     margin: 0 auto !important;
-    font-family: 'Montserrat', sans-serif !important;
     text-align: center;
+    line-height: 1.3;
   }
 
   /* ----------------------------------------------------
@@ -132,25 +130,25 @@ get_header(); ?>
   }
 
   .about-value-title {
-    font-size: 19px !important;
-    font-weight: 700 !important;
+    font-size: 19px;
+    font-weight: 700;
     color: #1E2022;
     margin: 0 0 8px 0 !important;
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   .about-value-quote {
-    font-size: 15px !important;
+    font-size: 15px;
     color: #4A5568;
     margin: 0 0 4px 0 !important;
-    font-style: italic !important;
-    line-height: 1.6 !important;
+    font-style: italic;
+    line-height: 1.6;
   }
 
   .about-value-text {
-    font-size: 15px !important;
+    font-size: 15px;
     color: #555555;
-    line-height: 1.65 !important;
+    line-height: 1.65;
     margin: 0 !important;
   }
 
@@ -201,18 +199,18 @@ get_header(); ?>
   .about-highlight-section h4,
   .about-highlight-subtitle {
     color: #EB6324;
-    font-size: 22px !important;
-    font-weight: 700 !important;
+    font-size: 22px;
+    font-weight: 700;
     margin: 0 0 20px 0 !important;
-    letter-spacing: 0.3px !important;
-    font-family: 'Montserrat', sans-serif !important;
+    letter-spacing: 0.3px;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     text-align: center !important;
   }
 
   .about-highlight-section p {
-    font-size: 15.5px !important;
+    font-size: 15.5px;
     color: #4A5568;
-    line-height: 1.75 !important;
+    line-height: 1.75;
     margin: 0 auto 16px auto !important;
     text-align: center !important;
     max-width: 900px !important;
@@ -246,19 +244,19 @@ get_header(); ?>
   }
 
   .about-fact-label {
-    font-size: 17.5px !important;
-    font-weight: 700 !important;
+    font-size: 17.5px;
+    font-weight: 700;
     color: #1E2022;
     margin: 0 0 4px 0 !important;
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     text-align: center;
   }
 
   .about-fact-value {
-    font-size: 15px !important;
+    font-size: 15px;
     color: #4A5568;
     margin: 0 !important;
-    line-height: 1.6 !important;
+    line-height: 1.6;
     text-align: center;
   }
 
@@ -336,22 +334,30 @@ get_header(); ?>
       min-height: 300px;
     }
     .about-main-title {
-      font-size: 28px !important;
+      font-size: 28px;
     }
     .about-highlight-section {
       padding: 45px 16px;
     }
     .about-highlight-subtitle {
-      font-size: 18px !important;
+      font-size: 18px;
     }
     .about-highlight-section p {
-      font-size: 14.5px !important;
+      font-size: 14.5px;
       text-align: left;
     }
     .about-facts-section {
       padding-bottom: 50px;
     }
   }
+
+  /* Đảm bảo toàn bộ cài đặt Typography của Gutenberg (Font size, Text transform, Letter spacing...) luôn hiển thị */
+  .about-page-wrapper .has-small-font-size { font-size: var(--wp--preset--font-size--small, 13px) !important; }
+  .about-page-wrapper .has-medium-font-size { font-size: var(--wp--preset--font-size--medium, 20px) !important; }
+  .about-page-wrapper .has-large-font-size { font-size: var(--wp--preset--font-size--large, 36px) !important; }
+  .about-page-wrapper .has-x-large-font-size { font-size: var(--wp--preset--font-size--x-large, 42px) !important; }
+  .about-page-wrapper .has-normal-font-size { font-size: var(--wp--preset--font-size--normal, 16px) !important; }
+  .about-page-wrapper .has-huge-font-size { font-size: var(--wp--preset--font-size--huge, 42px) !important; }
 </style>
 
 <div class="about-page-wrapper">
